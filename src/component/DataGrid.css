@@ -1,0 +1,45 @@
+/* DataGrid.css */
+
+.customBackground {
+  background: linear-gradient(to right, #1A1F71, #6F7CFF);
+}
+
+.data-grid-container {
+  display: grid;
+  gap: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.data-grid-header {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  background-color: #f5f5f5;
+  font-weight: bold;
+  border-bottom: 2px solid #ddd;
+}
+
+.data-grid-body {
+  display: grid;
+  grid-template-rows: auto;
+}
+
+.data-grid-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  border-bottom: 1px solid #eee;
+}
+
+.data-grid-cell {
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.header-cell {
+  background-color: #eaeaea;
+}
+
+.body-cell {
+  background-color: #fff;
+}
