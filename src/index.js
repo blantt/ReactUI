@@ -1,4 +1,4 @@
-export { default as FishButton,Button2 } from './component/button';
+export { default as Button,Button2 } from './component/button';
  
 
 
