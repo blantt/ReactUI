@@ -50,7 +50,7 @@ export const transformToFormField = (data: any[],
                 : col.transform
                     ? col.transform(value) // 使用欄位的 transform
                     : { name: col.name, value: String(value), type: col.type }; // 預設邏輯
-          console.log(`轉換後的欄位 (${col.name}):`, transformedRow[col.name]); // 確認轉換後的欄位
+        //  console.log(`轉換後的欄位 (${col.name}):`, transformedRow[col.name]); // 確認轉換後的欄位
         });
        // console.log(`轉換後的第 ${itemIndex + 1} 列:`, transformedRow); // 確認整列轉換結果
         return transformedRow;
@@ -74,7 +74,7 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
             const fetchData = async () => {
                 setLoading(true);
                 try {
-
+                   // console.log(`Fetching datagrid from API: ${apiUrl}`);;
                     const response = await fetch(apiUrl);
                    // const response = await fetch('/data2.json'); //抓在本地的json檔測試用
                     if (!response.ok) {
@@ -83,7 +83,7 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
                     }
 
                     const jsonData = await response.json();
- 
+                   // console.log('grid jsonData:', jsonData);
                     const transformedData = transformToFormField(jsonData, columns, customTransform);
 
                     setTimeout(() => {

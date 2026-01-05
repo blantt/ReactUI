@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // 定義下拉選單元件的屬性介面
 interface DropdownProps {
-  options: FileItem[]; // 下拉選單的選項陣列
+  options?: FileItem[]; // 下拉選單的選項陣列
   onSelect: (value: FileItem) => void; // 當選擇選項時觸發的回調函數
   keyValue?: string; // 可選的當前選擇值
   keyText?: string; // 可選的顯示文字
+  apiUrl?: string; // API 資料來源 URL
 }
 
 //FileItem 預計是dropdown選項的型別 
@@ -15,21 +16,96 @@ interface DropdownProps {
 // }
 
 export interface FileItem {
-    [key: string]: any;
+  [key: string]: any;
 }
 
-const MyDropDown: React.FC<DropdownProps> = ({ options, onSelect, keyValue, keyText }) => {
+//FileItem 範例
+const fileOptions: FileItem[] = [
+  { sname: "name 1", svalueb: "value 1", sother: "other1" },
+  { sname: "name 2", svalueb: "value 2", sother: "other2" },
+  { sname: "name 3", svalueb: "value 3", sother: "other3" },
+];
+
+export const transformToFormField = (data: any[], keyValue?: string, keyText?: string
+) => {
+
+  return data.map((item) => {
+    //這裡目的是要把 item 轉換成 FileItem 型別
+    const transformedRow: Record<string, FileItem> = {};
+
+    //[{\"ClassID\":4,\"ClassName\":\"全公司(09-18)\"},{\"ClassID\":5,\"ClassName\":\"發行客服(0830-1730)\"}]
+    const result: FileItem = {};
+    if (keyValue) {
+      result[keyValue] = item[keyValue];
+    }
+    if (keyText) {
+      result[keyText] = item[keyText];
+    }
+
+    // console.log(`轉換後的第 ${itemIndex + 1} 列:`, result); // 確認整列轉換結果
+    return result;
+  });
+};
+
+const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyValue, keyText }) => {
+  const [internalOptions, setInternalOptions] = useState<FileItem[]>(options || []);
+
   // 狀態：管理下拉選單是否展開
   const [isOpen, setIsOpen] = useState(false);
   // 狀態：儲存當前選擇的選項
   const [selectedOption, setSelectedOption] = useState<FileItem | null>(null);
-
+  //  const [loading, setLoading] = useState(!!apiUrl); // 如果有 apiUrl，預設為加載中
   // 切換下拉選單展開/收起的函數
   const handleToggle = () => {
     setIsOpen(!isOpen);
   };
 
-  
+  //如果沒有傳入options ,也沒傳apiUrl,強制報錯
+  // if (!options && !apiUrl) {
+  //   throw new Error('MyDropDown 必須提供 options 屬性或 apiUrl 屬性');
+  // }
+
+  useEffect(() => {
+ 
+
+    if (apiUrl) { 
+         console.log('com in apiUrl:', internalOptions);
+    }
+
+    if (options) { 
+         console.log('com in options:', internalOptions);
+    }
+
+    if (apiUrl) {
+      const fetchData = async () => {
+        // setLoading(true);
+        try {
+
+          const response = await fetch(apiUrl);
+          // const response = await fetch('/data2.json'); //抓在本地的json檔測試用
+          if (!response.ok) {
+            alert(`HTTP error! status: ${response.status}`);
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const jsonData = await response.json();
+          // console.log('drop jsonData:', jsonData);
+          // options = transformToFormField(jsonData, keyValue, keyText);
+          setInternalOptions(transformToFormField(jsonData, keyValue, keyText));
+          // console.log('com in apichange:', internalOptions);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+          alert('資料取得失敗' + error);
+        } finally {
+          //setLoading(false);
+        }
+      };
+
+      fetchData();
+    }
+  }, [internalOptions,apiUrl,options]);
+
+
   const handleSelect = (option: FileItem) => {
     setSelectedOption(option); // 更新當前選擇的選項
     onSelect(option); // 觸發回調函數，傳遞選擇的值
@@ -69,13 +145,15 @@ const MyDropDown: React.FC<DropdownProps> = ({ options, onSelect, keyValue, keyT
           <div className="py-1">
             {/* 渲染每個選項作為按鈕 */}
             {/* 如果沒有傳進 keyValue, keyText ,預設使用 option.value 和 option.name */}
-            {options.map((option) => (
+            {/* 在這裡可以在前端先console.log internalOptions */}
+            
+            {internalOptions.map((option) => (
               <button
                 key={keyValue ? option[keyValue] : option.value} // 根據 keyValue 判斷使用哪個 key
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left"
                 onClick={() => handleSelect(option)}
               >
-                {keyText ? option[keyText] : option.name}
+                 {keyText ? option[keyText] : option.name}
               </button>
             ))}
           </div>

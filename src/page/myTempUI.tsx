@@ -32,7 +32,11 @@ const MyTempUI: React.FC = () => {
     };
 
     const handleSelect2 = (value: DropdownOption) => {
-        alert(`Selected value: ${value.sname} (${value.svalue})`);
+        alert(`Selected name, value: ${value.sname} (${value.svalue})`);
+    };
+
+ const handleSelect3 = (value: DropdownOption) => {
+        alert(`Selected name, value: ${value.ClassName} (${value.ClassID})`);
     };
 
     // interface FileItem {
@@ -41,9 +45,9 @@ const MyTempUI: React.FC = () => {
     // }
 
     const fileOptions: DropdownOption[] = [
-        { sname: "Option 1", svalue: "option1", sother: "other1" },
-        { sname: "Option 2", svalue: "option2", sother: "other2" },
-        { sname: "Option 3", svalue: "option3", sother: "other3" },
+        { sname: "name 1", svalue: "value 1", sother: "other1" },
+        { sname: "name 2", svalue: "value 2", sother: "other2" },
+        { sname: "name 3", svalue: "value 3", sother: "other3" },
     ];
 
     const fileOptions2: DropdownOption[] = [
@@ -117,6 +121,14 @@ const MyTempUI: React.FC = () => {
                     <MyDropDown keyValue='sname' keyText='svalue'
                         options={fileOptions}
                         onSelect={handleSelect2}
+                    />
+                </div>
+
+                 <div className="p-4">
+                    <h1 className="text-sm font-bold mb-4">dropdown(API) Example</h1>
+                    <MyDropDown keyValue='ClassID' keyText='ClassName'
+                        apiUrl="https://clockappservice.english4u.com.tw/api/clock/selectClockWorkClass"
+                        onSelect={handleSelect3}
                     />
                 </div>
 
