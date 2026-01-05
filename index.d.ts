@@ -8,5 +8,5 @@ export const Loading: any;
 export const DynamicForm: any;
 export const MyDropDown: any;
 export const MyDropGrid: any;
-
+export const AppTitle: any;
 
