@@ -5,7 +5,7 @@ import AppTitle from '../component/header.tsx';
 import Loading from '../component/myload';
 import Modal from '../component/myModal';
 import { Button2 } from "../component/button.tsx";
-import { Grid_Data1 } from "../data/data.js";
+ import { Grid_Data1 } from "../data/data.js";
 import { DiscordIcon, AnotherIcon, AnotherIcon2 } from "../component/mySvg.tsx";
 import type { FileItem as DropdownOption } from '../component/myDropGrid'; // 匯入 FileItem 型別
  
@@ -126,7 +126,7 @@ const MyTempUI: React.FC = () => {
 
                  <div className="p-4">
                     <h1 className="text-sm font-bold mb-4">dropdown(API) Example</h1>
-                    <MyDropDown keyValue='ClassID' keyText='ClassName'
+                    <MyDropDown keyValue='ClassID' keyText='ClassName' haveBlank={true}
                         apiUrl="https://clockappservice.english4u.com.tw/api/clock/selectClockWorkClass"
                         onSelect={handleSelect3}
                     />
