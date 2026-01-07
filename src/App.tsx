@@ -70,6 +70,9 @@ const Tab1 = () => {
         <Button label="formTest" onClick={() => callUrl("formTest")} />
         <Button label="formTest2" onClick={() => callUrl("formTest2")} />
         <Button label="flowbite" onClick={() => callUrl("flowbite")} />
+        <Button label="textOtc" onClick={() => callUrl("textOtc")} />
+
+
       </div>
 
       <div className="space-x-4 pt-3">
