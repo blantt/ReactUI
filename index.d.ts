@@ -10,3 +10,5 @@ export const MyDropDown: any;
 export const MyDropGrid: any;
 export const AppTitle: any;
 export const Modal: any;
+export const LoadingInline: any;
+
