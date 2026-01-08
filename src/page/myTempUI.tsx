@@ -3,6 +3,7 @@ import MyDropDown from '../component/myDropDown';
 import MyDropGrid, { transformToFormField as apitransform } from '../component/myDropGrid';
 import AppTitle from '../component/header.tsx';
 import Loading from '../component/myload';
+import {LoadingInline} from '../component/myload';
 import Modal from '../component/myModal';
 import { Button2 } from "../component/button.tsx";
  import { Grid_Data1 } from "../data/data.js";
@@ -14,17 +15,13 @@ import type { FileItem as DropdownOption } from '../component/myDropGrid'; // �
 const MyTempUI: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [isLoading_modal, setIsLoading_modal] = useState(false);
-
+    const [isLoading_modal2, setIsLoading_modal2] = useState(false);
     const handleButtonClick_modal = () => {
         setIsLoading_modal(true); // 顯示 Loading
-
-        // 模擬加載過程，例如 2 秒後隱藏 Loading
-        // setTimeout(() => {
-        //     setIsLoading_modal(false);
-        //     alert('加載完成！');
-        // }, 2000);
     };
-
+     const handleButtonClick_modal2 = () => {
+        setIsLoading_modal2(true); // 顯示 Loading
+    };
 
     const handleSelect = (value: string) => {
         // console.log('Selected value:', value);
@@ -110,6 +107,8 @@ const MyTempUI: React.FC = () => {
         }, 2000);
     };
 
+    
+
     return (
 
         <div>
@@ -176,13 +175,15 @@ const MyTempUI: React.FC = () => {
                     <Button2 icon={<DiscordIcon color='rgb(255, 87, 51)' />} label="testmodal" onClick={handleButtonClick_modal} />
                 </div>
                 <div className='p-2'>
-
                     <Button2 icon={<AnotherIcon2 />} label="testLoad" onClick={handleButtonClick} />
-
+                </div>
+                <div className='p-2'>
+                    <Button2 icon={<AnotherIcon2 />} label="testinlineLoad" onClick={handleButtonClick_modal2} />
                 </div>
 
             </div>
 
+            
 
 
             <Loading isLoading={isLoading} message="加載中..." />
@@ -190,6 +191,16 @@ const MyTempUI: React.FC = () => {
                 <p>今天笑了嗎?</p>
                 <Button2 label="close" onClick={() => setIsLoading_modal(false)} />
             </Modal>
+
+            <Modal isOpen={isLoading_modal2} onClose={() => setIsLoading_modal2(false)} title="我是loading modal">
+                <p>loading modal</p>
+                <div className=' relative  '>
+                     <Button2 label="close" onClick={() => setIsLoading_modal2(false)} />
+                     <LoadingInline isLoading={true}   message="資料加載中..." />   
+                </div>
+              
+            </Modal>
+
         </div>
 
 

@@ -64,9 +64,8 @@ const Example = () => {
   };
  
   const columns_api = [
-    { name: 'Name', type: 'input' },
-    { name: 'Age', type: 'input' },
-    { name: 'Email', type: 'input' },
+       { name: 'empno', type: 'input', showname: '員工編號' },
+        { name: 'fullname', type: 'input', showname: '全名' }
   ];
 
   const transformedData_api = apitransform(Grid_Data1, columns_api, customTransform);
@@ -79,8 +78,9 @@ const Example = () => {
         
         <DataGridApi
           columns={columns_api}
-          customTransform={customTransform}
-          apiUrl="https://clockappservice.english4u.com.tw/api/testdata"
+          PageSize={10}
+          // customTransform={customTransform}
+          apiUrl="https://editor.4kids.com.tw/Portal/apitest/HandlerApiTest.ashx?func=Cehck輪班制一例一休"
         />
 
       </div>

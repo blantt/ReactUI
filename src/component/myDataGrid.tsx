@@ -7,6 +7,7 @@ export interface FormField {
     type: string; // 支援 "input"、"hyperlink" 和 "empty"
     href?: string; // 當 type 為 hyperlink 時，指定超連結的目標 URL
     child?: React.ReactNode; // 當 type 為 empty 時，允許外部傳入子元素
+    
 }
 
 interface ColumnType {
@@ -19,6 +20,7 @@ type DataGridProps = {
     //columns: ColumnType[]; // 表頭名稱
     columns: Array<{
         name: string; // 欄位名稱
+        showname?: string; // 顯示名稱
         colSpan?: number; // 欄位寬度
         type: string; // 欄位型態，例如 "input"、"hyperlink"、"empty"
         transform?: (value: any) => FormField; // 動態轉換函數
@@ -28,6 +30,7 @@ type DataGridProps = {
     apiUrl?: string; // API 資料來源 URL
     className?: string; // 自定義樣式
     gridCols?: number; // 動態控制grid列數
+    PageSize?: number; // 分頁大小
     onRowClick?: (row: Record<string, FormField>) => void; // 新增點擊事件
     customTransform?: (item: any, col: DataGridProps['columns'][number]) => FormField; // 新增自定義轉換邏輯
 };
@@ -57,14 +60,14 @@ export const transformToFormField = (data: any[],
     });
 };
 
-const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className,
+const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className,PageSize,
     gridCols, onRowClick, customTransform }) => {
 
     const [internalData, setInternalData] = useState<Array<Record<string, FormField>>>(data || []);
     const [loading, setLoading] = useState(!!apiUrl); // 如果有 apiUrl，預設為加載中
 
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 2;
+    const itemsPerPage = PageSize || 5;
     const totalPages = Math.ceil(internalData.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
     const paginatedData = internalData.slice(startIndex, startIndex + itemsPerPage);
@@ -134,7 +137,7 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
                                 //className={`col-span-1 p-1.5 outline outline-1   outline-slate-700   text-center  ${gridColsClass || ''}  `}>
                                 className={`col-span-${col.colSpan || 1} p-1.5 outline outline-1 outline-slate-700 text-center ${gridColsClass || ''}`}
                             >
-                                {col.name}
+                               {col.showname ? col.showname : col.name}
                             </div>
                         ))}
                     </div>
