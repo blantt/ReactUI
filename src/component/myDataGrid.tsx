@@ -35,6 +35,7 @@ type DataGridProps = {
     havecheckbox?: boolean; // 是否顯示checkbox欄位
     useBar?: boolean; // 是否使用進度條
     keycol?: string; // 指定每列的唯一鍵值欄位名稱
+    useSearch?: boolean; // 是否啟用搜尋功能
     onCheckItemsChange?: (items: Array<Record<string, FormField>>) => void; // 新增選取項目變更回調
     onRowClick?: (row: Record<string, FormField>) => void; // 新增點擊事件
     customTransform?: (item: any, col: DataGridProps['columns'][number]) => FormField; // 新增自定義轉換邏輯
@@ -66,7 +67,7 @@ export const transformToFormField = (data: any[],
 };
 
 const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className, PageSize, havecheckbox = false,
-    useBar = false, keycol, gridCols, onCheckItemsChange, onRowClick, customTransform }) => {
+    useBar = false, useSearch = false, keycol, gridCols, onCheckItemsChange, onRowClick, customTransform }) => {
 
     let cssUserbar = "";
     if (useBar) {
@@ -159,6 +160,27 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
     }, [checkItems, onCheckItemsChange]);
 
 
+    const [searchText, setSearchText] = useState('');
+
+
+    // 根據搜尋文字過濾資料,如沒關鍵字,則顯示全部
+    let filteredData1 = internalData;
+    if (useSearch && searchText.trim() !== '') {
+        console.log('觸發 searchText:', searchText);
+        console.log('過濾前資料筆數:', internalData.length);
+        filteredData1 = internalData.filter(item => {
+
+            // 搜尋所有欄位
+            return Object.values(item).some(field =>
+                field.value?.toLowerCase().includes(searchText.toLowerCase())
+            );
+
+        });
+        console.log('過濾後資料筆數:', filteredData1.length);
+        console.log('filteredData1:', filteredData1);
+    }
+
+
     let mygridCols = gridCols || columns.length;
     if (havecheckbox) {
         mygridCols += 1; //預留給 checkbox 欄位使用
@@ -181,6 +203,16 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
     return (
         <div className={` ${cssUserbar} relative text-sm border border-gray-300  bg-slate-100  rounded-md`}>
             <div className=' text-gray-800 p-2  '>
+                {useSearch && (
+                    <div className="mb-2">
+                        <input
+                            type="text"
+                            placeholder="Search..."
+                            className="w-full p-2 border border-gray-300 rounded"
+                            onChange={e => setSearchText(e.target.value)}
+                        />
+                    </div>
+                )}
                 <div className={`grid   gap-1 border border-gray-300 bg-white/50 p-1  ${className || ''} shadow-md `}>
                     {/* 表頭 */}
                     {/*  <div  className={`grid grid-flow-col grid-cols-[30px] auto-cols-fr  gap-1 shadow-md bg-gray-300 text-gray-700    `}> */}
@@ -209,7 +241,7 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
                     {/* 表身 */}
                     <div className="grid  gap-1 text-gray-700 font-medium not-only-of-type:">
 
-                        {paginatedData.map((row, rowIndex) => (
+                        {filteredData1.map((row, rowIndex) => (
 
                             <div
                                 key={rowIndex}
@@ -223,7 +255,11 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
                                             {havecheckbox && (
                                                 <input
                                                     type="checkbox"
-                                                    // checked={checkItems.some(i => i.TestType === item.TestType)}
+                                                    checked={
+                                                        keyColumn
+                                                            ? checkItems.some(i => i[keyColumn]?.value === row[keyColumn]?.value)
+                                                            : false
+                                                    }
                                                     onChange={e =>
                                                         handleCheck(
                                                             row,
