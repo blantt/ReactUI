@@ -34,6 +34,8 @@ type DataGridProps = {
     PageSize?: number; // 分頁大小
     havecheckbox?: boolean; // 是否顯示checkbox欄位
     useBar?: boolean; // 是否使用進度條
+    keycol?: string; // 指定每列的唯一鍵值欄位名稱
+    onCheckItemsChange?: (items: Array<Record<string, FormField>>) => void; // 新增選取項目變更回調
     onRowClick?: (row: Record<string, FormField>) => void; // 新增點擊事件
     customTransform?: (item: any, col: DataGridProps['columns'][number]) => FormField; // 新增自定義轉換邏輯
 };
@@ -64,29 +66,28 @@ export const transformToFormField = (data: any[],
 };
 
 const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className, PageSize, havecheckbox = false,
-   useBar=false, gridCols, onRowClick, customTransform }) => {
+    useBar = false, keycol, gridCols, onCheckItemsChange, onRowClick, customTransform }) => {
 
-    let cssUserbar="";
+    let cssUserbar = "";
     if (useBar) {
-        PageSize=10000
-        cssUserbar=" h-full overflow-y-auto "
+        PageSize = 10000
+        cssUserbar = " h-full overflow-y-auto "
     }
+    let itemsPerPage = PageSize || 5;
 
     const [internalData, setInternalData] = useState<Array<Record<string, FormField>>>(data || []);
     const [loading, setLoading] = useState(!!apiUrl); // 如果有 apiUrl，預設為加載中
 
     const [currentPage, setCurrentPage] = useState(1);
-    let itemsPerPage = PageSize || 5;
+
     const totalPages = Math.ceil(internalData.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
     const paginatedData = internalData.slice(startIndex, startIndex + itemsPerPage);
 
-   
+    //keycol 如果是空值,則預設使用 columns 的第一個欄位名稱
+    const keyColumn = keycol || (columns.length > 0 ? columns[0].name : undefined);
 
     useEffect(() => {
-
-    
-     
 
         if (apiUrl) {
             const fetchData = async () => {
@@ -125,6 +126,7 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
 
 
 
+
     const handlePageChange = (newPage: number) => {
         if (newPage > 0 && newPage <= totalPages) {
             setCurrentPage(newPage);
@@ -132,9 +134,32 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
     };
 
 
+    const [checkItems, setCheckItems] = useState<Array<Record<string, FormField>>>([]);
+    const handleCheck = (item: Record<string, FormField>, checked: boolean) => {
+        if (checked) {
+            //prev 代表目前的 checkItems 陣列,...prev 是展開原本所有元素,[...prev, item] 就是「原本的全部」加上「新 item」
+            setCheckItems(prev => [...prev, item]);
+        } else {
+            //取消選取
+            if (keyColumn) {
+                //i 代表 checkItems 陣列中的每一個元素,i[keyColumn]?.value 是該元素在 keyColumn 欄位的值
+                setCheckItems(prev => prev.filter(i => i[keyColumn]?.value !== item[keyColumn]?.value));
+            }
+
+            // setCheckItems(prev => prev.filter(i => i.TestType !== item.TestType));
+        }
+    };
+
+
+    useEffect(() => {
+        //console.log('觸發 onCheckItemsChange');
+        if (onCheckItemsChange) {
+            onCheckItemsChange(checkItems);
+        }
+    }, [checkItems, onCheckItemsChange]);
+
+
     let mygridCols = gridCols || columns.length;
-
-
     if (havecheckbox) {
         mygridCols += 1; //預留給 checkbox 欄位使用
     }
@@ -142,16 +167,16 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
 
     let gridColsClass = ' shadow-2xl   outline-gray-400  bg-gradient-to-br from-blue-50 via-[#e8efff] to-[#ccdff9] shadow-md';
     gridColsClass = ` bg-gradient-to-br from-indigo-100 to-blue-200 backdrop-blur-xl    shadow-lg `;
- 
-       // gridColsStyle 這裡要處理 columns 的 widthcss 屬性，動態設定欄位寬度,組合成 grid的css ,ex:grid-cols-[minmax(100px,150px)_max-content_1fr_1fr]
-       //如果 widthcss空值,預設為 1fr
-     const gridTemplate = [
-    ...(havecheckbox ? ['30px'] : []), // checkbox 欄位寬度
-    ...columns.map(col => col.widthcss?.trim() ? col.widthcss : '1fr')
-].join('_');
 
-        const gridColsStyle = `grid-cols-[${gridTemplate}]`; 
-         
+    // gridColsStyle 這裡要處理 columns 的 widthcss 屬性，動態設定欄位寬度,組合成 grid的css ,ex:grid-cols-[minmax(100px,150px)_max-content_1fr_1fr]
+    //如果 widthcss空值,預設為 1fr
+    const gridTemplate = [
+        ...(havecheckbox ? ['30px'] : []), // checkbox 欄位寬度
+        ...columns.map(col => col.widthcss?.trim() ? col.widthcss : '1fr')
+    ].join('_');
+
+    const gridColsStyle = `grid-cols-[${gridTemplate}]`;
+
 
     return (
         <div className={` ${cssUserbar} relative text-sm border border-gray-300  bg-slate-100  rounded-md`}>
@@ -198,12 +223,13 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
                                             {havecheckbox && (
                                                 <input
                                                     type="checkbox"
-                                                    onChange={(e) => {
-                                                        const checkboxes = document.querySelectorAll<HTMLInputElement>('input[type="checkbox"].row-checkbox');
-                                                        checkboxes.forEach((checkbox) => {
-                                                            checkbox.checked = e.target.checked;
-                                                        });
-                                                    }}
+                                                    // checked={checkItems.some(i => i.TestType === item.TestType)}
+                                                    onChange={e =>
+                                                        handleCheck(
+                                                            row,
+                                                            e.target.checked
+                                                        )
+                                                    }
                                                 />
                                             )}
                                         </div>

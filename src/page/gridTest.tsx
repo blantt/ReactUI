@@ -80,11 +80,32 @@ const Example = () => {
             columns={columns_api}
             useBar={true}
             havecheckbox={true}
-            // customTransform={customTransform}
+            onCheckItemsChange={items => {
+              // items 就是最新的 checkItems
+                console.log('外部取得的勾選資料:', items);
+              //寫入gridChecklist 
+              const checklistDiv = document.getElementById('gridChecklist');
+              if (checklistDiv) {
+                
+                checklistDiv.innerHTML = '<h3>勾選清單:</h3><ul>' +
+                  items.map(item => `<li>${item.empno.value} - ${item.fullname.value}</li>`).join('') +
+                  '</ul>';
+              }
+
+            }}
+             // customTransform={customTransform}
             apiUrl="https://editor.4kids.com.tw/Portal/apitest/HandlerApiTest.ashx?func=Cehck輪班制一例一休"
           />
         </div>
 
+         <div className='mt-4 bg-amber-100 p-2 rounded-md' >
+            <div id='gridChecklist'>
+            {/* 這裡是外部放置勾選清單的位置 */}
+            
+
+
+            </div>
+         </div> 
 
       </div>
 
@@ -106,7 +127,7 @@ const Example = () => {
             alert(`Clicked Name: ${item['Name']?.value}, Age: ${item['Age']?.value}`);
           }}
         />
-
+ 
       </div>
 
     </div>
