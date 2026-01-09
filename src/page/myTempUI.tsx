@@ -113,6 +113,30 @@ const MyTempUI: React.FC = () => {
 
         <div>
             <AppTitle title="My Dropdown Example" bkcolor="bg-green-600" />
+
+            <div className="flex justify-center items-center ">
+                 <div className="p-2">
+                    <h1 className="text-sm font-bold mb-4">Drop sch check Grid </h1>
+                      {/* 在drop 使用 grid havecheckbox 還沒完成,找時間再來處理!! */}
+                       <MyDropGrid apiUrl="https://editor.4kids.com.tw/Portal/apitest/HandlerApiTest.ashx?func=Cehck輪班制一例一休"
+                        columns={[
+                            { name: 'empno', type: 'input', colSpan: 1 },
+                            { name: 'fullname', type: 'input', colSpan: 1 },
+                        ]}
+                        keyValue='empno' keyText='fullname' gridCols={2}
+                        useBar={true}
+                        havecheckbox={true}
+                        useSearch={true}
+
+                    />
+ 
+                </div> 
+
+
+            </div>
+
+
+
             <div className="flex justify-center items-center ">
 
                 <div className="p-4">

@@ -34,6 +34,9 @@ interface DropdownProps {
   keyValue?: string; // 可選的當前選擇值
   keyText?: string; // 可選的顯示文字
   gridCols?: number; // 動態控制grid列數
+  useSearch?: boolean; // 是否啟用搜尋功能
+  havecheckbox?: boolean; // 是否顯示checkbox欄位
+  useBar?: boolean; // 是否使用進度條
 }
 
 export interface FileItem {
@@ -42,7 +45,8 @@ export interface FileItem {
 
 export const transformToFormField = apitransform;
 
-const MyDropDown: React.FC<DropdownProps> = ({ data, columns,apiUrl, onSelect, keyValue, keyText, gridCols }) => {
+const MyDropDown: React.FC<DropdownProps> = ({ data, columns,apiUrl, onSelect, keyValue, keyText, gridCols
+, useSearch, havecheckbox, useBar }) => {
   // 狀態：管理下拉選單是否展開  
   const [isOpen, setIsOpen] = useState(false);
   // 狀態：儲存當前選擇的選項
@@ -74,12 +78,10 @@ const MyDropDown: React.FC<DropdownProps> = ({ data, columns,apiUrl, onSelect, k
   }, []);
 
 
-
-  // const handleSelect = (option: FileItem) => {
-  //   setSelectedOption(option); // 更新當前選擇的選項
-  //   // onSelect(option); // 觸發回調函數，傳遞選擇的值
-  //   setIsOpen(false); // 收起下拉選單
-  // };
+    let cssUserbar = "";
+    if (useBar) {
+        cssUserbar = " h-full overflow-y-auto "
+    }
 
   //handleGridSelect 是要給 DataGrid2 用的點選事件處理函數
   const handleSelect = (option: FileItem) => {
@@ -106,8 +108,8 @@ const MyDropDown: React.FC<DropdownProps> = ({ data, columns,apiUrl, onSelect, k
 
       {/* 下拉選單內容，僅在 isOpen 為 true 時顯示 */}
       {isOpen && (
-        <div className="origin-top-right absolute right-0 mt-2 w-96 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-          <div className="">
+        <div className="origin-top-right z-50 absolute right-0 mt-2 w-96 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+          <div className={` ${cssUserbar} `} style={{ maxHeight: '400px'  }}>
             {/* 渲染 DataGrid2，並處理其點選事件 */}
             {/* onRowClick={handleSelect} */}
 
@@ -115,15 +117,11 @@ const MyDropDown: React.FC<DropdownProps> = ({ data, columns,apiUrl, onSelect, k
               columns={columns}
               data={data} apiUrl={apiUrl} gridCols={mygridCols}
               onRowClick={item => handleSelect(item)}
+              useSearch={useSearch}
+              havecheckbox={havecheckbox}
+              useBar={useBar}
             />
-
-            {/* <DataGrid2 columns={columns} data={data}
-              onRowClick={item => handleSelect(item)}
-
-              gridCols={mygridCols}
-
-            /> */}
-
+  
           </div>
         </div>
       )}

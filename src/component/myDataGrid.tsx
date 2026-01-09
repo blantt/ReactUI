@@ -32,10 +32,10 @@ type DataGridProps = {
     className?: string; // 自定義樣式
     gridCols?: number; // 動態控制grid列數
     PageSize?: number; // 分頁大小
+    useSearch?: boolean; // 是否啟用搜尋功能
     havecheckbox?: boolean; // 是否顯示checkbox欄位
     useBar?: boolean; // 是否使用進度條
     keycol?: string; // 指定每列的唯一鍵值欄位名稱
-    useSearch?: boolean; // 是否啟用搜尋功能
     onCheckItemsChange?: (items: Array<Record<string, FormField>>) => void; // 新增選取項目變更回調
     onRowClick?: (row: Record<string, FormField>) => void; // 新增點擊事件
     customTransform?: (item: any, col: DataGridProps['columns'][number]) => FormField; // 新增自定義轉換邏輯
@@ -147,7 +147,6 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
                 setCheckItems(prev => prev.filter(i => i[keyColumn]?.value !== item[keyColumn]?.value));
             }
 
-            // setCheckItems(prev => prev.filter(i => i.TestType !== item.TestType));
         }
     };
 
@@ -271,12 +270,7 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
                                         </div>
                                     )
                                 }
-
-
-
                                 {columns.map((col, colIndex) => {
-
-
                                     const field = row[col.name];
                                     if (!field) {
                                         return (
@@ -310,9 +304,6 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
                                             )}
                                             {field.type === 'empty' && field.child}
                                         </div>
-
-
-
                                     );
                                 })}
                             </div>
@@ -369,21 +360,11 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
                         </button>
                     </div>
                 </div>
-
-
-
             </div>
-
-            <div  >
-
-
+            <div>
             </div>
-
-
             <LoadingInline isLoading={loading} message="i am loading..." />
         </div>
-
-
 
     );
 };
