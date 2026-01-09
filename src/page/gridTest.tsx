@@ -7,7 +7,7 @@ import Loading from '../component/myload';
 
 const Example = () => {
 
-   
+
 
   const columns = ['Name', 'Age', 'Email'];
   const data = [
@@ -31,14 +31,14 @@ const Example = () => {
   const handleSelect2 = (value: GridDataItem) => {
     alert(`Selected value: ${value.Name} (${value.Age})`);
   };
- 
+
   interface GridDataItem {
     Name: string;
     Age: string;
     Email?: string | null;
   }
 
- 
+
 
   const customTransform = (item: any, col: { name: string; type: string }) => {
 
@@ -62,10 +62,10 @@ const Example = () => {
 
     return { name: col.name, value: String(item[col.name]), type: col.type };
   };
- 
+
   const columns_api = [
-       { name: 'empno', type: 'input', showname: '員工編號' , colSpan: 1, widthcss: 'minmax(80px,120px)'},
-        { name: 'fullname', type: 'input', showname: '全名', colSpan: 1 }
+    { name: 'empno', type: 'input', showname: '員工編號', colSpan: 1, widthcss: 'minmax(80px,120px)' },
+    { name: 'fullname', type: 'input', showname: '全名', colSpan: 1 }
   ];
 
   const transformedData_api = apitransform(Grid_Data1, columns_api, customTransform);
@@ -75,19 +75,21 @@ const Example = () => {
 
       <div className='w-1/2'>
         <h1>AMC GRID api new</h1>
-        
-        <DataGridApi
-          columns={columns_api}
-          PageSize={10}
-          havecheckbox={true}
-          // customTransform={customTransform}
-          apiUrl="https://editor.4kids.com.tw/Portal/apitest/HandlerApiTest.ashx?func=Cehck輪班制一例一休"
-        />
+        <div className='h-[400px]'>
+          <DataGridApi
+            columns={columns_api}
+            useBar={true}
+            havecheckbox={true}
+            // customTransform={customTransform}
+            apiUrl="https://editor.4kids.com.tw/Portal/apitest/HandlerApiTest.ashx?func=Cehck輪班制一例一休"
+          />
+        </div>
+
 
       </div>
 
       <div></div>
- 
+
       <div>
         {/* 這裡試著 取得 data.js 的 Grid_Data1 資料給grid  */}
         {/* 但要先將Grid_Data1 轉換成符合FormField格式的資料 */}
@@ -100,13 +102,13 @@ const Example = () => {
             { name: 'Email', type: 'hyperlink', colSpan: 2 },
           ]}
           data={transformedData_api} gridCols={4}
-           onRowClick={(item) => {
+          onRowClick={(item) => {
             alert(`Clicked Name: ${item['Name']?.value}, Age: ${item['Age']?.value}`);
           }}
         />
 
       </div>
-  
+
     </div>
 
   );

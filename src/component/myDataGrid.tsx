@@ -64,10 +64,12 @@ export const transformToFormField = (data: any[],
 };
 
 const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className, PageSize, havecheckbox = false,
-   useBar=true, gridCols, onRowClick, customTransform }) => {
+   useBar=false, gridCols, onRowClick, customTransform }) => {
 
- if (useBar) {
+    let cssUserbar="";
+    if (useBar) {
         PageSize=10000
+        cssUserbar=" h-full overflow-y-auto "
     }
 
     const [internalData, setInternalData] = useState<Array<Record<string, FormField>>>(data || []);
@@ -152,7 +154,7 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
          
 
     return (
-        <div className=' relative text-sm border border-gray-300  bg-slate-100  rounded-md'>
+        <div className={` ${cssUserbar} relative text-sm border border-gray-300  bg-slate-100  rounded-md`}>
             <div className=' text-gray-800 p-2  '>
                 <div className={`grid   gap-1 border border-gray-300 bg-white/50 p-1  ${className || ''} shadow-md `}>
                     {/* 表頭 */}
