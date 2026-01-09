@@ -64,8 +64,8 @@ const Example = () => {
   };
  
   const columns_api = [
-       { name: 'empno', type: 'input', showname: '員工編號' },
-        { name: 'fullname', type: 'input', showname: '全名' }
+       { name: 'empno', type: 'input', showname: '員工編號' , colSpan: 1, widthcss: 'minmax(80px,120px)'},
+        { name: 'fullname', type: 'input', showname: '全名', colSpan: 1 }
   ];
 
   const transformedData_api = apitransform(Grid_Data1, columns_api, customTransform);
@@ -79,6 +79,7 @@ const Example = () => {
         <DataGridApi
           columns={columns_api}
           PageSize={10}
+          havecheckbox={true}
           // customTransform={customTransform}
           apiUrl="https://editor.4kids.com.tw/Portal/apitest/HandlerApiTest.ashx?func=Cehck輪班制一例一休"
         />
