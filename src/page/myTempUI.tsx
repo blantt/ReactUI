@@ -212,12 +212,20 @@ const MyTempUI: React.FC = () => {
 
             <Loading isLoading={isLoading} message="加載中..." />
             <Modal isOpen={isLoading_modal} onClose={() => setIsLoading_modal(false)} title="我是彈跳視窗"
-                width="  w-4/5 " height=' h-4/5'>
+                width="  w-4/5 " height=' h-4/5'
+                 footer={
+                    <div className=' flex justify-end '>
+                        <Button2 label="close" onClick={() => setIsLoading_modal(false)} />
+                    </div>
+                 }
+                >
                 <p>今天笑了嗎?</p>
                 <Button2 label="close" onClick={() => setIsLoading_modal(false)} />
             </Modal>
 
-            <Modal isOpen={isLoading_modal2} onClose={() => setIsLoading_modal2(false)} title="我是loading modal">
+            <Modal isOpen={isLoading_modal2} onClose={() => setIsLoading_modal2(false)} title="我是loading modal"
+                
+                >
                 <p>loading modal</p>
                 <div className=' relative w-4/5 '>
                      <Button2 label="close" onClick={() => setIsLoading_modal2(false)} />
