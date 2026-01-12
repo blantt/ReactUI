@@ -119,8 +119,10 @@ const MyTempUI: React.FC = () => {
     return (
 
         <div>
-            <AppTitle title="My Dropdown Example" bkcolor="bg-green-600"  />
-
+            <AppTitle title="My Dropdown Example" bkcolor="bg-green-600" btest='dd'
+             onCheckItemsChange={(items) => console.log(items)}
+                onCheckItemsChange2={(items) => console.log(items)}
+            />
             <div className="flex justify-center items-center ">
                 <div className="p-2">
                     <h1 className="text-sm font-bold mb-4">Drop sch check Grid </h1>

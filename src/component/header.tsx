@@ -14,9 +14,10 @@ type AppProps = {
     children?: React.ReactNode; // children 是 React 節點
     btest?: string;
      onCheckItemsChange?: (items: string[]) => void;
+      onCheckItemsChange2?: (items: Array<Record<string, FormField>>) => void;
 };
 
-export default function App({title,bkcolor = 'bg-blue-500', children,onCheckItemsChange,btest}: AppProps) {
+export default function App({title,bkcolor = 'bg-blue-500', children,onCheckItemsChange,onCheckItemsChange2,btest}: AppProps) {
     return (
         <div className=' w-full'>
            
