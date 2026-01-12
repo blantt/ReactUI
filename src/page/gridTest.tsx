@@ -6,9 +6,7 @@ import { Grid_Data1 } from "../data/data.js";
 import Loading from '../component/myload';
 
 const Example = () => {
-
-
-
+ 
   const columns = ['Name', 'Age', 'Email'];
   const data = [
     {

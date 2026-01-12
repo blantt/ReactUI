@@ -108,18 +108,6 @@ const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyVal
     }, []);
 
   useEffect(() => {
- 
-
-    if (apiUrl) { 
-         console.log('com in apiUrl:', internalOptions);
-    }
-
-    if (options) { 
-         //==如果是options 傳入的,第一行也加入一個空白選項
-        // setInternalOptions(transformToFormField(options, keyValue, keyText));
-        
-         console.log('com in options:', internalOptions);
-    }
 
     if (apiUrl) {
       const fetchData = async () => {

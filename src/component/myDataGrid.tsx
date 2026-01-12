@@ -38,6 +38,7 @@ type DataGridProps = {
     keycol?: string; // 指定每列的唯一鍵值欄位名稱
     onCheckItemsChange?: (items: Array<Record<string, FormField>>) => void; // 新增選取項目變更回調
     onRowClick?: (row: Record<string, FormField>) => void; // 新增點擊事件
+    checkedItems_old?: Array<Record<string, FormField>>; // 1. 新增這行
     customTransform?: (item: any, col: DataGridProps['columns'][number]) => FormField; // 新增自定義轉換邏輯
 };
 
@@ -67,7 +68,7 @@ export const transformToFormField = (data: any[],
 };
 
 const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className, PageSize, havecheckbox = false,
-    useBar = false, useSearch = false, keycol, gridCols, onCheckItemsChange, onRowClick, customTransform }) => {
+    useBar = false, useSearch = false, keycol, gridCols, checkedItems_old, onCheckItemsChange, onRowClick, customTransform }) => {
 
     let cssUserbar = "";
     if (useBar) {
@@ -87,6 +88,16 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
 
     //keycol 如果是空值,則預設使用 columns 的第一個欄位名稱
     const keyColumn = keycol || (columns.length > 0 ? columns[0].name : undefined);
+
+    // 4. 外部 checkedItems_old 改變時，更新內部 state
+    useEffect(() => {
+        if (checkedItems_old) {
+
+            //console.log('接收到的已勾選資料b:', checkedItems_old);
+
+            // setCheckItems(checkedItems_old);
+        }
+    }, [checkedItems_old]);
 
     useEffect(() => {
 
@@ -136,28 +147,35 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
 
 
     const [checkItems, setCheckItems] = useState<Array<Record<string, FormField>>>([]);
-    const handleCheck = (item: Record<string, FormField>, checked: boolean) => {
-        if (checked) {
-            //prev 代表目前的 checkItems 陣列,...prev 是展開原本所有元素,[...prev, item] 就是「原本的全部」加上「新 item」
-            setCheckItems(prev => [...prev, item]);
-        } else {
-            //取消選取
-            if (keyColumn) {
-                //i 代表 checkItems 陣列中的每一個元素,i[keyColumn]?.value 是該元素在 keyColumn 欄位的值
-                setCheckItems(prev => prev.filter(i => i[keyColumn]?.value !== item[keyColumn]?.value));
-            }
 
+    // 有在使用者點選 checkbox 時，才會觸發 onCheckItemsChange，checkedItems_old 
+    // 也只會在真正有勾選變動時才被更新，不會因為外部 checkedItems_old 變動或初始化而被清空。
+    const handleCheck = (item: Record<string, FormField>, checked: boolean) => {
+        let newChecked: Array<Record<string, FormField>>;
+        if (checked) {
+            newChecked = [...checkItems, item];
+        } else {
+            if (keyColumn) {
+                newChecked = checkItems.filter(i => i[keyColumn]?.value !== item[keyColumn]?.value);
+            } else {
+                newChecked = checkItems;
+            }
+        }
+        setCheckItems(newChecked);
+        if (onCheckItemsChange) {
+           //要確定是點選checkbox時才呼叫 onCheckItemsChange
+            onCheckItemsChange(newChecked); // 只在這裡呼叫
         }
     };
 
-
     useEffect(() => {
-        //console.log('觸發 onCheckItemsChange');
-        if (onCheckItemsChange) {
-            onCheckItemsChange(checkItems);
+        // 只有 checkedItems_old 有值時才寫入
+        if (checkedItems_old && Array.isArray(checkedItems_old)) {
+            setCheckItems(checkedItems_old);
         }
-    }, [checkItems, onCheckItemsChange]);
-
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [checkedItems_old]);
+ 
 
     const [searchText, setSearchText] = useState('');
 
@@ -200,8 +218,19 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
 
 
     return (
+
         <div className={` ${cssUserbar} relative text-sm border border-gray-300  bg-slate-100  rounded-md`}>
+
+            {/* 測試 如果 checkedItems_old有值,就顯示出來 */}
+            {/* {checkedItems_old && checkedItems_old.length > 0 && (
+            <div className="mb-2 p-2 bg-yellow-100 border border-yellow-300 rounded">
+                <h2 className="font-semibold mb-1">Previously Checked Items:</h2>
+                <pre>{JSON.stringify(checkedItems_old, null, 2)}</pre>
+            </div>
+        )} */}
+
             <div className=' text-gray-800 p-2  '>
+
                 {useSearch && (
                     <div className="mb-2">
                         <input
