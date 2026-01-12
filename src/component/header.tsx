@@ -1,23 +1,15 @@
-export interface FormField {
-    name: string;
-    value?: string;
-    colSpan?: number;
-    type: string; // 支援 "input"、"hyperlink" 和 "empty"
-    href?: string; // 當 type 為 hyperlink 時，指定超連結的目標 URL
-    child?: React.ReactNode; // 當 type 為 empty 時，允許外部傳入子元素
-
-}
+ 
 
 type AppProps = {
     title: string; // title 是字串
     bkcolor?: string; // color 是可選的字串
     children?: React.ReactNode; // children 是 React 節點
     btest?: string;
-     onCheckItemsChange?: (items: string[]) => void;
-      onCheckItemsChange2?: (items: Array<Record<string, FormField>>) => void;
+    onCheckItemsChange?: (items: string[]) => void;
+    
 };
 
-export default function App({title,bkcolor = 'bg-blue-500', children,onCheckItemsChange,onCheckItemsChange2,btest}: AppProps) {
+export default function App({title,bkcolor = 'bg-blue-500', children,onCheckItemsChange,btest}: AppProps) {
     return (
         <div className=' w-full'>
            

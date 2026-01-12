@@ -6,8 +6,11 @@
   ],
   "compilerOptions": {
     "declaration": true,
-    "emitDeclarationOnly": false,
-    "outDir": "dist",
+    "emitDeclarationOnly": false,  // 如果是透過 tsc 編譯，設為 false 以同時產生 js
+    "jsx": "react-jsx",
+    "moduleResolution": "node",
+    "target": "ESNext",
+    "outDir": "dist"
      
   }                        
   

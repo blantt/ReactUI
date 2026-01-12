@@ -121,7 +121,7 @@ const MyTempUI: React.FC = () => {
         <div>
             <AppTitle title="My Dropdown Example" bkcolor="bg-green-600" btest='dd'
              onCheckItemsChange={(items) => console.log(items)}
-                onCheckItemsChange2={(items) => console.log(items)}
+ 
             />
             <div className="flex justify-center items-center ">
                 <div className="p-2">
