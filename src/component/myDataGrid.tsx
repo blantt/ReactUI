@@ -27,7 +27,7 @@ type DataGridProps = {
         transform?: (value: any) => FormField; // 動態轉換函數
 
     }>;
-    btest? :boolean
+     
     data?: Array<Record<string, FormField>>; // 直接傳入的資料
     apiUrl?: string; // API 資料來源 URL
     className?: string; // 自定義樣式
@@ -69,7 +69,7 @@ export const transformToFormField = (data: any[],
 };
 
 const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className, PageSize, havecheckbox = false,
-    btest=true,useBar = false, useSearch = false, keycol, gridCols, checkedItems_old, onCheckItemsChange, onRowClick, customTransform }) => {
+    useBar = false, useSearch = false, keycol, gridCols, checkedItems_old, onCheckItemsChange, onRowClick, customTransform }) => {
 
     let cssUserbar = "";
     if (useBar) {
@@ -221,7 +221,9 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
     return (
 
         <div className={` ${cssUserbar} relative text-sm border border-gray-300  bg-slate-100  rounded-md`}>
-
+            <div>
+                test
+            </div>
             {/* 測試 如果 checkedItems_old有值,就顯示出來 */}
             {/* {checkedItems_old && checkedItems_old.length > 0 && (
             <div className="mb-2 p-2 bg-yellow-100 border border-yellow-300 rounded">

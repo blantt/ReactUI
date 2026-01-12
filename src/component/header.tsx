@@ -8,9 +8,7 @@ type AppProps = {
 export default function App({title,bkcolor = 'bg-blue-500', children}: AppProps) {
     return (
         <div className=' w-full'>
-            <div>
-                test
-            </div>
+           
             
             <h1 className={`${bkcolor} text-sm text-white rounded-t-md px-2 py-1 inline-block  `} >{title}</h1>
              
