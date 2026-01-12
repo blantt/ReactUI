@@ -3,7 +3,7 @@
   "private": false,  
   "version": "1.0.0",
   "type": "module",
-  "main": "dist/assets/index-D2bEkf-X.js",       
+  "main": "dist/index.js",       
   "types": "index.d.ts",     
   "files": [                  
     "src",
