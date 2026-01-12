@@ -19,6 +19,7 @@ import TabTest from './page/testTab.tsx';
 import TestHtmlPage from './page/testHtmlPage.tsx';
 import TestHtmlPage2 from './page/testHtmlPage2.tsx';
 import TextOtc from './page/textOtc.tsx';
+import TestModal from './page/testmodal.tsx';
 
 async function enableMocking() {
   if (import.meta.env.MODE !== 'development') {
@@ -53,6 +54,7 @@ async function enableMocking() {
           <Route path="/testHtmlPage" element={<TestHtmlPage />} />
           <Route path="/testHtmlPage2" element={<TestHtmlPage2 />} />
           <Route path="/textOtc" element={<TextOtc />} />
+          <Route path="/testModal" element={<TestModal />} />
         </Routes>
       </BrowserRouter>
     </StrictMode>,
