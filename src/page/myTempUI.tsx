@@ -11,14 +11,14 @@ import { Grid_Data1 } from "../data/data.js";
 import { DiscordIcon, AnotherIcon, AnotherIcon2 } from "../component/mySvg.tsx";
 import type { FileItem as DropdownOption } from '../component/myDropGrid'; // 匯入 FileItem 型別
 
-  
+
 
 const MyTempUI: React.FC = () => {
 
     // 處理開啟與關閉的動畫邏輯
 
 
- const [checkedItems_old, setCheckedItems_old] = useState<any[]>([]); // 1. 新增 state
+    const [checkedItems_old, setCheckedItems_old] = useState<any[]>([]); // 1. 新增 state
 
     const [isLoading, setIsLoading] = useState(false);
     const [isLoading_modal, setIsLoading_modal] = useState(false);
@@ -119,7 +119,7 @@ const MyTempUI: React.FC = () => {
     return (
 
         <div>
-            <AppTitle title="My Dropdown Example" bkcolor="bg-green-600" />
+            <AppTitle title="My Dropdown Example" bkcolor="bg-green-600"  />
 
             <div className="flex justify-center items-center ">
                 <div className="p-2">
@@ -207,12 +207,12 @@ const MyTempUI: React.FC = () => {
                     {/* <input type="text" id='gridChecklist' className="border border-gray-300 rounded-md px-3 py-2 mr-2"
                         placeholder="取得grid checkbox選擇" /> */}
 
-                      <div id='gridChecklist'>
+                    <div id='gridChecklist'>
                         {/* 這裡是外部放置勾選清單的位置 */}
-                        
 
 
-                        </div>
+
+                    </div>
                 </div>
                 <div>
                     <Button2 icon={<DiscordIcon color='rgb(255, 87, 51)' />} label="modal_checkgrid"
@@ -237,9 +237,9 @@ const MyTempUI: React.FC = () => {
 
             <Loading isLoading={isLoading} message="加載中..." />
 
-            <Button2   label="test log" onClick={() => console.log(checkedItems_old)} />
+            <Button2 label="test log" onClick={() => console.log(checkedItems_old)} />
 
-           
+
             <Modal isOpen={isLoading_modal_check} onClose={() => setIsLoading_modal_check(false)}
                 title="我是checkbox grid彈跳視窗"
                 width="  w-4/5 " height=' h-4/5'
@@ -265,7 +265,7 @@ const MyTempUI: React.FC = () => {
                             //console.log('之前勾選資料:', checkedItems_old);
                             const checklistDiv = document.getElementById('gridChecklist');
                             if (checklistDiv) {
-                       
+
                                 checklistDiv.innerHTML = '<h3>勾選清單:</h3><ul>' +
                                     items.map(item => `<li>${item.empno.value} - ${item.fullname.value}</li>`).join('') +
                                     '</ul>';
