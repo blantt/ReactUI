@@ -79,6 +79,7 @@ const Example = () => {
             useBar={true}
             havecheckbox={true}
             useSearch={true}
+            
             onCheckItemsChange={items => {
               // items 就是最新的 checkItems
                 console.log('外部取得的勾選資料:', items);

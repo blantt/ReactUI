@@ -27,6 +27,7 @@ type DataGridProps = {
         transform?: (value: any) => FormField; // 動態轉換函數
 
     }>;
+    btest? :boolean
     data?: Array<Record<string, FormField>>; // 直接傳入的資料
     apiUrl?: string; // API 資料來源 URL
     className?: string; // 自定義樣式
@@ -68,7 +69,7 @@ export const transformToFormField = (data: any[],
 };
 
 const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className, PageSize, havecheckbox = false,
-    useBar = false, useSearch = false, keycol, gridCols, checkedItems_old, onCheckItemsChange, onRowClick, customTransform }) => {
+    btest=true,useBar = false, useSearch = false, keycol, gridCols, checkedItems_old, onCheckItemsChange, onRowClick, customTransform }) => {
 
     let cssUserbar = "";
     if (useBar) {
