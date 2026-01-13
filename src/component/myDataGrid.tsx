@@ -215,7 +215,8 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
     const gridTemplate = [
         ...(havecheckbox ? ['30px'] : []), // checkbox 欄位寬度
         ...columns
-            .filter(col => col.visible === undefined || col.visible === true)
+       //  .filter(col => col.name==="sssssss")   
+          .filter(col => col.visible === undefined || col.visible === true)
             // .filter(col =>   col.visible === true)
             //col.visible === undefined || col.visible === true
             .map(col => col.widthcss?.trim() ? col.widthcss : '1fr')
@@ -251,8 +252,9 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
                     </div>
                 )}
                 <div className={`grid   gap-1 border border-gray-300 bg-white/50 p-1  ${className || ''} shadow-md `}>
-                    {/* 表頭 */}
-                    {/*  <div  className={`grid grid-flow-col grid-cols-[30px] auto-cols-fr  gap-1 shadow-md bg-gray-300 text-gray-700    `}> */}
+                   
+                  
+                    {/* 表頭 */}        
                     <div className={`grid grid-flow-col ${gridColsStyle}  shadow-md bg-gray-300 text-gray-700    `}>
                         {
                             havecheckbox && (

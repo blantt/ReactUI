@@ -254,7 +254,7 @@ const MyTempUI: React.FC = () => {
                 <div className='h-[500px]'>
                     <DataGridApi
                         columns={[
-                           { name: 'empno', type: 'input', showname: '員工編號', colSpan: 1,   widthcss: 'minmax(80px,120px)' },
+                           { name: 'empno', type: 'input', showname: '員工編號', colSpan: 1,  },
                            {  name: 'fullname', type: 'input', showname: '全名', colSpan: 1, visible: false}
                         ]}
                         
