@@ -222,8 +222,7 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
             .map(col => col.widthcss?.trim() ? col.widthcss : '1fr')
     ].join('_');
 
-    console.log('gridTemplate:', gridTemplate);
-
+     
     const gridColsStyle = `grid-cols-[${gridTemplate}]`;
 
 
