@@ -4,7 +4,14 @@
   "version": "1.0.0",
   "type": "module",
   "main": "dist/index.js",       
-  "types": "index.d.ts",     
+  "types": "index.d.ts",  
+   "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.js"
+    }
+  },   
   "files": [                  
     "src",
     "dist",
@@ -16,7 +23,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build":"tsc && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
