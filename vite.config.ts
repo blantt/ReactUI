@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   build: {
     lib: {
-      entry: 'src/index.tsx', // 您的元件入口
+      entry: 'src/index.js', // 您的元件入口
       name: 'MyComponentLib',
      // fileName: (format) => `index.js`, // 固定檔名為 index.js
       formats: ['es', 'cjs']
