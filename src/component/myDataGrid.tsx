@@ -43,6 +43,7 @@ type DataGridProps = {
     onRowClick?: (row: Record<string, FormField>) => void; // 新增點擊事件
     checkedItems_old?: Array<Record<string, FormField>>; // 1. 新增這行
     customTransform?: (item: any, col: DataGridProps['columns'][number]) => FormField; // 新增自定義轉換邏輯
+    onlyCheckedItems?: boolean; // 是否只顯示已勾選的項目
 };
 
 export const transformToFormField = (data: any[],
@@ -71,7 +72,7 @@ export const transformToFormField = (data: any[],
 };
 
 const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className, PageSize, havecheckbox = false,
-    useBar = false, useSearch = false, keycol, gridCols, checkedItems_old, onCheckItemsChange, onRowClick, customTransform }) => {
+    onlyCheckedItems = false, useBar = false, useSearch = false, keycol, gridCols, checkedItems_old, onCheckItemsChange, onRowClick, customTransform }) => {
 
     let cssUserbar = "";
     if (useBar) {
@@ -196,8 +197,15 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
             );
 
         });
-       // console.log('過濾後資料筆數:', filteredData1.length);
-      //  console.log('filteredData1:', filteredData1);
+        
+    }
+
+    if (havecheckbox && onlyCheckedItems) {
+        filteredData1 = filteredData1.filter(item => 
+            checkItems.some(checkedItem =>  
+                keyColumn ? checkedItem[keyColumn]?.value === item[keyColumn]?.value : false
+            )
+        );
     }
 
 
@@ -222,7 +230,8 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
             .map(col => col.widthcss?.trim() ? col.widthcss : '1fr')
     ].join('_');
 
-     
+   // console.log('gridTemplate:', gridTemplate);
+
     const gridColsStyle = `grid-cols-[${gridTemplate}]`;
 
 
@@ -281,9 +290,9 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
 
                     {/* 表身 */}
                     <div className="grid  gap-1 text-gray-700 font-medium not-only-of-type:">
-
-                        {filteredData1.map((row, rowIndex) => (
-
+                         {/* {filteredData1.map((row, rowIndex) => ( */}
+                            {filteredData1.slice(startIndex, startIndex + itemsPerPage).map((row, rowIndex) => (
+                            //  eee
                             <div
                                 key={rowIndex}
                                 className={`grid  grid-flow-col ${gridColsStyle}   bg-white hover:bg-gray-100 cursor-pointer`}
