@@ -196,8 +196,8 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
             );
 
         });
-        console.log('過濾後資料筆數:', filteredData1.length);
-        console.log('filteredData1:', filteredData1);
+       // console.log('過濾後資料筆數:', filteredData1.length);
+      //  console.log('filteredData1:', filteredData1);
     }
 
 
@@ -215,8 +215,9 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
     const gridTemplate = [
         ...(havecheckbox ? ['30px'] : []), // checkbox 欄位寬度
         ...columns
-            .filter(col => col.name === "sssssss")
+            .filter(col => col.visible === undefined || col.visible === true)
             // .filter(col =>   col.visible === true)
+            //col.visible === undefined || col.visible === true
             .map(col => col.widthcss?.trim() ? col.widthcss : '1fr')
     ].join('_');
 
