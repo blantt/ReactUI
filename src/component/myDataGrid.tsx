@@ -221,9 +221,7 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
     return (
 
         <div className={` ${cssUserbar} relative text-sm border border-gray-300  bg-slate-100  rounded-md`}>
-            <div>
-                test22
-            </div>
+             
             {/* 測試 如果 checkedItems_old有值,就顯示出來 */}
             {/* {checkedItems_old && checkedItems_old.length > 0 && (
             <div className="mb-2 p-2 bg-yellow-100 border border-yellow-300 rounded">
