@@ -8,6 +8,7 @@ export interface FormField {
     href?: string; // 當 type 為 hyperlink 時，指定超連結的目標 URL
     child?: React.ReactNode; // 當 type 為 empty 時，允許外部傳入子元素
 
+
 }
 
 interface ColumnType {
@@ -24,10 +25,11 @@ type DataGridProps = {
         colSpan?: number; // 欄位寬度
         widthcss?: string; // 自定義寬度樣式
         type: string; // 欄位型態，例如 "input"、"hyperlink"、"empty"
+        visible?: boolean; // 控制欄位是否可見
         transform?: (value: any) => FormField; // 動態轉換函數
 
     }>;
-     
+
     data?: Array<Record<string, FormField>>; // 直接傳入的資料
     apiUrl?: string; // API 資料來源 URL
     className?: string; // 自定義樣式
@@ -164,7 +166,7 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
         }
         setCheckItems(newChecked);
         if (onCheckItemsChange) {
-           //要確定是點選checkbox時才呼叫 onCheckItemsChange
+            //要確定是點選checkbox時才呼叫 onCheckItemsChange
             onCheckItemsChange(newChecked); // 只在這裡呼叫
         }
     };
@@ -176,7 +178,7 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [checkedItems_old]);
- 
+
 
     const [searchText, setSearchText] = useState('');
 
@@ -199,10 +201,10 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
     }
 
 
-    let mygridCols = gridCols || columns.length;
-    if (havecheckbox) {
-        mygridCols += 1; //預留給 checkbox 欄位使用
-    }
+    // let mygridCols = gridCols || columns.length;
+    // if (havecheckbox) {
+    //     mygridCols += 1; //預留給 checkbox 欄位使用
+    // }
 
 
     let gridColsClass = ' shadow-2xl   outline-gray-400  bg-gradient-to-br from-blue-50 via-[#e8efff] to-[#ccdff9] shadow-md';
@@ -212,8 +214,13 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
     //如果 widthcss空值,預設為 1fr
     const gridTemplate = [
         ...(havecheckbox ? ['30px'] : []), // checkbox 欄位寬度
-        ...columns.map(col => col.widthcss?.trim() ? col.widthcss : '1fr')
+        ...columns
+            .filter(col => col.name === "sssssss")
+            // .filter(col =>   col.visible === true)
+            .map(col => col.widthcss?.trim() ? col.widthcss : '1fr')
     ].join('_');
+
+    console.log('gridTemplate:', gridTemplate);
 
     const gridColsStyle = `grid-cols-[${gridTemplate}]`;
 
@@ -221,7 +228,7 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
     return (
 
         <div className={` ${cssUserbar} relative text-sm border border-gray-300  bg-slate-100  rounded-md`}>
-             
+
             {/* 測試 如果 checkedItems_old有值,就顯示出來 */}
             {/* {checkedItems_old && checkedItems_old.length > 0 && (
             <div className="mb-2 p-2 bg-yellow-100 border border-yellow-300 rounded">
@@ -255,14 +262,17 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
 
                         {columns.map((col, index) => (
                             //判斷 col.colSpan
-                            <div
-                                key={index}
-                                // border-[#cabbbb]
-                                //className={`col-span-1 p-1.5 outline outline-1   outline-slate-700   text-center  ${gridColsClass || ''}  `}>
-                                className={`col-span-${col.colSpan || 1} sticky top-0 p-1.5 outline outline-1 outline-slate-700 text-center ${gridColsClass || ''}`}
-                            >
-                                {col.showname ? col.showname : col.name}
-                            </div>
+                            (col.visible === undefined || col.visible === true) && (
+                                <div
+                                    key={index}
+                                    // border-[#cabbbb]
+                                    //className={`col-span-1 p-1.5 outline outline-1   outline-slate-700   text-center  ${gridColsClass || ''}  `}>
+                                    className={`col-span-${col.colSpan || 1} sticky top-0 p-1.5 outline outline-1 outline-slate-700 text-center ${gridColsClass || ''}`}
+                                >
+                                    {col.showname ? col.showname : col.name}
+                                </div>
+                            )
+                            
 
                         ))}
                     </div>
@@ -317,23 +327,32 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
                                     const colSpan = field.colSpan || header_colSpan || 1; // Default colSpan to 1 if not provided
 
                                     return (
+                                        (col.visible === undefined || col.visible === true) && (
+                                            <div
+                                                key={colIndex}
+                                                className={`col-span-${colSpan} p-1.5 outline outline-1   outline-stone-400 text-gray-600 font-medium text-center`}
+                                            >
+                                                {(col.visible === undefined || col.visible === true) && (
+                                                    <>
+                                                        {field.type === 'input' && field.value}
+                                                        {field.type === 'hyperlink' && field.href && (
+                                                            <a href={field.href}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                className="text-blue-500 hover:underline"
+                                                            >
+                                                                {field.value}
+                                                            </a>
+                                                        )}
+                                                        {field.type === 'empty' && field.child}
+                                                    </>
+                                                )}
+ 
+                                            </div>
+                                        )
 
-                                        <div
-                                            key={colIndex}
-                                            className={`col-span-${colSpan} p-1.5 outline outline-1   outline-stone-400 text-gray-600 font-medium text-center`}
-                                        >
-                                            {field.type === 'input' && field.value}
-                                            {field.type === 'hyperlink' && field.href && (
-                                                <a href={field.href}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="text-blue-500 hover:underline"
-                                                >
-                                                    {field.value}
-                                                </a>
-                                            )}
-                                            {field.type === 'empty' && field.child}
-                                        </div>
+
+
                                     );
                                 })}
                             </div>

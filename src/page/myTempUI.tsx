@@ -254,15 +254,16 @@ const MyTempUI: React.FC = () => {
                 <div className='h-[500px]'>
                     <DataGridApi
                         columns={[
-                            { name: 'empno', type: 'input', showname: '員工編號', colSpan: 1, widthcss: 'minmax(80px,120px)' },
-                            { name: 'fullname', type: 'input', showname: '全名', colSpan: 1 }
+                           { name: 'empno', type: 'input', showname: '員工編號', colSpan: 1,   widthcss: 'minmax(80px,120px)' },
+                           {  name: 'fullname', type: 'input', showname: '全名', colSpan: 1, visible: false}
                         ]}
+                        
                         useBar={true}
                         havecheckbox={true}
                         useSearch={true}
                         checkedItems_old={checkedItems_old} // 2. 傳入已勾選項目
                         onCheckItemsChange={items => {
-                            console.log('com in onCheckItemsChange');
+                           // console.log('com in onCheckItemsChange');
                             setCheckedItems_old(items); // 3. 更新 state
                             //console.log('之前勾選資料:', checkedItems_old);
                             const checklistDiv = document.getElementById('gridChecklist');
