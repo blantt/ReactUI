@@ -159,7 +159,7 @@ const MyTempUI: React.FC = () => {
 
                 <div className="p-4">
                     <h1 className="text-sm font-bold mb-4">dropdown(API) Example</h1>
-                    <MyDropDown keyValue='ClassID' keyText='ClassName' haveBlank={true}
+                    <MyDropDown keyValue='ClassID' keyText='ClassName' haveBlank={true} emptyText='dropdown(API)選擇'
                         apiUrl="https://clockappservice.english4u.com.tw/api/clock/selectClockWorkClass"
                         onSelect={handleSelect3}
                     />

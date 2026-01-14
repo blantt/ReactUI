@@ -177,7 +177,7 @@ const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyVal
 
       {/* 下拉選單內容，僅在 isOpen 為 true 時顯示 */}
       {isOpen && (
-        <div ref={dropdownRef} className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 
+        <div ref={dropdownRef} className="z-50 origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 
         focus:outline-none">
           <div className="py-1">
             {/* 渲染每個選項作為按鈕 */}
