@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 // 定義下拉選單元件的屬性介面
 interface DropdownProps {
@@ -8,6 +8,8 @@ interface DropdownProps {
   keyText?: string; // 可選的顯示文字
   apiUrl?: string; // API 資料來源 URL
   haveBlank?: boolean; // 是否包含空白選項
+  widthCss?: string; // 下拉選單寬度
+  emptyText?: string; // 空白選項顯示文字
 }
 
 //FileItem 預計是dropdown選項的型別 
@@ -27,15 +29,15 @@ const fileOptions: FileItem[] = [
   { sname: "name 3", svalueb: "value 3", sother: "other3" },
 ];
 
-export const transformToFormField = (data: any[], keyValue?: string, keyText?: string,haveBlank: boolean = true
+export const transformToFormField = (data: any[], keyValue?: string, keyText?: string, haveBlank: boolean = true
 ) => {
 
-    const transformedData = data.map((item,itemIndex) => {
-      const result: FileItem = {};
+  const transformedData = data.map((item, itemIndex) => {
+    const result: FileItem = {};
     //這裡目的是要把 item 轉換成 FileItem 型別
-   
+
     //[{\"ClassID\":4,\"ClassName\":\"全公司(09-18)\"},{\"ClassID\":5,\"ClassName\":\"發行客服(0830-1730)\"}]
-    
+
     if (keyValue) {
       result[keyValue] = item[keyValue];
     }
@@ -62,24 +64,24 @@ export const transformToFormField = (data: any[], keyValue?: string, keyText?: s
   }
 
   // 將空白選項加到陣列的最前面並回傳
-  if(!haveBlank){
+  if (!haveBlank) {
     return transformedData;
   } else {
 
     return [blankOption, ...transformedData];
   }
-   
+
 
 };
 
-const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyValue, keyText, haveBlank = true }) => {
-  
- 
+const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyValue, keyText, haveBlank = true, widthCss = "w-48", emptyText = "請選擇" }) => {
+
+
   // const [internalOptions, setInternalOptions] = useState<FileItem[]>(options || []);
   const [internalOptions, setInternalOptions] = useState<FileItem[]>(
     // 因為第一列要加入空白選項,所以options 傳入時也要經過transformToFormField轉換
-  options ? transformToFormField(options, keyValue, keyText,haveBlank) : []
-);
+    options ? transformToFormField(options, keyValue, keyText, haveBlank) : []
+  );
 
   // 狀態：管理下拉選單是否展開
   const [isOpen, setIsOpen] = useState(false);
@@ -92,26 +94,26 @@ const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyVal
   };
 
   // 使用 useRef 來參考下拉選單的 DOM 節點
-    const dropdownRef = useRef<HTMLDivElement>(null);
-   // 點擊外部時關閉下拉選單
-    useEffect(() => {
-      const handleClickOutside = (event: MouseEvent) => {
-        if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-          setIsOpen(false);
-        }
-      };
-  
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
-      };
-    }, []);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  // 點擊外部時關閉下拉選單
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   useEffect(() => {
 
     if (apiUrl) {
       const fetchData = async () => {
-         
+
         // setLoading(true);
         try {
 
@@ -125,7 +127,7 @@ const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyVal
           const jsonData = await response.json();
           // console.log('drop jsonData:', jsonData);
           // options = transformToFormField(jsonData, keyValue, keyText);
-          setInternalOptions(transformToFormField(jsonData, keyValue, keyText,haveBlank));
+          setInternalOptions(transformToFormField(jsonData, keyValue, keyText, haveBlank));
           // console.log('com in apichange:', internalOptions);
         } catch (error) {
           console.error('Error fetching data:', error);
@@ -135,9 +137,9 @@ const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyVal
         }
       };
       //dd
-      fetchData() 
+      fetchData()
     }
-  }, [internalOptions,apiUrl,options]);
+  }, [internalOptions, apiUrl, options]);
 
 
   const handleSelect = (option: FileItem) => {
@@ -148,29 +150,29 @@ const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyVal
 
   return (
     <div className="relative inline-block text-left">
-      <div>
-        {/* 按鈕：用於切換下拉選單 */}
-        <button
-          type="button"
-          className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          onClick={handleToggle}
-        >
-          {/* 顯示當前選擇的選項或預設提示文字 */}
-          {selectedOption ? (keyText ? selectedOption[keyText] : selectedOption.name) : '請選擇一個選項'}
-          <svg
-            className="-mr-1 ml-2 h-5 w-5"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              fillRule="evenodd"
-              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-              clipRule="evenodd"
-            />
-          </svg>
+      <div id='btnPanel'>
+
+        <button className={`relative flex items-center justify-center ${widthCss} rounded-md border   border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 `}
+          onClick={handleToggle} >
+          {/* {selectedOption ? (keyText ? selectedOption[keyText] : selectedOption.name) : emptyText} */}
+          {
+            selectedOption
+              ? (
+              //  如果有傳入 keyText（代表你希望顯示某個欄位的文字），就用 selectedOption[keyText] 取出該欄位的值。
+               // 如果沒傳 keyText，就用 selectedOption.name 取出 name 欄位的值。
+                (keyText ? selectedOption[keyText] : selectedOption.name) === "請選擇"
+                  ? emptyText
+                  : (keyText ? selectedOption[keyText] : selectedOption.name)
+              )
+              : emptyText
+          }
+          <div className="absolute right-1">
+            <img src={`${import.meta.env.BASE_URL}arrow_d.png`} alt="icon" style={{ width: 20, height: 20 }} />
+          </div>
         </button>
+
+
+
       </div>
 
       {/* 下拉選單內容，僅在 isOpen 為 true 時顯示 */}
@@ -181,14 +183,14 @@ const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyVal
             {/* 渲染每個選項作為按鈕 */}
             {/* 如果沒有傳進 keyValue, keyText ,預設使用 option.value 和 option.name */}
             {/* 在這裡可以在前端先console.log internalOptions */}
-             
+
             {internalOptions.map((option) => (
               <button
                 key={keyValue ? option[keyValue] : option.value} // 根據 keyValue 判斷使用哪個 key
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left"
                 onClick={() => handleSelect(option)}
               >
-                 {keyText ? option[keyText] : option.name}
+                {keyText ? option[keyText] : option.name}
               </button>
             ))}
           </div>

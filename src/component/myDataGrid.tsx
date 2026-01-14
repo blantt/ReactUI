@@ -7,8 +7,7 @@ export interface FormField {
     type: string; // 支援 "input"、"hyperlink" 和 "empty"
     href?: string; // 當 type 為 hyperlink 時，指定超連結的目標 URL
     child?: React.ReactNode; // 當 type 為 empty 時，允許外部傳入子元素
-
-
+ 
 }
 
 interface ColumnType {
@@ -44,6 +43,7 @@ type DataGridProps = {
     checkedItems_old?: Array<Record<string, FormField>>; // 1. 新增這行
     customTransform?: (item: any, col: DataGridProps['columns'][number]) => FormField; // 新增自定義轉換邏輯
     onlyCheckedItems?: boolean; // 是否只顯示已勾選的項目
+   
 };
 
 export const transformToFormField = (data: any[],

@@ -153,6 +153,7 @@ const MyTempUI: React.FC = () => {
                     <MyDropDown keyValue='sname' keyText='svalue'
                         options={fileOptions}
                         onSelect={handleSelect2}
+                       emptyText='我是誰'
                     />
                 </div>
 
@@ -217,7 +218,7 @@ const MyTempUI: React.FC = () => {
                     </div>
                 </div>
                 <div>
-                    <Button2 icon={<DiscordIcon color='rgb(255, 87, 51)' />} label="modal_checkgrid"
+                    <Button2   icon={<img src={`${import.meta.env.BASE_URL}arrow_r.png`} alt="icon" style={{ width: 20, height: 20 }} />} label="modal_checkgrid"
                         onClick={() => setIsLoading_modal_check(true)} />
                 </div>
 
