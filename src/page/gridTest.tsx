@@ -126,14 +126,14 @@ const Example = () => {
 
   return (
     <div>
-
-      <div className='w-1/2'>
+{/* minmax(80px,120px) */}
+      <div className='w-1/2 '>
         <h1>AMC GRID api new</h1>
         <div className='h-[400px]'>
           <DataGridApi
             columns={[
-              { name: 'empno', type: 'input', showname: '員工編號', colSpan: 1, widthcss: 'minmax(80px,120px)' },
-              { name: 'fullname', type: 'input', showname: '全名', colSpan: 1 }
+              { name: 'empno', type: 'input', showname: '員工編號', colSpan: 1 },
+              { name: 'fullname', type: 'input', showname: '全名2', colSpan: 1, widthcss: 'minmax(50px,150px)'}
             ]}
             useBar={true}
             havecheckbox={true}

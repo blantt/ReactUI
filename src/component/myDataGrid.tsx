@@ -7,11 +7,13 @@ export interface FormField {
     type: string; // 支援 "input"、"hyperlink" 和 "empty"
     href?: string; // 當 type 為 hyperlink 時，指定超連結的目標 URL
     child?: React.ReactNode; // 當 type 為 empty 時，允許外部傳入子元素
- 
+
+
 }
 
 interface ColumnType {
     name: string;
+    //colSpan 暫時沒有作用,因為grid現在是自動分配欄位寬度,所以如有colSpan,會影響顯示效果(真有需要再優化)
     colSpan?: number;
 
 }
@@ -43,7 +45,6 @@ type DataGridProps = {
     checkedItems_old?: Array<Record<string, FormField>>; // 1. 新增這行
     customTransform?: (item: any, col: DataGridProps['columns'][number]) => FormField; // 新增自定義轉換邏輯
     onlyCheckedItems?: boolean; // 是否只顯示已勾選的項目
-   
 };
 
 export const transformToFormField = (data: any[],
@@ -197,12 +198,12 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
             );
 
         });
-        
+
     }
 
     if (havecheckbox && onlyCheckedItems) {
-        filteredData1 = filteredData1.filter(item => 
-            checkItems.some(checkedItem =>  
+        filteredData1 = filteredData1.filter(item =>
+            checkItems.some(checkedItem =>
                 keyColumn ? checkedItem[keyColumn]?.value === item[keyColumn]?.value : false
             )
         );
@@ -223,14 +224,14 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
     const gridTemplate = [
         ...(havecheckbox ? ['30px'] : []), // checkbox 欄位寬度
         ...columns
-       //  .filter(col => col.name==="sssssss")   
-          .filter(col => col.visible === undefined || col.visible === true)
+            //  .filter(col => col.name==="sssssss")   
+            .filter(col => col.visible === undefined || col.visible === true)
             // .filter(col =>   col.visible === true)
             //col.visible === undefined || col.visible === true
             .map(col => col.widthcss?.trim() ? col.widthcss : '1fr')
     ].join('_');
 
-   // console.log('gridTemplate:', gridTemplate);
+    console.log('gridTemplate:', gridTemplate);
 
     const gridColsStyle = `grid-cols-[${gridTemplate}]`;
 
@@ -238,14 +239,6 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
     return (
 
         <div className={` ${cssUserbar} relative text-sm border border-gray-300  bg-slate-100  rounded-md`}>
-
-            {/* 測試 如果 checkedItems_old有值,就顯示出來 */}
-            {/* {checkedItems_old && checkedItems_old.length > 0 && (
-            <div className="mb-2 p-2 bg-yellow-100 border border-yellow-300 rounded">
-                <h2 className="font-semibold mb-1">Previously Checked Items:</h2>
-                <pre>{JSON.stringify(checkedItems_old, null, 2)}</pre>
-            </div>
-        )} */}
 
             <div className=' text-gray-800 p-2  '>
 
@@ -259,39 +252,120 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
                         />
                     </div>
                 )}
-                <div className={`grid   gap-1 border border-gray-300 bg-white/50 p-1  ${className || ''} shadow-md `}>
-                   
-                  
-                    {/* 表頭 */}        
-                    <div className={`grid grid-flow-col ${gridColsStyle}  shadow-md bg-gray-300 text-gray-700    `}>
-                        {
-                            havecheckbox && (
-                                <div className={` sticky top-0 p-1.5 outline outline-1   outline-slate-700 text-center ${gridColsClass || ''}`}>
-                                </div>
-                            )
-                        }
+                <div className={`grid   ${gridColsStyle}   border border-gray-300 bg-white/50 p-1  ${className || ''} shadow-md `}>
 
-                        {columns.map((col, index) => (
-                            //判斷 col.colSpan
-                            (col.visible === undefined || col.visible === true) && (
-                                <div
-                                    key={index}
-                                    // border-[#cabbbb]
-                                    //className={`col-span-1 p-1.5 outline outline-1   outline-slate-700   text-center  ${gridColsClass || ''}  `}>
-                                    className={`col-span-${col.colSpan || 1} sticky top-0 p-1.5 outline outline-1 outline-slate-700 text-center ${gridColsClass || ''}`}
-                                >
-                                    {col.showname ? col.showname : col.name}
-                                </div>
-                            )
-                            
 
-                        ))}
-                    </div>
+                    {/* 表頭 */}
+                    {/* <div className={` shadow-md bg-gray-300 text-gray-700    `}> */}
+                    {
+                        havecheckbox && (
+                            <div className={` sticky top-0 p-1.5 outline outline-1   outline-slate-700 text-center ${gridColsClass || ''}`}>
+                            </div>
+                        )
+                    }
 
-                    {/* 表身 */}
-                    <div className="grid  gap-1 text-gray-700 font-medium not-only-of-type:">
-                         {/* {filteredData1.map((row, rowIndex) => ( */}
-                            {filteredData1.slice(startIndex, startIndex + itemsPerPage).map((row, rowIndex) => (
+                    {columns.map((col, index) => (
+                        //判斷 col.colSpan
+                        (col.visible === undefined || col.visible === true) && (
+                            <div
+                                key={index}
+                                // border-[#cabbbb]
+                                //className={`col-span-1 p-1.5 outline outline-1   outline-slate-700   text-center  ${gridColsClass || ''}  `}>
+                                className={`  sticky top-0 p-1.5 outline outline-1 outline-slate-700 text-center ${gridColsClass || ''}`}
+                            >
+                                {col.showname ? col.showname : col.name}
+                            </div>
+                        )
+
+
+                    ))}
+
+                    {/* 處理表身NEW */}
+                    {/* React.Fragment（或簡寫為 <>...</>）是 React 提供的一個虛擬容器，用來包裹多個子元素，但不會在 DOM 中產生額外的標籤。
+                    它的用途是：當你需要回傳多個元素，但又不想多包一層 <div> 或其他 HTML 標籤時 */}
+                    {filteredData1.slice(startIndex, startIndex + itemsPerPage).map((row, rowIndex) => (
+                        <React.Fragment key={rowIndex}>
+
+                            {
+                                havecheckbox && (
+                                    <div className={`  p-1.5 outline outline-1   outline-stone-400 text-gray-600 font-medium text-center`}>
+                                        {havecheckbox && (
+                                            <input
+                                                type="checkbox"
+                                                checked={
+                                                    keyColumn
+                                                        ? checkItems.some(i => i[keyColumn]?.value === row[keyColumn]?.value)
+                                                        : false
+                                                }
+                                                onChange={e =>
+                                                    handleCheck(
+                                                        row,
+                                                        e.target.checked
+                                                    )
+                                                }
+                                            />
+                                        )}
+                                    </div>
+                                )
+                            }
+                            {columns.map((col, colIndex) => {
+                                const field = row[col.name];
+                                if (!field) {
+                                    return (
+                                        <div
+                                            key={colIndex}
+                                            className="col-span-1 p-1.5  "
+                                        />
+                                    );
+                                }
+
+                                // 這裡想抓到 columns 裡面的對應欄位field.name 的 colSpan
+                                const header_colSpan = col.colSpan || 1;
+                                //colSpan 優先使用 field.colSpan , 若無則使用 header 的 colSpan, 若 header 也無則預設為1
+                                const colSpan = field.colSpan || header_colSpan || 1; // Default colSpan to 1 if not provided
+
+                                return (
+                                    (col.visible === undefined || col.visible === true) && (
+                                        <div
+                                            key={colIndex}
+                                            onClick={() => onRowClick && onRowClick(row)} // 新增點擊事件
+                                            className={`  p-1.5 outline outline-1   outline-stone-400 text-gray-600 font-medium text-center`}
+                                        >
+                                            {(col.visible === undefined || col.visible === true) && (
+                                                <>
+                                                    {field.type === 'input' && field.value}
+                                                    {field.type === 'hyperlink' && field.href && (
+                                                        <a href={field.href}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="text-blue-500 hover:underline"
+                                                        >
+                                                            {field.value}
+                                                        </a>
+                                                    )}
+                                                    {field.type === 'empty' && field.child}
+                                                </>
+                                            )}
+
+                                        </div>
+                                    )
+
+
+
+                                );
+                            })}
+
+
+                        </React.Fragment>
+                    ))}
+
+
+                    {/* 表身NEW END */}
+
+                    {/* 表身舊版 */}
+                    {/* <div className="grid  gap-1 text-gray-700 font-medium not-only-of-type:">
+                       
+                        {filteredData1.slice(startIndex, startIndex + itemsPerPage).map((row, rowIndex) => (
                             //  eee
                             <div
                                 key={rowIndex}
@@ -358,7 +432,7 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
                                                         {field.type === 'empty' && field.child}
                                                     </>
                                                 )}
- 
+
                                             </div>
                                         )
 
@@ -371,7 +445,12 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
 
 
                         ))}
-                    </div>
+                    </div> */}
+                    {/* 表身舊版 END */}
+
+
+
+
                 </div>
 
 
