@@ -188,7 +188,12 @@ const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyVal
               <button
                 key={keyValue ? option[keyValue] : option.value} // 根據 keyValue 判斷使用哪個 key
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left"
-                onClick={() => handleSelect(option)}
+                onClick={() =>
+                   {
+                     handleSelect(option);
+                     setIsOpen(false);
+                   }
+                }
               >
                 {keyText ? option[keyText] : option.name}
               </button>
