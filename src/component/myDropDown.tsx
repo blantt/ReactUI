@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 // 定義下拉選單元件的屬性介面
 interface DropdownProps {
   options?: FileItem[]; // 下拉選單的選項陣列
-  onSelect: (value: FileItem) => void; // 當選擇選項時觸發的回調函數
+  onSelect?: (value: FileItem) => void; // 當選擇選項時觸發的回調函數
   keyValue?: string; // 可選的當前選擇值
   keyText?: string; // 可選的顯示文字
   apiUrl?: string; // API 資料來源 URL
@@ -190,8 +190,9 @@ const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyVal
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left"
                 onClick={() =>
                    {
+                    setIsOpen(false);
                      handleSelect(option);
-                     setIsOpen(false);
+                     
                    }
                 }
               >

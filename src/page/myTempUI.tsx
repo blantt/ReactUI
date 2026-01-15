@@ -152,7 +152,7 @@ const MyTempUI: React.FC = () => {
                     <h1 className="text-sm font-bold mb-4">dropdown Example</h1>
                     <MyDropDown keyValue='sname' keyText='svalue'
                         options={fileOptions}
-                        onSelect={handleSelect2}
+                      // onSelect={handleSelect2}
                        emptyText='我是誰'
                     />
                 </div>
