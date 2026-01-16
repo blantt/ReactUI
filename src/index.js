@@ -10,9 +10,11 @@ export { default as Loading } from './component/myload.tsx';
 export { default as Modal } from './component/myModal.tsx'; 
 export { default as DynamicForm } from './component/DynamicForm.tsx';  
 export { LoadingInline } from './component/myload'; 
-
+export { TextInput } from './component/simpleUI.tsx'; 
  
 
+
+ 
 
  
  

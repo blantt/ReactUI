@@ -88,8 +88,9 @@ const Tab1 = () => {
       <div className="space-x-4 pt-3">
 
         <Button label="uiTemplate" onClick={() => callUrl("uiTemplate")} />
-        <Button2 label="myTempUI" onClick={() => callUrl("myTempUI")} />
+        <Button2 label="myTempUI" onClick={() => callUrl("myTempUI")} />  
         <Button2 label="Grid說明文件" onClick={() => callUrl("docGrid")} />
+        <Button label="simpleUI" onClick={() => callUrl("simpleUI")} />
       </div>
     </div>
   );
