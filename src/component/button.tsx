@@ -19,7 +19,7 @@ export const Button = ({ label, onClick }: ButtonProps) => {
 type ButtonProps2 = {
     label: string; // label 是字串
     icon?: React.ReactNode; // icon 是可選的 React 節點
-    onClick?: () => void; // onClick 是一個函式，無參數且無回傳值 
+     onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void; // 允許帶 event
 };
 
 

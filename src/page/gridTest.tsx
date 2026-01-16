@@ -138,6 +138,7 @@ const Example = () => {
             useBar={true}
             havecheckbox={true}
             useSearch={true}
+             
 
             onCheckItemsChange={items => {
               // items 就是最新的 checkItems
