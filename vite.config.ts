@@ -1,9 +1,12 @@
+import dts from 'vite-plugin-dts'  //類別庫自動補完功能
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(),
+    dts({ insertTypesEntry: true }) // 這會自動幫你產生 .d.ts 並關聯到 package.json
+  ],
   build: {
     lib: {
       entry: 'src/index.js', // 您的元件入口
