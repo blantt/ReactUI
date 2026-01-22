@@ -6,7 +6,7 @@ export { default as Button ,Button2} from './component/button';
 export { default as DataGridApi } from './component/myDataGrid';// 這樣會同時匯出組件與型別
 export { default as DynamicForm} from './component/DynamicForm';
 export { default as SmartModal} from './component/SmartModal';
-export { default as SmartModal_test,Modal_test} from './component/SmartModal_test';
+// export { default as SmartModal_test,Modal_test} from './component/SmartModal_test';
 
 export const apitransform: any;
 export const apitransformDrop: any;
