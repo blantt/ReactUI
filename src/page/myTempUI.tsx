@@ -10,8 +10,9 @@ import { Button2 } from "../component/button";
 import { Grid_Data1 } from "../data/data.js";
 import { DiscordIcon, AnotherIcon, AnotherIcon2 } from "../component/mySvg";
 import type { FileItem as DropdownOption } from '../component/myDropGrid'; // 匯入 FileItem 型別
-
-
+import SmartModal from '../component/SmartModal';
+import SmartModal_test from '../component/SmartModal_test';
+import { Modal_test } from '../component/SmartModal_test';
 
 const MyTempUI: React.FC = () => {
 
@@ -25,6 +26,9 @@ const MyTempUI: React.FC = () => {
     const [isLoading_modal2, setIsLoading_modal2] = useState(false);
 
     const [isLoading_modal_check, setIsLoading_modal_check] = useState(false);
+    const [isLoading_smartModal, setIsLoading_smartModal] = useState(false);
+
+    const [isLoading_modal_test, setIsLoading_modal_test] = useState(false);
 
     const handleButtonClick_modal = () => {
         setIsLoading_modal(true); // 顯示 Loading
@@ -120,8 +124,8 @@ const MyTempUI: React.FC = () => {
 
         <div>
             <AppTitle title="My Dropdown Example" bkcolor="bg-green-600" btest='dd'
-             onCheckItemsChange={(items) => console.log(items)}
- 
+                onCheckItemsChange={(items) => console.log(items)}
+
             />
             <div className="flex justify-center items-center ">
                 <div className="p-2">
@@ -152,8 +156,8 @@ const MyTempUI: React.FC = () => {
                     <h1 className="text-sm font-bold mb-4">dropdown Example</h1>
                     <MyDropDown keyValue='sname' keyText='svalue'
                         options={fileOptions}
-                      // onSelect={handleSelect2}
-                       emptyText='我是誰'
+                        // onSelect={handleSelect2}
+                        emptyText='我是誰'
                     />
                 </div>
 
@@ -218,10 +222,21 @@ const MyTempUI: React.FC = () => {
                     </div>
                 </div>
                 <div>
-                    <Button2   icon={<img src={`${import.meta.env.BASE_URL}arrow_r.png`} alt="icon" style={{ width: 20, height: 20 }} />} label="modal_checkgrid"
+                    <Button2 icon={<img src={`${import.meta.env.BASE_URL}arrow_r.png`} alt="icon" style={{ width: 20, height: 20 }} />}
+                     label="modal_checkgrid"
                         onClick={() => setIsLoading_modal_check(true)} />
                 </div>
+                <div>
+                    <Button2 icon={<img src={`${import.meta.env.BASE_URL}arrow_r.png`} alt="icon" style={{ width: 20, height: 20 }} />}
+                     label="smartModal"
+                        onClick={() => setIsLoading_smartModal(true)} />
+                </div>
 
+                <div>
+                    <Button2 icon={<img src={`${import.meta.env.BASE_URL}arrow_r.png`} alt="icon" style={{ width: 20, height: 20 }} />}
+                     label="test modal new"
+                        onClick={() => setIsLoading_modal_test(true)} />
+                </div>
             </div>
 
 
@@ -255,16 +270,16 @@ const MyTempUI: React.FC = () => {
                 <div className='h-[500px]'>
                     <DataGridApi
                         columns={[
-                           { name: 'empno', type: 'input', showname: '員工編號', colSpan: 1,  },
-                           {  name: 'fullname', type: 'input', showname: '全名', colSpan: 1, visible: false}
+                            { name: 'empno', type: 'input', showname: '員工編號', colSpan: 1, },
+                            { name: 'fullname', type: 'input', showname: '全名', colSpan: 1, visible: false }
                         ]}
-                        
+
                         useBar={true}
                         havecheckbox={true}
                         useSearch={true}
                         checkedItems_old={checkedItems_old} // 2. 傳入已勾選項目
                         onCheckItemsChange={items => {
-                           // console.log('com in onCheckItemsChange');
+                            // console.log('com in onCheckItemsChange');
                             setCheckedItems_old(items); // 3. 更新 state
                             //console.log('之前勾選資料:', checkedItems_old);
                             const checklistDiv = document.getElementById('gridChecklist');
@@ -307,6 +322,44 @@ const MyTempUI: React.FC = () => {
 
             </Modal>
 
+            <SmartModal_test
+                isOpen={isLoading_smartModal}
+                onClose={() => setIsLoading_smartModal(false)}
+                // triggerTop={modalState.top}
+                triggerTop={0}
+                maxWidth='w-4/5'
+                footer={
+                    <div className="flex justify-end pt-1">
+                        aaaa
+                    </div>
+                }
+                title={"題庫選擇"}>
+                <div>
+                    <div className='h-[500px]'>
+                        99999
+                    </div>
+                </div>
+            </SmartModal_test>
+
+
+           <Modal_test
+                isOpen={isLoading_modal_test}
+                onClose={() => setIsLoading_modal_test(false)}
+                // triggerTop={modalState.top}
+                triggerTop={0}
+                maxWidth='w-4/5'
+                footer={
+                    <div className="flex justify-end pt-1">
+                        aaaa
+                    </div>
+                }
+                title={"Modal_test"}>
+                <div>
+                    <div className='h-[500px]'>
+                        99999888888888
+                    </div>
+                </div>
+            </Modal_test>
         </div>
 
 
