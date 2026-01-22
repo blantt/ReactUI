@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import MyDropDown from '../component/myDropDown';
 import MyDropGrid, { transformToFormField as apitransform } from '../component/myDropGrid';
-import AppTitle from '../component/header.tsx';
+import AppTitle from '../component/header';
 import Loading from '../component/myload';
 import Modal from '../component/myModal';
-import { Button2 } from "../component/button.tsx";
+import { Button2 } from "../component/button";
 
 import type { FileItem as DropdownOption } from '../component/myDropGrid'; // 匯入 FileItem 型別
 

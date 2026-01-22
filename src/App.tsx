@@ -2,9 +2,9 @@
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 import './App.css'
-import Button from "./component/button.tsx";
-import { Button2 } from "./component/button.tsx";
-import Mytab from './component/myTab.tsx';
+import Button from "./component/button";
+import { Button2 } from "./component/button";
+import Mytab from './component/myTab';
 function Image1() {
   return (
     <div>

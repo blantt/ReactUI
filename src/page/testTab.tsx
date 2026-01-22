@@ -1,4 +1,4 @@
-import Mytab from '../component/myTab.tsx';
+import Mytab from '../component/myTab';
 
 
 

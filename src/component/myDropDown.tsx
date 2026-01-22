@@ -144,7 +144,7 @@ const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyVal
 
   const handleSelect = (option: FileItem) => {
     setSelectedOption(option); // 更新當前選擇的選項
-    onSelect(option); // 觸發回調函數，傳遞選擇的值
+    if (onSelect) onSelect(option); // 觸發回調函數，傳遞選擇的值
     setIsOpen(false); // 收起下拉選單
   };
 

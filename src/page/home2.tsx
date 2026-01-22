@@ -1,6 +1,6 @@
-import Header from "../component/header.tsx";
+import Header from "../component/header";
 import { useState } from "react";
-import Button  from "../component/button.tsx";
+import Button  from "../component/button";
 import { CORE_CONCEPTS } from "../data/data.js"; // 匯入數據
    
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 // import DataGrid2 from '../component/DataGrid2';
-import DataGridApi, { transformToFormField as apitransform } from './myDataGrid.tsx';
-import { Down } from "../component/mySvg.tsx";
+import DataGridApi, { transformToFormField as apitransform } from './myDataGrid';
+import { Down } from "../component/mySvg";
 // 定義下拉選單元件的屬性介面
 
 export interface FormField {

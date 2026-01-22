@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom/client";
-import Header from "../component/header.tsx";
+import Header from "../component/header";
 
 import { useState } from "react";
 

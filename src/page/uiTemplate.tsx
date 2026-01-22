@@ -1,6 +1,6 @@
 import React from 'react';
 import CardGrid from '../component/CardGrid';
-import AppTitle from '../component/header.tsx';
+import AppTitle from '../component/header';
 
 export const CORE_CONCEPTS = [
     {

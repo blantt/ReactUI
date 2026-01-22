@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import Button from "../component/button.tsx";
+import Button from "../component/button";
 export default function app() {
 
     const [data, setData] = useState([]); // 用於儲存 API 返回的資料

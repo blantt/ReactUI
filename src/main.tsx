@@ -1,26 +1,26 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 // import './index.css'
-import App from './App.tsx'
+import App from './App'
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Home from './page/home.tsx';
-import Home2 from './page/home2.tsx';
-import ApiTest from './page/apiTest.tsx';
-import FormTest from './page/formTest.tsx';
-import FormTest2 from './page/formTest2.tsx';
-import GridTest from './page/gridTest.tsx';
-import Uitemplabe from './page/uiTemplate.tsx';
-import MytempUI from './page/myTempUI.tsx';
-import DocGrid from './page/docGrid.tsx';
-import OTCtest from './pageAmc1234/OTCtest.tsx';
-import OTCtest2 from './pageAmc1234/OTCtest2.tsx';
-import TabTest from './page/testTab.tsx';
-import TestHtmlPage from './page/testHtmlPage.tsx';
-import TestHtmlPage2 from './page/testHtmlPage2.tsx';
-import TextOtc from './page/textOtc.tsx';
-import TestModal from './page/testmodal.tsx';
-import SimpleUItest from './page/simpleUItest.tsx';
+import Home from './page/home';
+import Home2 from './page/home2';
+import ApiTest from './page/apiTest';
+import FormTest from './page/formTest';
+import FormTest2 from './page/formTest2';
+import GridTest from './page/gridTest';
+import Uitemplabe from './page/uiTemplate';
+import MytempUI from './page/myTempUI';
+import DocGrid from './page/docGrid';
+import OTCtest from './pageAmc1234/OTCtest';
+import OTCtest2 from './pageAmc1234/OTCtest2';
+import TabTest from './page/testTab';
+import TestHtmlPage from './page/testHtmlPage';
+import TestHtmlPage2 from './page/testHtmlPage2';
+import TextOtc from './page/textOtc';
+import TestModal from './page/testmodal';
+import SimpleUItest from './page/simpleUItest';
 
 async function enableMocking() {
   if (import.meta.env.MODE !== 'development') {

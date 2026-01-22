@@ -1,8 +1,8 @@
 import React, { useState,useRef } from 'react';
-import AppTitle from '../component/header.tsx';
+import AppTitle from '../component/header';
 // import { Button2 } from "../component/button.tsx";
-import { DiscordIcon, AnotherIcon, AnotherIcon2 } from "../component/mySvg.tsx";
-import { Button2, TextInput } from "../component/simpleUI.tsx";
+import { DiscordIcon, AnotherIcon, AnotherIcon2 } from "../component/mySvg";
+import { Button2, TextInput } from "../component/simpleUI";
 
 
 // 想建一個類別,裡面有參數,在迴圈中使用,每一個迴圈會new它,再給它值

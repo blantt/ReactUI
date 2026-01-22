@@ -1,6 +1,9 @@
 export const Button: any;
 export const Button2: any;
 export const DataGridApi: any;
+ 
+//export * from 'src/component/myDataGrid';// 這樣會同時匯出組件與型別
+ 
 export const apitransform: any;
 export const apitransformDrop: any;
 export const Mytab: any;

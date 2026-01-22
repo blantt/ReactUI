@@ -1,6 +1,6 @@
 import DynamicForm from "../component/DynamicForm";
 import { CORE_CONCEPTS } from "../data/data.js";
-import Button  from "../component/button.tsx";
+import Button  from "../component/button";
 export default function App2() {
 
 //  先取得數據 CORE_CONCEPTS 第1筆，再帶入placeholder

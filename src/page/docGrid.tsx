@@ -1,5 +1,5 @@
 import React from 'react';
-import DataGridApi from '../component/myDataGrid.tsx';
+import DataGridApi from '../component/myDataGrid';
 import type { FormField } from '../component/myDataGrid.tsx';
 
 type CodeTxtProps = {

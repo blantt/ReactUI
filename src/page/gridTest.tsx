@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import DataGridApi, { transformToFormField as apitransform } from '../component/myDataGrid.tsx';
-import Button from "../component/button.tsx";
+import DataGridApi, { transformToFormField as apitransform } from '../component/myDataGrid';
+import Button from "../component/button";
 
 // import type { FormField } from '../component/DataGrid2'; // 匯入 FileItem 型別
 import Loading from '../component/myload';

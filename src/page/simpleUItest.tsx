@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import MyDropDown from '../component/myDropDown';
 import MyDropGrid, { transformToFormField as apitransform } from '../component/myDropGrid';
-import AppTitle from '../component/header.tsx';
+import AppTitle from '../component/header';
 import Loading from '../component/myload';
 import { LoadingInline } from '../component/myload';
 import Modal from '../component/myModal';
-import DataGridApi from '../component/myDataGrid.tsx';
-import { Button2 } from "../component/button.tsx";
-import { TextInput } from "../component/simpleUI.tsx";
-import { DiscordIcon, AnotherIcon, AnotherIcon2 } from "../component/mySvg.tsx";
+import DataGridApi from '../component/myDataGrid';
+import { Button2 } from "../component/button";
+import { TextInput } from "../component/simpleUI";
+import { DiscordIcon, AnotherIcon, AnotherIcon2 } from "../component/mySvg";
 import type { FileItem as DropdownOption } from '../component/myDropGrid'; // 匯入 FileItem 型別
 
 

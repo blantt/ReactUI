@@ -1,6 +1,6 @@
 import React from 'react';
-import Button from "../component/button.tsx";
-import DataGridApi, { transformToFormField as apitransform } from '../component/myDataGrid.tsx';
+import Button from "../component/button";
+import DataGridApi, { transformToFormField as apitransform } from '../component/myDataGrid';
 const TesttHtmlPage: React.FC = () => {
 
 
