@@ -54,7 +54,7 @@ const SmartModal: React.FC<SmartModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50">
+    <div id="smart-modal" className="fixed inset-0 z-50">
       {/* 背景遮罩 */}
       <div
         className="absolute inset-0  bg-slate-900/40   transition-opacity"
