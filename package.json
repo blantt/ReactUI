@@ -16,7 +16,8 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "//old build": "vite build",
+    "build": "tsc -p tsconfig.app.json --declaration --emitDeclarationOnly --outDir dist && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
