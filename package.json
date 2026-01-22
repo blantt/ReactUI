@@ -4,11 +4,13 @@
   "version": "1.0.0",
   "type": "module",
   "main": "src/index.js",
-  "types": "dist/index.d.ts",
+  "//types": "dist/index.d.ts",
+  "types": "src/test.d.ts",
   "files": [
     "src",
     "dist",
-    "index.d.ts"
+    "index.d.ts",
+    "test.d.ts"
   ],
   "peerDependencies": {
     "react": ">=18.0.0",
