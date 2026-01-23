@@ -5,7 +5,10 @@ import react from '@vitejs/plugin-react'
 // Library Mode之後
 export default defineConfig({
   plugins: [react(),
-       dts({ insertTypesEntry: true }) // 這會自動幫你產生 .d.ts 並關聯到 package.json
+       dts({
+        insertTypesEntry: true, // 自動在 package.json 產生正確的入口宣告
+        rollupTypes: true,      // 將所有的 .d.ts 檔案強行合併成一個 index.d.ts
+})
   ],
   build: {
     // lib: {
