@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "type": "module",
   "main": "src/index.js",
-  "types": "src/test.d.ts",
+  "types": "dist/test.d.ts",
   "files": [
     "src",
     "dist",
