@@ -15,7 +15,7 @@ export default defineConfig({
     // },
     lib: {
       // 這是你元件庫的入口檔案
-      entry: 'src/index.tsx', 
+      entry: 'src/index.ts', 
       // 別人 import 時顯示的名稱 (例如在 UMD 模式下)
       name: 'MyComponentLib',
       // 輸出的檔案名稱
