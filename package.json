@@ -3,7 +3,8 @@
   "private": false,
   "version": "1.0.0",
   "type": "module",
-  "main": "src/index.js",
+  "main": "./dist/fish-reactui.cjs",
+  "module": "./dist/fish-reactui.js",
   "types": "./dist/index.d.ts",
   "files": [
     "src",
