@@ -3,8 +3,8 @@
   "private": false,
   "version": "1.0.0",
   "type": "module",
-  "main": "src/index.ts",
-  "types": "./dist/index.d.ts",
+  "main": "src/index.ds",
+  "types": "dist/index.d.ts",
   "files": [
     "src",
     "dist",
@@ -48,9 +48,7 @@
     "package.json": {
       "scripts.build": "old build\": \"vite build\",",
       "types": "types\": \"dist/index.d.ts\",",
-      "name": "Library Mode之後",
-      "files": "這行告訴 NPM：發佈時，請務必把哪些資料包進去,例如 dist 資料夾包進去！(dist包進去很重要!)",
-      "main": "\"./dist/fish-reactui.cjs\","
+      "name": "Library Mode之前"
     }
   }
 }
