@@ -12,7 +12,7 @@ export { default as DynamicForm } from './component/DynamicForm.tsx';
 export { LoadingInline } from './component/myload'; 
 export { TextInput } from './component/simpleUI.tsx'; 
 export {  default as SmartModal } from './component/simpleUI.tsx'; 
- 
+ export { default as SmartModal_test,Modal_test} from './component/SmartModal_test'; 
 
 
  
