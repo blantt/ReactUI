@@ -10,6 +10,7 @@ interface SmartModalProps {
   children: React.ReactNode;
   maxWidth?: string; // 可選：自定義寬度
   footer?: React.ReactNode;
+  blanttTest?:string;
 }
 
 const SmartModal_test: React.FC<SmartModalProps> = ({
@@ -106,7 +107,7 @@ export const Modal_test: React.FC<SmartModalProps> = ({
   title = "系統訊息",
   children,
   maxWidth = "max-w-sm"
-  , footer
+  , footer,blanttTest
 }) => {
   if (!isOpen) return null;
 
