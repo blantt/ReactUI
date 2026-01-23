@@ -3,8 +3,8 @@
   "private": false,
   "version": "1.0.0",
   "type": "module",
-  "main": "src/index.ds",
-  "types": "dist/index.d.ts",
+  "main": "src/index.js",
+  "types": "src/test.d.ts",
   "files": [
     "src",
     "dist",
