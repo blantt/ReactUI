@@ -48,7 +48,7 @@
     "package.json": {
       "scripts.build": "old build\": \"vite build\",",
       "types": "types\": \"dist/index.d.ts\",",
-      "name": "Library Mode之前"
+      "name": "Library Mode之後"
     }
   }
 }
