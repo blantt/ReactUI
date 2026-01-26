@@ -7,17 +7,38 @@ import { LoadingInline } from '../component/myload';
 import Modal from '../component/myModal';
 import DataGridApi from '../component/myDataGrid';
 import { Button2 } from "../component/button";
-import { Grid_Data1 } from "../data/data.js";
+// import { Grid_Data1 } from "../data/data.js";
 import { DiscordIcon, AnotherIcon, AnotherIcon2 } from "../component/mySvg";
 import type { FileItem as DropdownOption } from '../component/myDropGrid'; // 匯入 FileItem 型別
 import SmartModal from '../component/SmartModal';
-import SmartModal_test from '../component/SmartModal_test';
-import { Modal_test } from '../component/SmartModal_test';
-
 const MyTempUI: React.FC = () => {
 
     // 處理開啟與關閉的動畫邏輯
+  const Grid_Data1 = [
 
+  {
+    Name: 'blantt',
+    Age: 'blantt Components',
+    Tel: '123-456-7890',
+    Email:
+      'bb.com',
+  },
+   {
+    Name: 'boy',
+    Age: 'fish Components',
+    Tel: '234-567-8901',
+    Email:
+      'bb2.com',
+  },
+   {
+    Name: 'girl',
+    Age: 'QQQ Components',
+    Tel: '345-678-9012',
+    Email:
+      '',
+  },
+
+];
 
     const [checkedItems_old, setCheckedItems_old] = useState<any[]>([]); // 1. 新增 state
 
@@ -322,44 +343,9 @@ const MyTempUI: React.FC = () => {
 
             </Modal>
 
-            <SmartModal_test
-                isOpen={isLoading_smartModal}
-                onClose={() => setIsLoading_smartModal(false)}
-                // triggerTop={modalState.top}
-                triggerTop={0}
-                maxWidth='w-4/5'
-                footer={
-                    <div className="flex justify-end pt-1">
-                        aaaa
-                    </div>
-                }
-                title={"題庫選擇"}>
-                <div>
-                    <div className='h-[500px]'>
-                        99999
-                    </div>
-                </div>
-            </SmartModal_test>
+            
 
-
-           <Modal_test
-                isOpen={isLoading_modal_test}
-                onClose={() => setIsLoading_modal_test(false)}
-                // triggerTop={modalState.top}
-                triggerTop={0}
-                maxWidth='w-4/5'
-                footer={
-                    <div className="flex justify-end pt-1">
-                        aaaa
-                    </div>
-                }
-                title={"Modal_test"}>
-                <div>
-                    <div className='h-[500px]'>
-                        99999888888888
-                    </div>
-                </div>
-            </Modal_test>
+          
         </div>
 
 

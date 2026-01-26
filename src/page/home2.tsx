@@ -1,8 +1,34 @@
 import Header from "../component/header";
 import { useState } from "react";
 import Button  from "../component/button";
-import { CORE_CONCEPTS } from "../data/data.js"; // 匯入數據
-   
+import componentsImg from '../images/icon_fish1.png';
+
+ export const CORE_CONCEPTS = [
+   {
+     image: componentsImg,
+     title: 'blantt Components',
+     description:
+       'The core UI building block - compose the user interface by combining multiple components.',
+   },
+   {
+     image: componentsImg,
+     title: 'JSX',
+     description:
+       'Return (potentially dynamic) HTML(ish) code to define the actual markup that will be rendered.',
+   },
+   {
+     image: componentsImg,
+     title: 'Props',
+     description:
+       'Make components configurable (and therefore reusable) by passing input data to them.',
+   },
+   {
+     image: componentsImg,
+     title: 'State',
+     description:
+       'React-managed data which, when changed, causes the component to re-render & the UI to update.',
+   },
+ ];
 
 export default function Mylogin() {
     const [state, setState] = useState({

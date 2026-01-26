@@ -1,10 +1,38 @@
 import DynamicForm from "../component/DynamicForm";
-import { CORE_CONCEPTS } from "../data/data.js";
+ 
 import Button  from "../component/button";
 export default function App2() {
 
 //  先取得數據 CORE_CONCEPTS 第1筆，再帶入placeholder
- const firstConceptTitle = CORE_CONCEPTS?.[0]?.title || "Default Placeholder";
+
+  // 處理開啟與關閉的動畫邏輯
+  const Grid_Data1 = [
+
+  {
+    Name: 'blantt',
+    Age: 'blantt Components',
+    Tel: '123-456-7890',
+    Email:
+      'bb.com',
+  },
+   {
+    Name: 'boy',
+    Age: 'fish Components',
+    Tel: '234-567-8901',
+    Email:
+      'bb2.com',
+  },
+   {
+    Name: 'girl',
+    Age: 'QQQ Components',
+    Tel: '345-678-9012',
+    Email:
+      '',
+  },
+
+];
+
+ const firstConceptTitle = Grid_Data1?.[0]?.Name || "Default Placeholder";
 
 
     const formFields = [
