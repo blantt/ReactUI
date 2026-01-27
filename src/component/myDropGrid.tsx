@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 // import DataGrid2 from '../component/DataGrid2';
 import DataGridApi, { transformToFormField as apitransform } from './myDataGrid';
 import { Down } from "../component/mySvg";
+import { ArrowBigRightDash, ChevronDown, X, CircleX, DivideIcon,SquareChevronDown } from 'lucide-react';
 // 定義下拉選單元件的屬性介面
 
 export interface FormField {
@@ -107,7 +108,8 @@ const MyDropDown: React.FC<DropdownProps> = ({ data, columns, apiUrl, onSelect, 
           <div className="absolute right-1">
 
             <div className=' flex flex-row'>
-              <img src={`${import.meta.env.BASE_URL}arrow_d.png`} alt="icon" style={{ width: 20, height: 20 }} />
+                <SquareChevronDown className="w-5 h-5    text-blue-300   " />
+              {/* <img src={`${import.meta.env.BASE_URL}arrow_d.png`} alt="icon" style={{ width: 20, height: 20 }} /> */}
               <div>
                 <button
                   onClick={e => {
@@ -115,7 +117,8 @@ const MyDropDown: React.FC<DropdownProps> = ({ data, columns, apiUrl, onSelect, 
                     setSelectedOption(null);
                     setIsOpen(false);
                   }}>
-                  <img src={`${import.meta.env.BASE_URL}arrow_del.png`} alt="icon" style={{ width: 20, height: 20 }} />
+                  {/* <img src={`${import.meta.env.BASE_URL}arrow_del.png`} alt="icon" style={{ width: 20, height: 20 }} /> */}
+                   <CircleX className="w-5 h-5  text-blue-300   " />
                 </button>
 
               </div>
