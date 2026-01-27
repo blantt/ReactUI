@@ -33,9 +33,7 @@ export const Button2 = ({ label, icon, onClick }: ButtonProps2) => {
             {icon && <span className="mr-2">{icon}</span>}
 
             <span>{label}</span>
-            <div>
-                testui99999999
-            </div>
+           
         </button>
 
 

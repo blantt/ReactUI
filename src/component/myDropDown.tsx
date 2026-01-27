@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-// import { ArrowBigRightDash, ChevronDown, X, CircleX, DivideIcon,SquareChevronDown } from 'lucide-react';
+import { ArrowBigRightDash, ChevronDown, X, CircleX, DivideIcon,SquareChevronDown } from 'lucide-react';
 // 定義下拉選單元件的屬性介面
 interface DropdownProps {
   options?: FileItem[]; // 下拉選單的選項陣列
@@ -167,8 +167,8 @@ const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyVal
               : emptyText
           }
           <div className="absolute right-1">
-             {/* <SquareChevronDown className="w-5 h-5      " /> */}
-            <img src={`${import.meta.env.BASE_URL}arrow_d.png`} alt="icon" style={{ width: 20, height: 20 }} />
+             <SquareChevronDown className="w-5 h-5   text-blue-300   " />
+            {/* <img src={`${import.meta.env.BASE_URL}arrow_d.png`} alt="icon" style={{ width: 20, height: 20 }} /> */}
           </div>
         </button>
 
