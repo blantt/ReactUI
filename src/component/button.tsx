@@ -25,7 +25,7 @@ type ButtonProps2 = {
 export const Button2 = ({ label, icon, onClick }: ButtonProps2) => {
  
     return (
-
+         
         <button onClick={onClick}
             className="inline-flex items-center bg-white border border-gray-300 rounded-lg shadow-md px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
         >
@@ -33,6 +33,9 @@ export const Button2 = ({ label, icon, onClick }: ButtonProps2) => {
             {icon && <span className="mr-2">{icon}</span>}
 
             <span>{label}</span>
+            <div>
+                testui99999999
+            </div>
         </button>
 
 
