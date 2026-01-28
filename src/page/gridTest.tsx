@@ -133,7 +133,7 @@ const Example = () => {
           <DataGridApi
             columns={[
               { name: 'empno', type: 'input', showname: '員工編號', colSpan: 1 , subSearch: true},
-              { name: 'fullname', type: 'input', showname: '全名2', colSpan: 1, widthcss: 'minmax(50px,150px)'}
+              { name: 'fullname', type: 'input', showname: '全名2', colSpan: 1, widthcss: 'minmax(50px,150px)', subSearch: true}
             ]}
             useBar={true}
             havecheckbox={true}

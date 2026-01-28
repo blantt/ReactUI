@@ -184,6 +184,15 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
 
 
     const [searchText, setSearchText] = useState('');
+     // 新增一個 state 來儲存每個欄位的搜尋文字
+    const [subSearchTexts, setSubSearchTexts] = useState<Record<string, string>>({});
+     // 處理子搜尋欄位變更的函式
+    const handleSubSearchChange = (colName: string, value: string) => {
+        setSubSearchTexts(prev => ({
+            ...prev,
+            [colName]: value
+        }));
+    };
 
 
     // 根據搜尋文字過濾資料,如沒關鍵字,則顯示全部
@@ -199,6 +208,21 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
 
         });
 
+    }
+
+    // 處理子搜尋的過濾邏輯
+    if (useSubSearch) {
+        const activeSubSearches = Object.entries(subSearchTexts).filter(([, value]) => value.trim() !== '');
+
+        if (activeSubSearches.length > 0) {
+            filteredData1 = filteredData1.filter(row => {
+                // 必須滿足所有子搜尋條件
+                return activeSubSearches.every(([colName, searchValue]) => {
+                    const cellValue = row[colName]?.value;
+                    return cellValue ? cellValue.toLowerCase().includes(searchValue.toLowerCase()) : false;
+                });
+            });
+        }
     }
 
     if (havecheckbox && onlyCheckedItems) {
@@ -301,7 +325,8 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
                                             type="text"
                                             placeholder={`搜尋...${col.showname}`}
                                             className="w-full p-1  border border-gray-300 rounded"
-                                           // onChange={e => setSearchText(e.target.value)}
+                                            value={subSearchTexts[col.name] || ''}
+                                            onChange={e => handleSubSearchChange(col.name, e.target.value)}
                                         />
                                     </div>
                                     // <div className={` p-1.5 outline outline-1   outline-stone-400 text-gray-600 font-medium text-center`}>
