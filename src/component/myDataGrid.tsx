@@ -210,14 +210,15 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
 
     }
 
-    // 處理子搜尋的過濾邏輯
+    //TODO 處理子搜尋的過濾邏輯
     if (useSubSearch) {
         const activeSubSearches = Object.entries(subSearchTexts).filter(([, value]) => value.trim() !== '');
 
         if (activeSubSearches.length > 0) {
             filteredData1 = filteredData1.filter(row => {
-                // 必須滿足所有子搜尋條件
+                // 必須滿足所有子搜尋條件(全部滿足,會傳true>保留,反之過濾掉)
                 return activeSubSearches.every(([colName, searchValue]) => {
+                    //every() 會對陣列中的每個元素執行提供的函式，並檢查是否所有元素都符合條件。
                     const cellValue = row[colName]?.value;
                     return cellValue ? cellValue.toLowerCase().includes(searchValue.toLowerCase()) : false;
                 });

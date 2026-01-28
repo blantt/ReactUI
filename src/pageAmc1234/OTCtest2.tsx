@@ -173,6 +173,7 @@ const App: React.FC = () => {
 
     return (
         <div>
+              <AppTitle title="考題測驗" bkcolor="   bg-blue-500 "></AppTitle>
                <h3>考題測驗</h3>
             <div className="space-x-4 flex items-center ">
 
