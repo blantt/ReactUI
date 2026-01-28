@@ -132,13 +132,13 @@ const Example = () => {
         <div className='h-[400px]'>
           <DataGridApi
             columns={[
-              { name: 'empno', type: 'input', showname: '員工編號', colSpan: 1 },
+              { name: 'empno', type: 'input', showname: '員工編號', colSpan: 1 , subSearch: true},
               { name: 'fullname', type: 'input', showname: '全名2', colSpan: 1, widthcss: 'minmax(50px,150px)'}
             ]}
             useBar={true}
             havecheckbox={true}
             useSearch={true}
-             
+             useSubSearch={true}
 
             onCheckItemsChange={items => {
               // items 就是最新的 checkItems
