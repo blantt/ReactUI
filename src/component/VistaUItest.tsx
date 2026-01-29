@@ -9,9 +9,7 @@ const styles =  /* css */`
     backdrop-filter: blur(15px) saturate(160%);
     -webkit-backdrop-filter: blur(15px) saturate(160%);
   }
-
-   
-
+ 
   .vista-glossy-bg {
     background: linear-gradient(to bottom, 
       rgba(255,255,255,0.5) 0%, 

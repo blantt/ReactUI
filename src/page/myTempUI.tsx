@@ -12,33 +12,80 @@ import { DiscordIcon, AnotherIcon, AnotherIcon2 } from "../component/mySvg";
 import type { FileItem as DropdownOption } from '../component/myDropGrid'; // 匯入 FileItem 型別
 import SmartModal from '../component/SmartModal';
 const MyTempUI: React.FC = () => {
+    //   212, 240, 255
+    //196, 223, 242
+    const styles =  /* css */`
+        .aero-blur {
+            
+            backdrop-filter: blur(15px) saturate(160%);
+            -webkit-backdrop-filter: blur(15px) saturate(160%);
+        }
+      
+        .vista-btn-gradient3 {
+            background: linear-gradient(to bottom, 
+               rgba(212,240,255,0.5) 0%, 
+                rgba(124, 174, 207,0.5) 50%, 
+                rgba(124, 174, 207,0.5) 51%, 
+                rgba(124, 174, 207,0.5) 100%
+            );
+            border: 1px solid #717171;
+            box-shadow: inset 0 1px 0 white;
+        }
+
+        .vista-btn-gradient2 {
+            background: linear-gradient(to bottom, 
+             rgba(212,240,255,0.5) 0%, 
+                rgba(42,105,145,0.5) 50%, 
+                rgba(42,105,145,0.5) 51%, 
+                rgba(42,105,145,0.5) 100%
+            );
+            border: 1px solid #717171;
+            box-shadow: inset 0 1px 0 white;
+        }
+
+        
+        .vista-btn-gradient {
+            background: linear-gradient(to bottom , 
+                #f3f4f6 0%, #e5e7eb 50%, #d1d5db 51%, #9ca3af 100%);
+            border: 1px solid #717171;
+            box-shadow: inset 0 1px 0 white;
+        }
+        
+     `;
+
+    const VistaStyles = () => <style>{styles}</style>;
+
+    useEffect(() => {
+
+    }, []);
 
     // 處理開啟與關閉的動畫邏輯
-  const Grid_Data1 = [
+    const Grid_Data1 = [
 
-  {
-    Name: 'blantt',
-    Age: 'blantt Components',
-    Tel: '123-456-7890',
-    Email:
-      'bb.com',
-  },
-   {
-    Name: 'boy',
-    Age: 'fish Components',
-    Tel: '234-567-8901',
-    Email:
-      'bb2.com',
-  },
-   {
-    Name: 'girl',
-    Age: 'QQQ Components',
-    Tel: '345-678-9012',
-    Email:
-      '',
-  },
+        {
+            Name: 'blantt',
+            Age: 'blantt Components',
+            Tel: '123-456-7890',
+            Email:
+                'bb.com',
+        },
+        {
+            Name: 'boy',
+            Age: 'fish Components',
+            Tel: '234-567-8901',
+            Email:
+                'bb2.com',
+        },
+        {
+            Name: 'girl',
+            Age: 'QQQ Components',
+            Tel: '345-678-9012',
+            Email:
+                '',
+        },
 
-];
+    ];
+
 
     const [checkedItems_old, setCheckedItems_old] = useState<any[]>([]); // 1. 新增 state
 
@@ -144,6 +191,7 @@ const MyTempUI: React.FC = () => {
     return (
 
         <div>
+            <VistaStyles />
             <AppTitle title="My Dropdown Example" bkcolor="bg-green-600" btest='dd'
                 onCheckItemsChange={(items) => console.log(items)}
 
@@ -231,6 +279,24 @@ const MyTempUI: React.FC = () => {
             </div>
 
             <div className="flex justify-center items-center  ">
+
+                 <div>
+                    <Button2 label="test btnstyle4"  style1='vistaBlue'
+                        onClick={handleButtonClick_modal} />
+                </div>
+                <div>
+                    <Button2 label="test btnstyle3" className='  vista-btn-gradient3 '
+                        onClick={handleButtonClick_modal} />
+                </div>
+                <div>
+                    <Button2 label="test btnstyle2" className='  vista-btn-gradient2 '
+                        onClick={handleButtonClick_modal} />
+                </div>
+
+            </div>
+
+
+            <div className="flex justify-center items-center  ">
                 <div>
                     {/* <input type="text" id='gridChecklist' className="border border-gray-300 rounded-md px-3 py-2 mr-2"
                         placeholder="取得grid checkbox選擇" /> */}
@@ -242,29 +308,39 @@ const MyTempUI: React.FC = () => {
 
                     </div>
                 </div>
-               <div>
-                 <Button2  className=' bg-cyan-100 text-sm text-amber-800 '
-                     label="test button2"
+
+
+                <div>
+
+                    <div className="bg-[linear-gradient(to_bottom,#60a5fa_0%,#3b82f6_50%,#2563eb_51%,#1d4ed8_100%)]">
+                        立體按鈕效果(classname)
+                    </div>
+
+                    <Button2 label="test btnstyle2" className=' '
+                        onClick={handleButtonClick_modal} />
+
+                    <Button2 className=' bg-cyan-100 text-sm text-amber-800 hover:bg-blue-500 hover:text-amber-50 '
+                        label="test button2"
                         onClick={() => setIsLoading_modal2(true)} />
 
 
-               </div>
+                </div>
 
 
                 <div>
                     <Button2 icon={<img src={`${import.meta.env.BASE_URL}arrow_r.png`} alt="icon" style={{ width: 20, height: 20 }} />}
-                     label="modal_checkgrid"
+                        label="modal_checkgrid"
                         onClick={() => setIsLoading_modal_check(true)} />
                 </div>
                 <div>
                     <Button2 icon={<img src={`${import.meta.env.BASE_URL}arrow_r.png`} alt="icon" style={{ width: 20, height: 20 }} />}
-                     label="smartModal"
+                        label="smartModal"
                         onClick={() => setIsLoading_smartModal(true)} />
                 </div>
 
                 <div>
                     <Button2 icon={<img src={`${import.meta.env.BASE_URL}arrow_r.png`} alt="icon" style={{ width: 20, height: 20 }} />}
-                     label="test modal new"
+                        label="test modal new"
                         onClick={() => setIsLoading_modal_test(true)} />
                 </div>
             </div>
@@ -352,9 +428,9 @@ const MyTempUI: React.FC = () => {
 
             </Modal>
 
-            
 
-          
+
+
         </div>
 
 

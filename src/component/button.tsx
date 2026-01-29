@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 /**
  * 提示：這兩個套件需要手動安裝，請在終端機執行：
  * npm install tailwind-merge clsx
@@ -8,6 +8,35 @@ import React from 'react';
 import { twMerge } from 'tailwind-merge';
 import { clsx } from 'clsx';
 
+
+ const styles =  /* css */`
+        
+      
+        .vista-btn-blue {
+            background: linear-gradient(to bottom, 
+               rgba(212,240,255,0.5) 0%, 
+                rgba(124, 174, 207,0.5) 50%, 
+                rgba(124, 174, 207,0.5) 51%, 
+                rgba(124, 174, 207,0.5) 100%
+            );
+            border: 1px solid #717171;
+            box-shadow: inset 0 1px 0 white;
+        }
+ 
+     `;
+export const VistaStyles = () => {
+    useEffect(() => {
+        const styleId = 'vista-btn-styles';
+        if (!document.getElementById(styleId)) {
+            const styleElement = document.createElement('style');
+            styleElement.id = styleId;
+            styleElement.innerHTML = styles;
+            document.head.appendChild(styleElement);
+        }
+    }, []);
+
+    return null; // 不在組件位置渲染任何東西
+};
 /**
  * 封裝一個 cn (className) 工具函數
  * 這能解決 Tailwind 類別順序衝突的問題，確保外部傳入的 className 優先級最高
@@ -48,21 +77,28 @@ type ButtonProps2 = {
     label: string; // label 是字串
     icon?: React.ReactNode; // icon 是可選的 React 節點
     className?: string;
+    style1 ?: 'default' | 'vistaBlue' ;
      onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void; // 允許帶 event
 };
 
 
-export const Button2 = ({ label, icon, onClick, className = "" }: ButtonProps2) => {
- 
+export const Button2 = ({ label, icon, onClick,style1= 'default', className = "" }: ButtonProps2) => {
+   
+     const styles = {
+        default: 'dd',
+        vistaBlue: 'vista-btn-blue',
+    };
+    
     return (
-         
+         VistaStyles(),
         <button onClick={onClick}
    
  className={cn(
         `inline-flex items-center bg-slate-100 border border-gray-300 rounded-lg shadow-md px-6 py-2 text-sm font-medium text-gray-800
          hover:bg-sky-200 focus:outline-none focus:ring-2 
          focus:ring-offset-2 focus:ring-gray-500`,
-        className
+         
+       `${styles[style1] || styles.default}  ${className}`
       )}
  
         >
