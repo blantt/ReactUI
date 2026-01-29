@@ -8,7 +8,6 @@ export interface FormField {
     href?: string; // 當 type 為 hyperlink 時，指定超連結的目標 URL
     child?: React.ReactNode; // 當 type 為 empty 時，允許外部傳入子元素
 
-
 }
 
 interface ColumnType {
@@ -436,10 +435,7 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
 
 
                     {/* 表身NEW END */}
-
-
-
-
+ 
 
                 </div>
 

@@ -152,7 +152,7 @@ const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyVal
     <div className="relative inline-block text-left">
       <div id='btnPanel'>
 
-        <button className={`relative flex items-center justify-center ${widthCss} rounded-md border   border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 `}
+        <button className={`relative flex items-center justify-center ${widthCss} rounded-md border   border-gray-300 shadow-sm px-4 py-2 bg-slate-100 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 `}
           onClick={handleToggle} >
           {/* {selectedOption ? (keyText ? selectedOption[keyText] : selectedOption.name) : emptyText} */}
           {

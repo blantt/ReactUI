@@ -242,6 +242,15 @@ const MyTempUI: React.FC = () => {
 
                     </div>
                 </div>
+               <div>
+                 <Button2  className=' bg-cyan-100 text-sm text-amber-800 '
+                     label="test button2"
+                        onClick={() => setIsLoading_modal2(true)} />
+
+
+               </div>
+
+
                 <div>
                     <Button2 icon={<img src={`${import.meta.env.BASE_URL}arrow_r.png`} alt="icon" style={{ width: 20, height: 20 }} />}
                      label="modal_checkgrid"
