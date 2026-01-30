@@ -15,7 +15,7 @@ import { clsx } from 'clsx';
                 #d2eaff 50%, 
                 #c2e0ff 100%);
             border: 1px solid #7a7a7a;
-            border-radius: 3px;
+           
             padding: 10px 15px; /* 調整內距，因為不再需要預留空間給自定義圖片 */
             color: #222;
            /*  font-size: 14px; */
@@ -39,13 +39,6 @@ import { clsx } from 'clsx';
             box-shadow: 
                 inset 0 1px 3px rgba(0, 0, 0, 0.1), 
                 0 0 6px rgba(60, 127, 177, 0.4);
-        }
-
-       .abc2{
-          background-color: rgb(237, 154, 85);
-            border: 1px solid #AAA5F0;
-            box-shadow: inset 0 1px 0 white;
-
         }
  
      `;
@@ -84,7 +77,7 @@ interface DropdownProps {
   widthCss?: string; // 下拉選單寬度
   emptyText?: string; // 空白選項顯示文字
   style1 ?: 'default' | 'vistaBlue' ;
-   className?: string;
+  className?: string;
 }
 
 //FileItem 預計是dropdown選項的型別 

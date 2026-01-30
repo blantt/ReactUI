@@ -9,9 +9,7 @@ import { twMerge } from 'tailwind-merge';
 import { clsx } from 'clsx';
 
 
- const styles =  /* css */`
-        
-      
+ const styles =  /* css */` 
         .vista-btn-blue {
             background: linear-gradient(to bottom, 
                rgba(212,240,255,0.5) 0%, 
@@ -46,32 +44,46 @@ function cn(...inputs: Array<string | false | null | undefined>) {
 }
 
 type ButtonProps = {
-    label: string; // label 是字串
+     label: string; // label 是字串
+    icon?: React.ReactNode; // icon 是可選的 React 節點
     className?: string;
-    onClick?: () => void; // onClick 是一個函式，無參數且無回傳值 
+    style1 ?: 'default' | 'vistaBlue' ;
+     onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void; // 允許帶 event
 };
 
 
-export const Button = ({ label, onClick, className = "" }: ButtonProps) => {
+export const Button  = ({ label, icon, onClick,style1= 'default', className = "" }: ButtonProps) => {
+   
+     const styles = {
+        default: '',
+        vistaBlue: 'vista-btn-blue',
+    };
+    
     return (
-        <button
-    //         className={`
-    //   px-5 py-1 text-sm font-medium rounded-sm transition-all active:opacity-80
-    //   ${primary ? 'vista-btn-primary text-white text-shadow-sm' : 'vista-btn-gradient text-gray-800'}
-    //    ${variants[variant] || variants.default}
-    //   ${className}
-    // `}
-          
-     className={cn(
-        `bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700`,
-        className
+         VistaStyles(),
+        <button onClick={onClick}
+   
+ className={cn(
+        `inline-flex items-center bg-slate-100 border border-gray-300 rounded-lg shadow-md px-6 py-2 text-sm font-medium text-gray-800
+         hover:bg-sky-200 focus:outline-none focus:ring-2 
+         focus:ring-offset-2 focus:ring-gray-500`,
+         
+       `${styles[style1] || styles.default}  ${className}`
       )}
-    // className={`bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 ${className}`}
-            onClick={onClick}  >
-            {label}
+ 
+        >
+
+
+            {icon && <span className="mr-2">{icon}</span>}
+
+            <span>{label}</span>
+           
         </button>
+
+
     );
 };
+
 
 type ButtonProps2 = {
     label: string; // label 是字串
@@ -103,7 +115,7 @@ export const Button2 = ({ label, icon, onClick,style1= 'default', className = ""
  
         >
 
-
+            
             {icon && <span className="mr-2">{icon}</span>}
 
             <span>{label}</span>

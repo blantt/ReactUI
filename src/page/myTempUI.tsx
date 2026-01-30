@@ -240,7 +240,7 @@ const MyTempUI: React.FC = () => {
 
                 <div className="p-2">
                     <h1 className="text-sm font-bold mb-4">DropGrid(直接給數據)</h1>
-                    <MyDropGrid data={fileOptions2}
+                    <MyDropGrid data={fileOptions2} style1='vistaBlue'
                         columns={[
                             { name: 'Name', type: 'input', colSpan: 1 },
                             { name: 'Age', type: 'input', colSpan: 1 },
