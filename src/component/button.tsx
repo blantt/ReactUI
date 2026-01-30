@@ -85,7 +85,7 @@ type ButtonProps2 = {
 export const Button2 = ({ label, icon, onClick,style1= 'default', className = "" }: ButtonProps2) => {
    
      const styles = {
-        default: 'dd',
+        default: '',
         vistaBlue: 'vista-btn-blue',
     };
     

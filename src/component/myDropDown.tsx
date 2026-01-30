@@ -1,5 +1,78 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ArrowBigRightDash, ChevronDown, X, CircleX, DivideIcon,SquareChevronDown } from 'lucide-react';
+import { twMerge } from 'tailwind-merge';
+import { clsx } from 'clsx';
+
+
+ const styles =  /* css */`
+         
+         .vista-drop-blue {
+            /* Vista 經典的雙層玻璃漸變 */
+            border-color: #3c7fb1;
+            background: linear-gradient(to bottom, 
+                #f8fbff 0%, 
+                #e5f1fb 45%, 
+                #d2eaff 50%, 
+                #c2e0ff 100%);
+            border: 1px solid #7a7a7a;
+            border-radius: 3px;
+            padding: 10px 15px; /* 調整內距，因為不再需要預留空間給自定義圖片 */
+            color: #222;
+           /*  font-size: 14px; */
+            font-family: "Segoe UI", Tahoma, sans-serif;
+            cursor: pointer;
+            
+            /* 關鍵：未點選時的內陰影組合 */
+            box-shadow: 
+                inset 0 2px 5px rgba(84, 105, 133, 0.15),   /* 頂部深色內陰影，營造凹陷感 */
+                inset 1px 0 3px rgba(84, 105, 133, 0.05),   /* 左側微弱陰影 */
+                inset 0 0 0 1px rgba(255, 255, 255, 0.4), /* 邊緣的高亮內發光 */
+                0 1px 0 rgba(255, 255, 255, 0.8);      /* 外邊框底部的白色投影 */
+
+            position: relative;
+            transition: all 0.2s ease-in-out;
+        }
+
+         /* 懸停時增強光澤與外發光 */
+        .vista-drop-blue:hover {
+            
+            box-shadow: 
+                inset 0 1px 3px rgba(0, 0, 0, 0.1), 
+                0 0 6px rgba(60, 127, 177, 0.4);
+        }
+
+       .abc2{
+          background-color: rgb(237, 154, 85);
+            border: 1px solid #AAA5F0;
+            box-shadow: inset 0 1px 0 white;
+
+        }
+ 
+     `;
+export const VistaStyles = () => {
+    useEffect(() => {
+        const styleId = 'vista-drop-styles';
+         
+        if (!document.getElementById(styleId)) {
+            const styleElement = document.createElement('style');
+            styleElement.id = styleId;
+            styleElement.innerHTML = styles;
+            document.head.appendChild(styleElement);
+        }
+    }, []);
+
+     return null; // 不在組件位置渲染任何東西
+};
+/**
+ * 封裝一個 cn (className) 工具函數
+ * 這能解決 Tailwind 類別順序衝突的問題，確保外部傳入的 className 優先級最高
+ */
+function cn(...inputs: Array<string | false | null | undefined>) {
+  return twMerge(clsx(inputs));
+}
+
+
+
 // 定義下拉選單元件的屬性介面
 interface DropdownProps {
   options?: FileItem[]; // 下拉選單的選項陣列
@@ -10,6 +83,8 @@ interface DropdownProps {
   haveBlank?: boolean; // 是否包含空白選項
   widthCss?: string; // 下拉選單寬度
   emptyText?: string; // 空白選項顯示文字
+  style1 ?: 'default' | 'vistaBlue' ;
+   className?: string;
 }
 
 //FileItem 預計是dropdown選項的型別 
@@ -74,7 +149,8 @@ export const transformToFormField = (data: any[], keyValue?: string, keyText?: s
 
 };
 
-const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyValue, keyText, haveBlank = true, widthCss = "w-48", emptyText = "請選擇" }) => {
+const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyValue, keyText, haveBlank = true, widthCss = "w-48"
+  , emptyText = "請選擇", style1 = 'default' , className = ""}) => {
 
 
   // const [internalOptions, setInternalOptions] = useState<FileItem[]>(options || []);
@@ -148,12 +224,29 @@ const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyVal
     setIsOpen(false); // 收起下拉選單
   };
 
+    const styles = {
+        default: '',
+        vistaBlue: 'vista-drop-blue',
+    };
+
+    
   return (
+     VistaStyles(),
     <div className="relative inline-block text-left">
       <div id='btnPanel'>
 
-        <button className={`relative flex items-center justify-center ${widthCss} rounded-md border   border-gray-300 shadow-sm px-4 py-2 bg-slate-100 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 `}
-          onClick={handleToggle} >
+        <button 
+        // className2={`relative flex items-center justify-center ${widthCss} rounded-md border   border-gray-300 shadow-sm px-4 py-2 bg-slate-100 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none 
+        //   focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 `}
+         //vista-drop-blue  abc2
+          className={cn(
+       `relative flex items-center justify-center ${widthCss} rounded-md border   border-gray-300 shadow-sm px-4 py-2 bg-slate-100 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none 
+          focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 `,
+         
+       `${styles[style1] || styles.default}  ${className} `
+      )}
+         
+         onClick={handleToggle} >
           {/* {selectedOption ? (keyText ? selectedOption[keyText] : selectedOption.name) : emptyText} */}
           {
             selectedOption
@@ -167,7 +260,11 @@ const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyVal
               : emptyText
           }
           <div className="absolute right-1">
-             <SquareChevronDown className="w-5 h-5   text-blue-300   " />
+             <SquareChevronDown 
+             //className="w-5 h-5   text-blue-300  "
+            //  className={`w-5 h-5 ${styles[style1] || styles.default}   text-blue-300 `}
+            className={`w-5 h-5  ${style1 === 'vistaBlue' ? 'text-blue-400' : 'text-blue-300'}`}
+            />
             {/* <img src={`${import.meta.env.BASE_URL}arrow_d.png`} alt="icon" style={{ width: 20, height: 20 }} /> */}
           </div>
         </button>
