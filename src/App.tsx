@@ -66,7 +66,7 @@ const Tab1 = () => {
     <div>
       <div className="space-x-4">
         <Button label="testModal" onClick={() => callUrl("testModal")} />
-        <Button2 label="apiTest" icon={<Image1 />} onClick={() => callUrl("apiTest")} />
+        <Button label="apiTest" icon={<Image1 />} onClick={() => callUrl("apiTest")} />
         <Button label="formTest" onClick={() => callUrl("formTest")} />
         <Button label="formTest2" onClick={() => callUrl("formTest2")} />
         <Button label="flowbite" onClick={() => callUrl("flowbite")} />
@@ -88,8 +88,9 @@ const Tab1 = () => {
       <div className="space-x-4 pt-3">
         <Button label="testVista" onClick={() => callUrl("testVista")} />
         <Button label="uiTemplate" onClick={() => callUrl("uiTemplate")} />
-        <Button2 label="myTempUI" onClick={() => callUrl("myTempUI")} />  
-        <Button2 label="Grid說明文件" onClick={() => callUrl("docGrid")} />
+        <Button label="myTempUI" onClick={() => callUrl("myTempUI")} />  
+        <Button label="myTempUI2" onClick={() => callUrl("myTempUI2")} />  
+        <Button label="Grid說明文件" onClick={() => callUrl("docGrid")} />
         <Button label="simpleUI" onClick={() => callUrl("simpleUI")} />
       </div>
     </div>
