@@ -10,11 +10,12 @@ export { default as Loading} from './component/myload';
 export { default as Modal} from './component/myModal';
 export { default as AppTitle} from './component/header';
 export { default as MyGetApi} from './component/myGetApi';
- 
+export { default as TextInput} from './component/myGetApi'; 
+
 export const apitransform: any;
 export const apitransformDrop: any;
 export const LoadingInline: any;
-export const TextInput: any;
+ 
  
  
  
