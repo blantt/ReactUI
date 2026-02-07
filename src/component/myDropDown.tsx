@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ArrowBigRightDash, ChevronDown, X, CircleX, DivideIcon,SquareChevronDown } from 'lucide-react';
+import { ArrowBigRightDash, ChevronDown, X, CircleX, DivideIcon, SquareChevronDown } from 'lucide-react';
 import { twMerge } from 'tailwind-merge';
 import { clsx } from 'clsx';
 
 
- const styles =  /* css */`
+const styles =  /* css */`
          
          .vista-drop-blue {
             /* Vista 經典的雙層玻璃漸變 */
@@ -43,18 +43,18 @@ import { clsx } from 'clsx';
  
      `;
 export const VistaStyles = () => {
-    useEffect(() => {
-        const styleId = 'vista-drop-styles';
-         
-        if (!document.getElementById(styleId)) {
-            const styleElement = document.createElement('style');
-            styleElement.id = styleId;
-            styleElement.innerHTML = styles;
-            document.head.appendChild(styleElement);
-        }
-    }, []);
+  useEffect(() => {
+    const styleId = 'vista-drop-styles';
 
-     return null; // 不在組件位置渲染任何東西
+    if (!document.getElementById(styleId)) {
+      const styleElement = document.createElement('style');
+      styleElement.id = styleId;
+      styleElement.innerHTML = styles;
+      document.head.appendChild(styleElement);
+    }
+  }, []);
+
+  return null; // 不在組件位置渲染任何東西
 };
 /**
  * 封裝一個 cn (className) 工具函數
@@ -76,7 +76,7 @@ interface DropdownProps {
   haveBlank?: boolean; // 是否包含空白選項
   widthCss?: string; // 下拉選單寬度
   emptyText?: string; // 空白選項顯示文字
-  style1 ?: 'default' | 'vistaBlue' ;
+  style1?: 'default' | 'vistaBlue';
   className?: string;
 }
 
@@ -143,7 +143,7 @@ export const transformToFormField = (data: any[], keyValue?: string, keyText?: s
 };
 
 const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyValue, keyText, haveBlank = true, widthCss = "w-48"
-  , emptyText = "請選擇", style1 = 'default' , className = ""}) => {
+  , emptyText = "請選擇", style1 = 'default', className = "" }) => {
 
 
   // const [internalOptions, setInternalOptions] = useState<FileItem[]>(options || []);
@@ -217,35 +217,35 @@ const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyVal
     setIsOpen(false); // 收起下拉選單
   };
 
-    const styles = {
-        default: '',
-        vistaBlue: 'vista-drop-blue',
-    };
+  const styles = {
+    default: '',
+    vistaBlue: 'vista-drop-blue',
+  };
 
-    
+
   return (
-     VistaStyles(),
+    VistaStyles(),
     <div className="relative inline-block text-left">
       <div id='btnPanel'>
 
-        <button 
-        // className2={`relative flex items-center justify-center ${widthCss} rounded-md border   border-gray-300 shadow-sm px-4 py-2 bg-slate-100 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none 
-        //   focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 `}
-         //vista-drop-blue  abc2
+        <button
+          // className2={`relative flex items-center justify-center ${widthCss} rounded-md border   border-gray-300 shadow-sm px-4 py-2 bg-slate-100 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none 
+          //   focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 `}
+          //vista-drop-blue  abc2
           className={cn(
-       `relative flex items-center justify-center ${widthCss} rounded-md border   border-gray-300 shadow-sm px-4 py-2 bg-slate-100 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none 
+            `relative flex items-center justify-center ${widthCss} rounded-md border   border-gray-300 shadow-sm px-4 py-2 bg-slate-100 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none 
           focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 `,
-         
-       `${styles[style1] || styles.default}  ${className} `
-      )}
-         
-         onClick={handleToggle} >
+
+            `${styles[style1] || styles.default}  ${className} `
+          )}
+
+          onClick={handleToggle} >
           {/* {selectedOption ? (keyText ? selectedOption[keyText] : selectedOption.name) : emptyText} */}
           {
             selectedOption
               ? (
-              //  如果有傳入 keyText（代表你希望顯示某個欄位的文字），就用 selectedOption[keyText] 取出該欄位的值。
-               // 如果沒傳 keyText，就用 selectedOption.name 取出 name 欄位的值。
+                //  如果有傳入 keyText（代表你希望顯示某個欄位的文字），就用 selectedOption[keyText] 取出該欄位的值。
+                // 如果沒傳 keyText，就用 selectedOption.name 取出 name 欄位的值。
                 (keyText ? selectedOption[keyText] : selectedOption.name) === "請選擇"
                   ? emptyText
                   : (keyText ? selectedOption[keyText] : selectedOption.name)
@@ -253,10 +253,10 @@ const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyVal
               : emptyText
           }
           <div className="absolute right-1">
-             <SquareChevronDown 
-             //className="w-5 h-5   text-blue-300  "
-            //  className={`w-5 h-5 ${styles[style1] || styles.default}   text-blue-300 `}
-            className={`w-5 h-5  ${style1 === 'vistaBlue' ? 'text-blue-400' : 'text-blue-300'}`}
+            <SquareChevronDown
+              //className="w-5 h-5   text-blue-300  "
+              //  className={`w-5 h-5 ${styles[style1] || styles.default}   text-blue-300 `}
+              className={`w-5 h-5  ${style1 === 'vistaBlue' ? 'text-blue-400' : 'text-blue-300'}`}
             />
             {/* <img src={`${import.meta.env.BASE_URL}arrow_d.png`} alt="icon" style={{ width: 20, height: 20 }} /> */}
           </div>
@@ -279,12 +279,11 @@ const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyVal
               <button
                 key={keyValue ? option[keyValue] : option.value} // 根據 keyValue 判斷使用哪個 key
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left"
-                onClick={() =>
-                   {
-                    setIsOpen(false);
-                     handleSelect(option);
-                     
-                   }
+                onClick={() => {
+                  setIsOpen(false);
+                  handleSelect(option);
+
+                }
                 }
               >
                 {keyText ? option[keyText] : option.name}
