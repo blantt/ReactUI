@@ -24,6 +24,8 @@ import TestModal from './page/testmodal';
 import SimpleUItest from './page/simpleUItest';
 import TestVista from './page/testVista';
 import Menutest from './pageTest/menuTest';
+import Menutest2 from './pageTest/menuTest2';
+ 
 
 async function enableMocking() {
   if (import.meta.env.MODE !== 'development') {
@@ -63,6 +65,8 @@ async function enableMocking() {
           <Route path="/simpleUI" element={<SimpleUItest />} />
           <Route path="/testVista" element={<TestVista />} />
           <Route path="/menuTest" element={<Menutest />} />
+          <Route path="/menuTest2" element={<Menutest2 />} />
+         
         </Routes>
       </BrowserRouter>
     </StrictMode>,

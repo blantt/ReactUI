@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronDown, ChevronRight, Folder, FileText } from 'lucide-react';
 
+
 /**
  * 定義 MenuItem 的 Props 介面
  */
@@ -52,6 +53,35 @@ const MenuItem: React.FC<MenuItemProps> = ({ title, children }) => {
   );
 };
 
+const HorizontalMenuItem: React.FC<MenuItemProps> = ({ title, children }) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  return (
+    <div
+      className="relative inline-block"
+      onMouseEnter={() => setIsOpen(true)}
+      onMouseLeave={() => setIsOpen(false)}
+    >
+      {/* 標題按鈕 */}
+      <button
+        onClick={() => setIsOpen(!isOpen)} // 同時支援點擊切換
+        className={`flex items-center gap-2 px-4 py-2 rounded-md transition-all ${isOpen ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
+          }`}
+      >
+        <span className="font-medium">{title}</span>
+        <ChevronDown size={16} className={`transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+      </button>
+      {isOpen && (
+        <div className="absolute top-full left-0 pt-2 w-48 z-50">
+          <div className="bg-white border border-gray-200 rounded-lg shadow-xl py-2 animate-in fade-in slide-in-from-top-2 duration-200">
+            {children}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 /**
  * SubItem 元件 - 用於選單內的具體子項目
  */
@@ -73,18 +103,21 @@ const App: React.FC = () => {
   return (
 
     <div className='  '>
+      <div>
+        測試版2
+      </div>
       <div className="flex justify-center items-start ">
-        <MenuItem title="系統設定">
+        <HorizontalMenuItem title="系統設定vv">
           <SubItem label="個人資料修改" onClick={() => handleItemClick('個人資料')} />
           <SubItem label="密碼安全性" onClick={() => handleItemClick('安全性')} />
           <SubItem label="隱私設定" onClick={() => handleItemClick('隱私')} />
-        </MenuItem>
+        </HorizontalMenuItem>
 
-        <MenuItem title="文件管理">
+        <HorizontalMenuItem title="文件管理">
           <SubItem label="最近使用的檔案" onClick={() => handleItemClick('最近檔案')} />
           <SubItem label="已歸檔專案" onClick={() => handleItemClick('歸檔')} />
           <SubItem label="資源回收桶" onClick={() => handleItemClick('回收桶')} />
-        </MenuItem>
+        </HorizontalMenuItem>
       </div>
 
       <div className="flex justify-center items-center ">
@@ -110,13 +143,6 @@ const App: React.FC = () => {
             </div>
           </MenuItem>
         </div>
-
-
-
-
-
-
-
 
 
       </div>
