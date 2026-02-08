@@ -10,6 +10,8 @@ import { FileText, ChevronRight, ChevronDown, Folder, File, Layers, Settings, Us
 interface MenuItemProps {
     item: MenuItemData;
     level?: number;
+    onNavigate?: (item: MenuItemData) => void;
+    activeId?: string;
 }
 
 /**
@@ -98,10 +100,20 @@ export const MenuItem: React.FC<MenuItemProps> = ({ item, level = 0 }) => {
 
 
 
-export const NavItem: React.FC<MenuItemProps> = ({ item, level = 0 }) => {
+export const NavItem: React.FC<MenuItemProps> = ({ item, level = 0, onNavigate, activeId }) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const timeoutRef = useRef<number | null>(null);
     const hasChildren = !!(item.children && item.children.length > 0);
+
+
+    const handleClick = (e: React.MouseEvent) => {
+        // 如果沒有子選單，代表它是功能點，執行導覽
+       // alert(`點擊了: ${item.label}`);
+        if (!hasChildren) {
+            onNavigate?.(item);
+            setIsOpen(false);
+        }
+    };
 
     // 處理滑鼠進入 (展開)
     const handleMouseEnter = () => {
@@ -129,7 +141,7 @@ export const NavItem: React.FC<MenuItemProps> = ({ item, level = 0 }) => {
             onMouseLeave={handleMouseLeave}
         >
             {/* 項目主體 */}
-            <div
+            <div  onClick={handleClick}
                 className={`
           flex items-center justify-between gap-2 px-4 py-2 cursor-pointer transition-colors whitespace-nowrap
           ${level === 0 ? 'rounded-md hover:bg-slate-100 dark:hover:bg-slate-800' : 'hover:bg-slate-50 dark:hover:bg-slate-800'}
@@ -162,7 +174,7 @@ export const NavItem: React.FC<MenuItemProps> = ({ item, level = 0 }) => {
           ${dropdownClasses}
         `}>
                     {item.children?.map((child) => (
-                        <NavItem key={child.id} item={child} level={level + 1} />
+                        <NavItem key={child.id} item={child} level={level + 1} onNavigate={onNavigate} activeId={activeId} />
                     ))}
                 </div>
             )}
@@ -186,12 +198,14 @@ const SubItem: React.FC<SubItemProps> = ({ label, onClick }) => (
     </button>
 );
 
- export interface MenuItemData {
+export interface MenuItemData {
     id: string;
     label: string;
     icon: React.ReactNode;
     children?: MenuItemData[];
     selfUI?: React.ReactNode;
+    /** 點擊後要顯示的組件內容 */
+    content?: React.ReactNode;
 }
 
 
