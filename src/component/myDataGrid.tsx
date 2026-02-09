@@ -28,6 +28,7 @@ type DataGridProps = {
         visible?: boolean; // 控制欄位是否可見
         transform?: (value: any) => FormField; // 動態轉換函數
         subSearch?: boolean; // 是否啟用單一欄位搜尋
+      
 
     }>;
 
@@ -46,6 +47,7 @@ type DataGridProps = {
     checkedItems_old?: Array<Record<string, FormField>>; // 1. 新增這行
     customTransform?: (item: any, col: DataGridProps['columns'][number]) => FormField; // 新增自定義轉換邏輯
     onlyCheckedItems?: boolean; // 是否只顯示已勾選的項目
+    haveCredentials?: boolean; // 是否包含憑證(後端可讀取到session)
 };
 
 export const transformToFormField = (data: any[],
@@ -73,7 +75,7 @@ export const transformToFormField = (data: any[],
 
 const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className, PageSize, havecheckbox = false,
     onlyCheckedItems = false, useBar = false, useSearch = false, keycol, gridCols, checkedItems_old, onCheckItemsChange, onRowClick
-    , customTransform, useSubSearch = false }) => {
+    , customTransform, useSubSearch = false ,haveCredentials=false}) => {
 
     let cssUserbar = "";
     if (useBar) {
@@ -110,8 +112,13 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
             const fetchData = async () => {
                 setLoading(true);
                 try {
-                    // console.log(`Fetching datagrid from API: ${apiUrl}`);;
-                    const response = await fetch(apiUrl);
+                     const fetchOptions: RequestInit = {};
+                    
+                    if (haveCredentials) {
+                        fetchOptions.credentials = 'include'; // 如果條件成立，就加入 credentials
+                    }
+                    const response = await fetch(apiUrl, fetchOptions)
+                    //const response = await fetch(apiUrl);
                     // const response = await fetch('/data2.json'); //抓在本地的json檔測試用
                     if (!response.ok) {
                         alert(`HTTP error! status: ${response.status}`);

@@ -128,7 +128,7 @@ const Example = () => {
     <div>
 {/* minmax(80px,120px) */}
       <div className='w-1/2 '>
-        <h1>AMC GRID api new</h1>
+        <h1>AMC GRID api new(一例一休)</h1>
         <div className='h-[400px]'>
           <DataGridApi
             columns={[
