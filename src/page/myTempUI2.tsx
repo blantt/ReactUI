@@ -99,7 +99,7 @@ const app: React.FC = () => {
             
             {apiUrl一例一休 && (
 
-                <MyGetApi apiUrl={apiUrl一例一休} asJson={true}>
+                <MyGetApi apiUrl={apiUrl一例一休}  asJson={true}>
                     {({ loading, error, data, status }) => {
                         if (loading) return <div>MyGetApi 載入中...</div>;
                         if (error) return <div style={{ color: 'red' }}>失敗: {String(error)}</div>;

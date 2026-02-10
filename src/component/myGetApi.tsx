@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 export type MyGetApiProps = {
     apiUrl: string;
     asJson?: boolean; // true: 回傳 JSON，false: 回傳字串
+    haveCredentials?: boolean; // 是否包含憑證(後端可讀取到session)
     onProgress?: (status: 'loading' | 'success' | 'error', data?: any, error?: any) => void;
     children?: (args: {
         loading: boolean;
@@ -12,7 +13,7 @@ export type MyGetApiProps = {
     }) => React.ReactNode;
 };
 
-const MyGetApi: React.FC<MyGetApiProps> = ({ apiUrl, asJson = true, onProgress, children }) => {
+const MyGetApi: React.FC<MyGetApiProps> = ({ apiUrl, asJson = true, haveCredentials = false, onProgress, children }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<any>(null);
     const [data, setData] = useState<any>(null);
@@ -27,7 +28,11 @@ const MyGetApi: React.FC<MyGetApiProps> = ({ apiUrl, asJson = true, onProgress, 
         
         const fetchData = async () => {
             try {
-                const response = await fetch(apiUrl);
+                const fetchOptions: RequestInit = {};
+                if (haveCredentials) {
+                    fetchOptions.credentials = 'include'; // 如果條件成立，就加入 credentials
+                }
+                const response = await fetch(apiUrl, fetchOptions);
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 let result: any;
                 if (asJson) {
