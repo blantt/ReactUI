@@ -206,6 +206,8 @@ export interface MenuItemData {
     selfUI?: React.ReactNode;
     /** 點擊後要顯示的組件內容 */
     content?: React.ReactNode;
+    // 點擊後直接轉跳頁面
+    url?: string;
 }
 
 

@@ -7,6 +7,10 @@ export default defineConfig({
   plugins: [react(),
        dts({ insertTypesEntry: true }) // 這會自動幫你產生 .d.ts 並關聯到 package.json
   ],
+  server: {
+    port: 5170,      // 固定使用 5171
+    strictPort: true // 重要！若 5171 被佔用則報錯，而不是自動跳到 5172
+  },
   build: {
     lib: {
       entry: 'src/index.js', // 您的元件入口

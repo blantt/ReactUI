@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import NavMenu, { MenuItem, type MenuItemData } from '../component/myMenuItem';
 import { Button } from "../component/button";
 import { FileText, ChevronRight, ChevronDown, Folder, File, Layers, Settings, User, Mail, Star, Share2 } from 'lucide-react';
-import TestTab from '../page/testTab';
-
+import TestTab from './testTab';
+import { isLocal, getApiUrl } from '../utils/env';
 const App: React.FC = () => {
 
     const menuData: MenuItemData[] = [
@@ -19,6 +19,12 @@ const App: React.FC = () => {
                 {
                     id: '1-1', label: '轉跳頁面test',
                     content: <TestTab />,
+                    icon: <File size={16} />
+                },
+                {
+                    id: '1-1', label: 'url直接轉跳頁面',
+                    //content: <TestTab />,
+                    url: '/testVista',
                     icon: <File size={16} />
                 },
                 {
@@ -78,7 +84,15 @@ const App: React.FC = () => {
     const handleNavigate = (item: MenuItemData) => {
         // alert(`導向頁面: ${item.label}`);
         // console.log(`導向頁面: ${item.label}`);
-        setCurrentPage(item);
+
+        if (item.url) {
+            window.location.href = getApiUrl(item.url);
+            // 如果是iframe 時
+           //  window.parent.location.href  =  getApiUrl(item.url);
+            return;
+        } else if (item.content) {
+            setCurrentPage(item);
+        }
     };
 
     return (

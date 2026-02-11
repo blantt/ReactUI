@@ -97,7 +97,7 @@ const Tab1 = () => {
        <div className="space-x-4 pt-3">
           <Button label="menuTest" onClick={() => callUrl("menuTest")} />
           <Button label="menu元件版" onClick={() => callUrl("menuTest2")} />
-         
+         <Button label="testMaster" onClick={() => callUrl("testMaster")} />
        </div>
     </div>
   );

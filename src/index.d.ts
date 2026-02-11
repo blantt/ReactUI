@@ -11,6 +11,7 @@ export { default as Modal} from './component/myModal';
 export { default as AppTitle} from './component/header';
 export { default as MyGetApi} from './component/myGetApi';
 export { default as TextInput} from './component/simpleUI'; 
+export { default as NavItem, MenuItem, type MenuItemData } from './component/myMenuItem';
 
 export const apitransform: any;
 export const apitransformDrop: any;

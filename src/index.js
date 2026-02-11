@@ -29,6 +29,6 @@ export { default as Modal } from './component/myModal';
 export { LoadingInline } from './component/myload';
 export { TextInput } from './component/simpleUI';
  export {  default as MyGetApi } from './component/myGetApi'; 
-
+export { default as NavItem, MenuItem } from './component/myMenuItem';
 
  

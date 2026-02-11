@@ -23,8 +23,9 @@ import TextOtc from './page/textOtc';
 import TestModal from './page/testmodal';
 import SimpleUItest from './page/simpleUItest';
 import TestVista from './page/testVista';
-import Menutest from './pageTest/menuTest';
-import Menutest2 from './pageTest/menuTest2';
+import Menutest from './page/menuTest';
+import Menutest2 from './page/menuTest2';
+import TestMaster from './pageTest/testMaster';
  
 
 async function enableMocking() {
@@ -66,6 +67,7 @@ async function enableMocking() {
           <Route path="/testVista" element={<TestVista />} />
           <Route path="/menuTest" element={<Menutest />} />
           <Route path="/menuTest2" element={<Menutest2 />} />
+         <Route path="/testMaster" element={<TestMaster />} />
          
         </Routes>
       </BrowserRouter>

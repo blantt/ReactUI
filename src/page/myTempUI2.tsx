@@ -102,7 +102,10 @@ const app: React.FC = () => {
                 <MyGetApi apiUrl={apiUrl一例一休}  asJson={true}>
                     {({ loading, error, data, status }) => {
                         if (loading) return <div>MyGetApi 載入中...</div>;
-                        if (error) return <div style={{ color: 'red' }}>失敗: {String(error)}</div>;
+                        // if (error) return <div style={{ color: 'red' }}>失敗: {String(error)}</div>;
+                         if (error){
+                            return <div style={{ color: 'red' }}>失敗: {String(error)}</div>;
+                         }
                         if (status === 'success') {
                           //  alert('MyGetApi 成功取得資料！');
                             // 你可以在這裡自訂處理 data（即 parsedData）

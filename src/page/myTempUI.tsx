@@ -363,8 +363,6 @@ const MyTempUI: React.FC = () => {
             <Loading isLoading={isLoading} message="加載中..." />
 
             <Button2 label="test log" onClick={() => console.log(checkedItems_old)} />
-
-
             <Modal isOpen={isLoading_modal_check} onClose={() => setIsLoading_modal_check(false)}
                 title="我是checkbox grid彈跳視窗"
                 width="  w-4/5 " height=' h-4/5'
