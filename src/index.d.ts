@@ -12,7 +12,7 @@ export { default as AppTitle} from './component/header';
 export { default as MyGetApi} from './component/myGetApi';
 export { default as TextInput} from './component/simpleUI'; 
 export { default as NavItem, MenuItem, type MenuItemData } from './component/myMenuItem';
-export {  default as MyMaster } from './component_s/myMaster'; 
+ 
 
 export const apitransform: any;
 export const apitransformDrop: any;
