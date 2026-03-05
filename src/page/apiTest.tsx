@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from "react";
 import Button from "../component/button";
+import MyGetApi from "../component/myGetApi";
 export default function app() {
 
     const [data, setData] = useState([]); // 用於儲存 API 返回的資料
@@ -51,6 +52,20 @@ export default function app() {
     return (
         <div className="min-h-screen flex flex-col">
         
+             <MyGetApi apiUrl={"https://editor.4kids.com.tw/Portal/apitest/HandlerApiTest.ashx?func=Cehck輪班制一例一休"}   asJson={true}>
+                    {({ loading, error, data, status }) => {
+
+                        if (loading) return <div>MyGetApi 載入中...</div>;
+                        if (error) return <div style={{ color: 'red' }}>失敗: {String(error)}</div>;
+                        if (status === 'success') {
+                                alert('MyGetApi 成功取得資料，請查看 console.log');
+                                console.log('MyGetApi 成功取得資料:', data);
+
+                        }
+                        return null;
+                    }}
+                </MyGetApi>
+
 
             <div>
                 API測試頁面
