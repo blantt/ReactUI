@@ -1,5 +1,39 @@
 import React, { useState, useEffect, use } from 'react';
 import { LoadingInline } from './myload';
+import { twMerge } from 'tailwind-merge';
+import { clsx } from 'clsx';
+ 
+
+ const styles =  /* css */` 
+        .vistaBlue {
+            background: linear-gradient(to bottom, 
+               rgba(212,240,255,0.5) 0%, 
+                rgba(124, 174, 207,0.5) 50%, 
+                rgba(124, 174, 207,0.5) 51%, 
+                rgba(124, 174, 207,0.5) 100%
+            );
+            border: 1px solid #717171;
+            box-shadow: inset 0 1px 0 white;
+        }
+ 
+     `;
+export const gridStyles = () => {
+    useEffect(() => {
+        const styleId = 'vistaBlue-styles';
+        if (!document.getElementById(styleId)) {
+            const styleElement = document.createElement('style');
+            styleElement.id = styleId;
+            styleElement.innerHTML = styles;
+            document.head.appendChild(styleElement);
+        }
+    }, []);
+
+    return null; // 不在組件位置渲染任何東西
+};
+
+function cn(...inputs: Array<string | false | null | undefined>) {
+  return twMerge(clsx(inputs));
+}
 export interface FormField {
     name: string;
     value?: string;
@@ -48,6 +82,11 @@ type DataGridProps = {
     customTransform?: (item: any, col: DataGridProps['columns'][number]) => FormField; // 新增自定義轉換邏輯
     onlyCheckedItems?: boolean; // 是否只顯示已勾選的項目
     haveCredentials?: boolean; // 是否包含憑證(後端可讀取到session)
+    textSize?: string; // 字體大小，例如 "text-sm"、"text-base" 等 Tailwind CSS 類別
+    classNameHeader?: string; // 表頭的自定義樣式
+    classItem?: string; // 單元格的自定義樣式
+    borderColor?: string; // 邊框顏色，例如 "border-gray-300"、"border-blue-500" 等 Tailwind CSS 類別
+    style1 ?: 'default' | 'empty' | 'vistaBlue' ;
 };
 
 export const transformToFormField = (data: any[],
@@ -75,7 +114,14 @@ export const transformToFormField = (data: any[],
 
 const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className, PageSize, havecheckbox = false,
     onlyCheckedItems = false, useBar = false, useSearch = false, keycol, gridCols, checkedItems_old, onCheckItemsChange, onRowClick
-    , customTransform, useSubSearch = false ,haveCredentials=false}) => {
+    , customTransform, useSubSearch = false ,haveCredentials=false,textSize="text-sm", classNameHeader="", classItem=""
+    , borderColor="border-slate-700", style1 = 'default' }) => {
+
+     const styles = {
+        default: ' bg-gradient-to-br from-indigo-100 to-blue-200 backdrop-blur-xl   shadow-lg ',
+        empty: ' nocss',
+        vistaBlue: 'vistaBlue',
+    };
 
     let cssUserbar = "";
     if (useBar) {
@@ -247,8 +293,8 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
     // }
 
 
-    let gridColsClass = ' shadow-2xl   outline-gray-400  bg-gradient-to-br from-blue-50 via-[#e8efff] to-[#ccdff9] shadow-md';
-    gridColsClass = ` bg-gradient-to-br from-indigo-100 to-blue-200 backdrop-blur-xl    shadow-lg `;
+    //let gridColsClass = ' ';
+    // gridColsClass = ` bg-gradient-to-br from-indigo-100 to-blue-200 backdrop-blur-xl    shadow-lg `;
 
     // gridColsStyle 這裡要處理 columns 的 widthcss 屬性，動態設定欄位寬度,組合成 grid的css ,ex:grid-cols-[minmax(100px,150px)_max-content_1fr_1fr]
     //如果 widthcss空值,預設為 1fr
@@ -266,11 +312,12 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
 
     const gridColsStyle = `grid-cols-[${gridTemplate}]`;
 
-
+  
     return (
-
-        <div className={` ${cssUserbar} relative text-sm border border-gray-300  bg-slate-100  rounded-md`}>
-
+ // gridStyles(); // 確保樣式被注入
+   
+   <div className={` ${cssUserbar} relative ${textSize} border border-gray-300  bg-slate-100  rounded-md`}>
+       {gridStyles()}
             <div className=' text-gray-800 p-2  '>
 
                 {useSearch && (
@@ -284,16 +331,17 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
                     </div>
                 )}
 
-                <div className={`grid   ${gridColsStyle}   border border-gray-300 bg-white/50 p-1  ${className || ''} shadow-md `}>
+                <div className={`grid  border-r border-b ${borderColor}  ${gridColsStyle}    bg-white/50   ${className || ''} shadow-md `}>
 
 
                     {/* 表頭 */}
                     {/* <div className={` shadow-md bg-gray-300 text-gray-700    `}> */}
                     {
                         havecheckbox && (
-                            <div className={` sticky top-0 p-1.5 outline outline-1   outline-slate-700 text-center ${gridColsClass || ''}`}>
+                            <div className={` sticky top-0 p-1.5  border-l border-t  ${borderColor} text-center `}>
                             </div>
                         )
+                         
                     }
 
                     {columns.map((col, index) => (
@@ -301,9 +349,15 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
                         (col.visible === undefined || col.visible === true) && (
                             <div
                                 key={index}
-                                // border-[#cabbbb]
-                                //className={`col-span-1 p-1.5 outline outline-1   outline-slate-700   text-center  ${gridColsClass || ''}  `}>
-                                className={`  sticky top-0 p-1.5 outline outline-1 outline-slate-700 text-center ${gridColsClass || ''}`}
+                               
+                            //   className={`  sticky top-0 p-1.5 outline outline-1 outline-slate-700 text-center ${gridColsClass || ''}`}
+                             className={cn(
+        ` sticky top-0 p-1.5 border-l border-t   ${borderColor}  text-center ${styles[style1] || styles.default}  `,
+         
+       ` ${classNameHeader}  `
+      )}
+
+
                             >
                                 {col.showname ? col.showname : col.name}
                             </div>
@@ -319,7 +373,7 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
                             {
                                 havecheckbox && (
 
-                                    <div className={` p-1.5 outline outline-1   outline-stone-400 text-gray-600 font-medium text-center`}>
+                                    <div className={` p-1.5  border-l border-t  ${borderColor} text-gray-600 font-medium text-center`}>
                                     </div>
                                 )
                             }
@@ -327,11 +381,11 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
                             {columns.map((col, index) => (
                                 //判斷 col.colSpan
                                 (col.subSearch === true) ? (
-                                    <div  className='p-1' >
+                                    <div  className={`p-1 border-l border-t  ${borderColor}    text-gray-600`} >
                                         <input
                                             type="text"
                                             placeholder={`搜尋...${col.showname}`}
-                                            className="w-full p-1  border border-gray-300 rounded"
+                                            className="w-full p-1  border  text-gray-600 rounded"
                                             value={subSearchTexts[col.name] || ''}
                                             onChange={e => handleSubSearchChange(col.name, e.target.value)}
                                         />
@@ -341,7 +395,7 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
                                     // </div>
                                 ) : (
                                     // 這裡放 col.subSearch 不為 true 時要顯示的內容
-                                    <div className={` p-1.5 outline outline-1   outline-stone-400 text-gray-600 font-medium text-center`}>
+                                    <div className={` p-1.5  border-l border-t  ${borderColor}   text-gray-600 font-medium text-center`}>
                                         {/* 留白或其他內容 */}
                                     </div>
                                 )
@@ -363,7 +417,7 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
 
                             {
                                 havecheckbox && (
-                                    <div className={`  p-1.5 outline outline-1   outline-stone-400 text-gray-600 font-medium text-center`}>
+                                    <div className={`  p-1.5 border-l border-t  ${borderColor}  outline-stone-400 text-gray-600 font-medium text-center`}>
                                         {havecheckbox && (
                                             <input
                                                 type="checkbox"
@@ -406,8 +460,13 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
                                         <div
                                             key={colIndex}
                                             onClick={() => onRowClick && onRowClick(row)} // 新增點擊事件
-                                            className={`  p-1.5 outline outline-1   outline-stone-400 text-gray-600 font-medium text-center`}
-                                        >
+                                            // className={`  p-1.5 outline outline-1   outline-stone-400 text-gray-600 font-medium text-center`}
+                                            className={cn(
+        ` p-1.5   border-l border-t   ${borderColor} font-medium text-center `,
+         
+       ` ${classItem}  `
+      )}
+                                     >
 
 
                                             {(col.visible === undefined || col.visible === true) && (

@@ -5,6 +5,7 @@ import Button from "../component/button";
 // import type { FormField } from '../component/DataGrid2'; // 匯入 FileItem 型別
 import Loading from '../component/myload';
 
+
 const Example = () => {
 
   const columns = ['Name', 'Age', 'Email'];
@@ -120,16 +121,15 @@ const Example = () => {
   ], customTransform);
 
 
-  console.log('原始data:', data);
-
-  console.log('transformedData_api:', transformedData_api);
+  
 
   return (
     <div>
+      
 {/* minmax(80px,120px) */}
       <div className='w-1/2 '>
         <h1>AMC GRID api new(一例一休)</h1>
-        <div className='h-[400px]'>
+        <div className='h-[400px] p-1  '>
           <DataGridApi
             columns={[
               { name: 'empno', type: 'input', showname: '員工編號', colSpan: 1 , subSearch: true},
@@ -139,7 +139,11 @@ const Example = () => {
             havecheckbox={true}
             useSearch={true}
             useSubSearch={true}
-
+            textSize="text-[14px]"
+            classNameHeader='  text-amber-900  font-bold p-1  bg-gradient-to-br from-orange-100 to-orange-200  backdrop-blur-xl   shadow-lg  '
+            borderColor='  border-slate-400 '
+            classItem=' text-cyan-800  '
+           // style1='empty'
             onCheckItemsChange={items => {
               // items 就是最新的 checkItems
               console.log('外部取得的勾選資料:', items);
