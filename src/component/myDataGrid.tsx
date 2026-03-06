@@ -86,7 +86,7 @@ type DataGridProps = {
     classNameHeader?: string; // 表頭的自定義樣式
     classItem?: string; // 單元格的自定義樣式
     borderColor?: string; // 邊框顏色，例如 "border-gray-300"、"border-blue-500" 等 Tailwind CSS 類別
-    style1 ?: 'default' | 'empty'  | 'yellow' | 'vistaBlue' | 'green1' | 'green2' | 'white1'; 
+    styleHeader ?: 'default' | 'empty'  | 'yellow' | 'vistaBlue' | 'green1' | 'green2' | 'white1'; 
     //green1 抺茶歐蕾,green2薄荷晨曦,white1 絲絨銀灰
 };
 
@@ -116,7 +116,7 @@ export const transformToFormField = (data: any[],
 const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className, PageSize, havecheckbox = false,
     onlyCheckedItems = false, useBar = false, useSearch = false, keycol, gridCols, checkedItems_old, onCheckItemsChange, onRowClick
     , customTransform, useSubSearch = false ,haveCredentials=false,textSize="text-sm", classNameHeader="", classItem=""
-    , borderColor="border-slate-700", style1 = 'default' }) => {
+    , borderColor="border-slate-700", styleHeader = 'default' }) => {
 
      const styles = {
         default: ' bg-gradient-to-br from-indigo-100 to-blue-200 backdrop-blur-xl   shadow-lg ',
@@ -357,7 +357,7 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
                                
                             //   className={`  sticky top-0 p-1.5 outline outline-1 outline-slate-700 text-center ${gridColsClass || ''}`}
                              className={cn(
-        ` sticky top-0 p-1.5 border-l border-t   ${borderColor}  text-center ${styles[style1] || styles.default}  `,
+        ` sticky top-0 p-1.5 border-l border-t   ${borderColor}  text-center ${styles[styleHeader] || styles.default}  `,
          
        ` ${classNameHeader}  `
       )}
