@@ -86,7 +86,8 @@ type DataGridProps = {
     classNameHeader?: string; // 表頭的自定義樣式
     classItem?: string; // 單元格的自定義樣式
     borderColor?: string; // 邊框顏色，例如 "border-gray-300"、"border-blue-500" 等 Tailwind CSS 類別
-    style1 ?: 'default' | 'empty' | 'vistaBlue' ;
+    style1 ?: 'default' | 'empty'  | 'yellow' | 'vistaBlue' | 'green1' | 'green2' | 'white1'; 
+    //green1 抺茶歐蕾,green2薄荷晨曦,white1 絲絨銀灰
 };
 
 export const transformToFormField = (data: any[],
@@ -120,6 +121,10 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
      const styles = {
         default: ' bg-gradient-to-br from-indigo-100 to-blue-200 backdrop-blur-xl   shadow-lg ',
         empty: ' nocss',
+        yellow: '   bg-gradient-to-br from-orange-100/80 to-orange-200/80 backdrop-blur-xl shadow-lg   ',
+        green1: '  bg-gradient-to-br from-lime-50/90 to-emerald-100/80   text-emerald-900   ',
+        green2: '  bg-gradient-to-br from-emerald-50/80 to-teal-100/80   text-emerald-900   ',
+        white1: ' bg-gradient-to-br from-slate-50/80 to-slate-200/80   text-slate-800  ',
         vistaBlue: 'vistaBlue',
     };
 
