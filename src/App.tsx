@@ -65,8 +65,10 @@ const Tab1 = () => {
   return (
     <div>
       <div className="space-x-4">
+         <Button label="formTest3" onClick={() => callUrl("formTest3")} />
          <Button label="FBalert" onClick={() => callUrl("FBalert")} />
-          <Button label="FBmodal" onClick={() => callUrl("FBmodal")} />
+        <Button label="FBmodal" onClick={() => callUrl("FBmodal")} />
+        <Button label="FBDatePicker" onClick={() => callUrl("FBDatePicker")} />
         <Button label="testfileControl" onClick={() => callUrl("fileControl")} />
         <Button label="testModal" onClick={() => callUrl("testModal")} />
         <Button label="apiTest" icon={<Image1 />} onClick={() => callUrl("apiTest")} />

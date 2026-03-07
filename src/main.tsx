@@ -29,6 +29,8 @@ import TestMaster from './pageTest/testMaster';
 import FileControl from './page/fileControl';  
 import FBalert from './Flowbite/FBalert';  
 import FBmodal from './Flowbite/FBmodal';  
+import FBDatePicker from './Flowbite/FBDatePicker';
+import Formtest3 from './page/formtest3'; 
  
 async function enableMocking() {
   if (import.meta.env.MODE !== 'development') {
@@ -73,6 +75,8 @@ async function enableMocking() {
          <Route path="/fileControl" element={<FileControl />} />
          <Route path="/FBmodal" element={<FBmodal />} />
           <Route path="/FBalert" element={<FBalert />} />
+          <Route path="/FBDatePicker" element={<FBDatePicker />} />
+          <Route path="/formTest3" element={<Formtest3 />} />
         </Routes>
       </BrowserRouter>
     </StrictMode>,
