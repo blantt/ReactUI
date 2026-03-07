@@ -51,6 +51,10 @@ interface ColumnType {
     subSearch?: boolean; // 是否啟用單一欄位搜尋
 }
 
+/**
+ * 通用 datagrid 元件 - 高度自定義化
+ * @param {string} className - 自定義樣式
+ */
 type DataGridProps = {
     //columns: ColumnType[]; // 表頭名稱
     columns: Array<{
@@ -113,6 +117,73 @@ export const transformToFormField = (data: any[],
     });
 };
 
+/**
+ *  * ### columns 欄位設定說明
+ * | 屬性 | 型別 | 必填 | 說明 |
+ * |------|------|------|------|
+ * | `name` | `string` | ✅ | 對應資料的欄位 key |
+ * | `showname` | `string` | ❌ | 表頭顯示名稱，未設定則顯示 name |
+ * | `type` | `string` | ✅ | `'input'` 純文字 / `'hyperlink'` 超連結 / `'empty'` 自訂內容 |
+ * | `widthcss` | `string` | ❌ | 欄位寬度，支援 CSS Grid 語法，如 `'120px'`、`'minmax(100px,200px)'`，預設 `'1fr'` |
+ * | `colSpan` | `number` | ❌ | 欄位合併（目前自動分配寬度，效果有限） |
+ * | `visible` | `boolean` | ❌ | 控制欄位是否顯示，預設 `true` |
+ * | `subSearch` | `boolean` | ❌ | 是否在該欄位顯示子搜尋輸入框，需搭配 `useSubSearch={true}` |
+ * | `transform` | `(value) => FormField` | ❌ | 自訂欄位資料轉換邏輯 |
+ *
+ * ---
+ * DataGridApi 元件
+* @param {Array} columns - **【必填】** 欄位設定陣列，定義表頭與資料顯示方式（詳見上表）
+ *
+ * @param {Array<Record<string, FormField>>} [data] - 直接傳入已處理好的資料（與 `apiUrl` 擇一使用）
+ *
+ * @param {string} [apiUrl] - API 端點 URL，元件掛載時自動 fetch 資料（與 `data` 擇一使用）
+ *
+ * @param {boolean} [haveCredentials=false] - fetch 時是否帶入 cookie/session 憑證（`credentials: 'include'`），
+ *   後端需要讀取 session 時設為 `true`
+ *
+ * @param {number} [PageSize=5] - 每頁顯示筆數。當 `useBar={true}` 時此設定無效，會自動設為 10000（顯示全部）
+ *
+ * @param {boolean} [useBar=false] - 啟用捲軸模式，元件高度填滿父容器並可垂直捲動，同時顯示全部資料不分頁
+ *
+ * @param {boolean} [useSearch=false] - 在表格上方顯示全欄位搜尋輸入框，即時過濾所有欄位內容
+ *
+ * @param {boolean} [useSubSearch=false] - 啟用單欄搜尋功能，需在 `columns` 對應欄位設定 `subSearch: true`
+ *
+ * @param {boolean} [havecheckbox=false] - 在每列最左側顯示 checkbox，搭配 `keycol` 使用效果最佳
+ *
+ * @param {string} [keycol] - 指定每列的唯一識別欄位名稱（如 `'id'`），
+ *   用於 checkbox 勾選比對，未設定時預設使用 columns 第一個欄位
+ *
+ * @param {Array<Record<string, FormField>>} [checkedItems_old] - 外部傳入預設勾選的資料，
+ *   元件會同步更新內部 checkItems state
+ *
+ * @param {(items: Array<Record<string, FormField>>) => void} [onCheckItemsChange] - 
+ *   使用者操作 checkbox 時的回調，回傳當前所有已勾選的列資料
+ *
+ * @param {boolean} [onlyCheckedItems=false] - 設為 `true` 時，表格只顯示已勾選的列，
+ *   需搭配 `havecheckbox={true}` 使用
+ *
+ * @param {(row: Record<string, FormField>) => void} [onRowClick] - 點擊任一列時觸發的回調，回傳該列資料
+ *
+ * @param {(item: any, col: ColumnDef) => FormField} [customTransform] - 
+ *   全域自訂資料轉換函式，優先於各欄位的 `transform`，適合統一處理複雜轉換邏輯
+ *
+ * @param {'default'|'empty'|'yellow'|'vistaBlue'|'green1'|'green2'|'white1'} [styleHeader='default'] -
+ *   表頭預設主題樣式：
+ * @param {string} [className] - 附加在 grid 容器上的 Tailwind CSS 類別
+ *
+ * @param {string} [classNameHeader] - 附加在每個表頭儲存格的 Tailwind CSS 類別，可覆蓋預設樣式
+ *
+ * @param {string} [classItem] - 附加在每個資料儲存格的 Tailwind CSS 類別
+ *
+ * @param {string} [borderColor='border-slate-700'] - 表格邊框顏色，使用 Tailwind CSS border 色彩類別，
+ *   例如 `'border-gray-300'`、`'border-blue-500'`
+ *
+ * @param {string} [textSize='text-sm'] - 整體字體大小，使用 Tailwind CSS 類別，
+ *   例如 `'text-xs'`、`'text-base'`、`'text-lg'`
+ *
+ * @param {number} [gridCols] - 手動指定 grid 欄數（目前以 `widthcss` 自動計算為主，較少使用）
+ */
 const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className, PageSize, havecheckbox = false,
     onlyCheckedItems = false, useBar = false, useSearch = false, keycol, gridCols, checkedItems_old, onCheckItemsChange, onRowClick
     , customTransform, useSubSearch = false ,haveCredentials=false,textSize="text-sm", classNameHeader="", classItem=""

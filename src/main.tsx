@@ -27,7 +27,9 @@ import Menutest from './page/menuTest';
 import Menutest2 from './page/menuTest2';
 import TestMaster from './pageTest/testMaster';
 import FileControl from './page/fileControl';  
-
+import FBalert from './Flowbite/FBalert';  
+import FBmodal from './Flowbite/FBmodal';  
+ 
 async function enableMocking() {
   if (import.meta.env.MODE !== 'development') {
     return
@@ -69,6 +71,8 @@ async function enableMocking() {
           <Route path="/menuTest2" element={<Menutest2 />} />
          <Route path="/testMaster" element={<TestMaster />} />
          <Route path="/fileControl" element={<FileControl />} />
+         <Route path="/FBmodal" element={<FBmodal />} />
+          <Route path="/FBalert" element={<FBalert />} />
         </Routes>
       </BrowserRouter>
     </StrictMode>,
