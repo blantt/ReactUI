@@ -120,6 +120,7 @@ const app: React.FC = () => {
 
 
             <AppTitle title="My tempui2" />
+              
             <div className="flex justify-center items-center ">
 
                 <Button2 label="Old fetch API" onClick={oldGetApi} />
