@@ -5,13 +5,15 @@ interface ModalProps {
   onClose: () => void;
   title?: string;
   children?: React.ReactNode;
+  myHeader?: React.ReactNode;
   footer?: React.ReactNode;
   width?: string;
   height?: string;
   isAnimating?: boolean;
+   
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, footer, width, height }) => {
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, myHeader, footer, width, height }) => {
   if (!isOpen) return null;
 
   return (
@@ -19,7 +21,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, footer,
       <div className={`  flex flex-col bg-white rounded-lg shadow-lg  min-w-80 ${width || ''} ${height || ''} `}>
         {/* Header */}
         <div className="relative px-2 py-1 border-b border-gray-200 flex items-center justify-center">
-           <h2 className="text-center text-base font-semibold text-slate-800">{title}</h2>
+           {myHeader ? myHeader : <h2 className="text-center text-base font-semibold text-slate-800">{title}</h2>}
           {/* <h2 className="text-base text-center font-medium">{title}</h2> */}
           <button
             onClick={onClose}

@@ -22,6 +22,7 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",
     "clsx": "^2.1.1",
+    "fish-reactui": "github:blantt/ReactUI",
     "lucide-react": "^0.562.0",
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0",
