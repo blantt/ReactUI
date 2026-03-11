@@ -78,6 +78,7 @@ interface DropdownProps {
   emptyText?: string; // 空白選項顯示文字
   style1?: 'default' | 'vistaBlue';
   className?: string;
+  value?: string; // 用於綁定選擇值的屬性
 }
 
 //FileItem 預計是dropdown選項的型別 
@@ -143,7 +144,7 @@ export const transformToFormField = (data: any[], keyValue?: string, keyText?: s
 };
 
 const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyValue, keyText, haveBlank = true, widthCss = "w-48"
-  , emptyText = "請選擇", style1 = 'default', className = "" }) => {
+  , emptyText = "請選擇", style1 = 'default', className = "", value }) => {
 
 
   // const [internalOptions, setInternalOptions] = useState<FileItem[]>(options || []);
@@ -156,6 +157,24 @@ const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyVal
   const [isOpen, setIsOpen] = useState(false);
   // 狀態：儲存當前選擇的選項
   const [selectedOption, setSelectedOption] = useState<FileItem | null>(null);
+
+  // 修正1: 當 value 或 internalOptions 改變時,同步更新 selectedOption
+  useEffect(() => {
+    if (value !== undefined && internalOptions.length > 0) {
+      const found = internalOptions.find(opt =>
+        String(keyValue ? opt[keyValue] : opt.value) === String(value)
+      );
+      if (found) {
+        setSelectedOption(found);
+      } else if (value === '' || value === null) {
+        // 處理清空的情況
+        setSelectedOption(null);
+      }
+    } else if (value === '' || value === null || value === undefined) {
+      setSelectedOption(null);
+    }
+  }, [value, internalOptions, keyValue]);
+
   //  const [loading, setLoading] = useState(!!apiUrl); // 如果有 apiUrl，預設為加載中
   // 切換下拉選單展開/收起的函數
   const handleToggle = () => {
@@ -208,8 +227,14 @@ const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyVal
       //dd
       fetchData()
     }
-  }, [internalOptions, apiUrl, options]);
+  }, [apiUrl, keyValue, keyText, haveBlank]); // 修正依賴陣列
 
+  // 修正3: 當 options prop 改變時更新 internalOptions
+  useEffect(() => {
+    if (options && !apiUrl) {
+      setInternalOptions(transformToFormField(options, keyValue, keyText, haveBlank));
+    }
+  }, [options, keyValue, keyText, haveBlank, apiUrl]);
 
   const handleSelect = (option: FileItem) => {
     setSelectedOption(option); // 更新當前選擇的選項

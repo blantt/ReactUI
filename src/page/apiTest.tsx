@@ -1,8 +1,8 @@
 
 import { useState, useEffect } from "react";
 import Button from "../component/button";
-// import MyGetApi from "../component/myGetApi";
-import { MyGetApi } from 'fish-reactui';
+ import MyGetApi from "../component/myGetApi";
+//import { MyGetApi } from 'fish-reactui';
 export default function app() {
 
     const [data, setData] = useState([]); // 用於儲存 API 返回的資料
@@ -65,7 +65,7 @@ export default function app() {
                         }
                         return null;
                     }}
-                </MyGetApi>
+            </MyGetApi>
 
 
             <div>

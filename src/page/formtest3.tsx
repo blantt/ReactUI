@@ -1,4 +1,8 @@
 import React, { useState } from 'react';
+import Button  from "../component/button";
+import TextInput  from "../component/simpleUI";
+import MyDropDown  from "../component/myDropDown";
+import type { FileItem as DropdownOption } from '../component/myDropGrid';
 import { User, Mail, Phone, Briefcase, Calendar, MapPin, DollarSign, MessageSquare, Save, Trash2 } from 'lucide-react';
 
 const App = () => {
@@ -14,18 +18,31 @@ const App = () => {
     emergencyContact: '',
     location: '',
     salaryType: '',
-    notes: ''
+    notes: '',
+    testdrop: '',
+    ClassID: '5'
   });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+  // ...prev,     // 1. 先複製舊的所有資料
+  // [name]: value // 2. 只更新當前改變的那一項（後面的會覆蓋前面的）
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
+   funcsetFormData(name, value);
+    // setFormData(prev => ({
+    //   ...prev,
+    //   [name]: value
+    // }));
+  };
+
+
+  const funcsetFormData = (name: string, value: any) => {
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
-  };
+  }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -34,6 +51,10 @@ const App = () => {
     setTimeout(() => setIsSubmitted(false), 3000);
   };
 
+  const handleSelect3 = (value: any) => {
+    funcsetFormData('testdrop', value);
+          //alert(`Selected name, value: ${value.ClassName} (${value.ClassID})`);
+      };
   const handleReset = () => {
     setFormData({
       fullName: '',
@@ -47,18 +68,20 @@ const App = () => {
       emergencyContact: '',
       location: '',
       salaryType: '',
-      notes: ''
+      notes: '',
+      testdrop: '',
+      ClassID: '5'
     });
   };
 
-  const inputClasses = "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 bg-white hover:border-gray-400";
+  const inputClasses = "  w-full px-4 py-2 border border-gray-300 text-sm  rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 bg-white hover:border-gray-400";
   const labelClasses = "block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2";
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-5xl mx-auto">
         {/* 表單標題區 */}
-        <div className="bg-white rounded-t-2xl shadow-sm border-b border-gray-100 p-8 text-center">
+        <div className="bg-white rounded-t-2xl shadow-sm border-b border-gray-100 p-8 text-center ">
           <h2 className="text-3xl font-bold text-gray-900">員工入職資料登記</h2>
           <p className="mt-2 text-gray-600">測試表單：包含 3 欄式佈局與「欄位合併」範例</p>
         </div>
@@ -83,21 +106,26 @@ const App = () => {
                   required
                 />
               </div>
-              <div>
+              <div  >
                 <label className={labelClasses}><Briefcase size={16} /> 員工編號</label>
-                <input
-                  type="text"
-                  name="employeeId"
-                  placeholder="EMP-001"
+                <TextInput
+                  placeholder="員工編號"
+                  name='employeeId'
                   value={formData.employeeId}
                   onChange={handleChange}
                   className={inputClasses}
-                  required
                 />
+                 
               </div>
-              <div>
-                <label className={labelClasses}>性別</label>
-                <select
+              <div >
+                <label className={labelClasses}>testdrop</label>
+                 <MyDropDown   keyValue='ClassID' keyText='ClassName' haveBlank={true} emptyText='dropdown(API)選擇'
+                       value={formData.ClassID}  // 綁定值
+                      apiUrl="https://clockappservice.english4u.com.tw/api/clock/selectClockWorkClass"
+                        onSelect={handleSelect3}
+                       
+                        />
+                {/* <select
                   name="gender"
                   value={formData.gender}
                   onChange={handleChange}
@@ -108,7 +136,7 @@ const App = () => {
                   <option value="male">男性 (Male)</option>
                   <option value="female">女性 (Female)</option>
                   <option value="other">其他</option>
-                </select>
+                </select> */}
               </div>
 
               {/* 第 2 列 */}
@@ -129,15 +157,21 @@ const App = () => {
                 </select>
               </div>
               <div>
-                <label className={labelClasses}>職位名稱</label>
-                <input
+                <label className={labelClasses}>職位名稱2</label>
+                <TextInput
+                  placeholder="例如：高級工程師"
+                  value={formData.position}
+                  onChange={handleChange}
+                  className={inputClasses}
+                />
+                {/* <input
                   type="text"
                   name="position"
                   placeholder="例如：高級工程師"
                   value={formData.position}
                   onChange={handleChange}
                   className={inputClasses}
-                />
+                /> */}
               </div>
               <div>
                 <label className={labelClasses}><Calendar size={16} /> 入職日期</label>
