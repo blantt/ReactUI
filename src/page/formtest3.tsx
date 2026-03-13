@@ -3,11 +3,12 @@ import Button  from "../component/button";
 import TextInput  from "../component/simpleUI";
 import MyDropDown  from "../component/myDropDown";
 import type { FileItem as DropdownOption } from '../component/myDropGrid';
+import MyDropGrid, { transformToFormField as apitransform } from '../component/myDropGrid';
 import { User, Mail, Phone, Briefcase, Calendar, MapPin, DollarSign, MessageSquare, Save, Trash2 } from 'lucide-react';
 
 const App = () => {
   const [formData, setFormData] = useState({
-    fullName: '',
+    fullName: '小光',
     employeeId: '',
     gender: '',
     department: '',
@@ -57,7 +58,7 @@ const App = () => {
       };
   const handleReset = () => {
     setFormData({
-      fullName: '',
+      fullName: '小光',
       employeeId: '',
       gender: '',
       department: '',
@@ -88,7 +89,8 @@ const App = () => {
 
         {/* 表單內容區 */}
         <div className="bg-white rounded-b-2xl shadow-xl p-8">
-          <form onSubmit={handleSubmit} className="space-y-6">
+          {/* onSubmit={handleSubmit}  */}
+          {/* <form className="space-y-6"> */}
             
             {/* 3欄 網格系統 */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -113,7 +115,7 @@ const App = () => {
                   name='employeeId'
                   value={formData.employeeId}
                   onChange={handleChange}
-                  className={inputClasses}
+                  //className={inputClasses}
                 />
                  
               </div>
@@ -123,6 +125,7 @@ const App = () => {
                        value={formData.ClassID}  // 綁定值
                       apiUrl="https://clockappservice.english4u.com.tw/api/clock/selectClockWorkClass"
                         onSelect={handleSelect3}
+                         className=' w-full'
                        
                         />
                 {/* <select
@@ -139,9 +142,21 @@ const App = () => {
                 </select> */}
               </div>
 
-              {/* 第 2 列 */}
+              
               <div>
-                <label className={labelClasses}>所屬部門</label>
+
+               <label className={labelClasses}>MyDropGrid</label>
+               <MyDropGrid apiUrl="https://clockappservice.english4u.com.tw/api/testdata"
+                        className='  w-full '
+                        columns={[
+                            { name: 'Name', type: 'input', colSpan: 1 },
+                            { name: 'Age', type: 'input', colSpan: 1 },
+                            { name: 'Email', type: 'input', colSpan: 2 },
+                        ]}
+                        keyValue='Name' keyText='Email' gridCols={4}
+
+                    />
+                 {/*<label className={labelClasses}>所屬部門</label>
                 <select
                   name="department"
                   value={formData.department}
@@ -154,7 +169,7 @@ const App = () => {
                   <option value="hr">人力資源部</option>
                   <option value="marketing">行銷部</option>
                   <option value="sales">業務部</option>
-                </select>
+                </select> */}
               </div>
               <div>
                 <label className={labelClasses}>職位名稱2</label>
@@ -290,7 +305,7 @@ const App = () => {
                 表單已成功提交！
               </div>
             )}
-          </form>
+          {/* </form> */}
         </div>
 
         {/* 底部數據預覽 */}

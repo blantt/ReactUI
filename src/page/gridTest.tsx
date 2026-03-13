@@ -202,7 +202,7 @@ const Example = () => {
      <h1>api grid have transform</h1>
         <div >
           <DataGridApi
-          PageSize={5}
+            PageSize={5}
             columns={[
               { name: 'empno', type: 'input', showname: '員工編號', colSpan: 1, widthcss: 'minmax(80px,120px)' },
               { name: 'fullname', type: 'input', showname: '全名', colSpan: 1 }

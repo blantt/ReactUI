@@ -247,6 +247,7 @@ const MyTempUI: React.FC = () => {
                             { name: 'Age', type: 'input', colSpan: 1 },
                             { name: 'Email', type: 'hyperlink', colSpan: 2 },
                         ]}
+                        value='Bob'
                         keyValue='Name' keyText='Email' gridCols={4}
 
                     />
@@ -259,6 +260,7 @@ const MyTempUI: React.FC = () => {
                             { name: 'Age', type: 'input', colSpan: 1 },
                             { name: 'Email', type: 'hyperlink', colSpan: 2 },
                         ]}
+                        value='boyQQ'
                         keyValue='Name' keyText='Email' gridCols={4}
 
                     />
@@ -271,6 +273,7 @@ const MyTempUI: React.FC = () => {
                             { name: 'Age', type: 'input', colSpan: 1 },
                             { name: 'Email', type: 'input', colSpan: 2 },
                         ]}
+                        value='blanttQQ2233'
                         keyValue='Name' keyText='Email' gridCols={4}
 
                     />

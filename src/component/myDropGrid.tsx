@@ -102,6 +102,7 @@ interface DropdownProps {
   emptyText?: string; // 空白選項顯示文字
   style1?: 'default' | 'vistaBlue';
   className?: string;
+  value?: string; // 用於綁定選擇值的屬性
 }
 
 export interface FileItem {
@@ -111,7 +112,7 @@ export interface FileItem {
 export const transformToFormField = apitransform;
 
 const MyDropDown: React.FC<DropdownProps> = ({ data, columns, apiUrl, onSelect, keyValue, keyText, gridCols
-  , useSearch, havecheckbox, useBar, widthCss = "w-48", emptyText = "請選擇", style1 = 'default', className = "" }) => {
+  , useSearch, havecheckbox, useBar, widthCss = "w-48", emptyText = "請選擇", style1 = 'default', className = "", value }) => {
   // 狀態：管理下拉選單是否展開  
   const [isOpen, setIsOpen] = useState(false);
   // 狀態：儲存當前選擇的選項
@@ -131,6 +132,49 @@ const MyDropDown: React.FC<DropdownProps> = ({ data, columns, apiUrl, onSelect, 
   const handleToggle = () => {
     setIsOpen(!isOpen);
   };
+
+  // 新增：內部資料狀態，用於 apiUrl 模式
+  const [internalData, setInternalData] = useState<Array<Record<string, FormField>> | undefined>(data);
+
+  // 當 apiUrl 存在時，在此元件也 fetch 一份資料
+  // 這樣做的好處是可以在下拉選單內部使用同一份資料，避免 DataGridApi 內部重複 fetch，並且可以在這裡統一處理資料轉換
+  useEffect(() => {
+    if (apiUrl) {
+      const fetchData = async () => {
+        try {
+          const response = await fetch(apiUrl);
+          if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+          const jsonData = await response.json();
+          // 使用相同的 transform 轉換資料
+          const transformed = transformToFormField(jsonData, columns);
+          setInternalData(transformed);
+        } catch (error) {
+          console.error('MyDropDown fetch error:', error);
+        }
+      };
+      fetchData();
+    }
+  }, [apiUrl]);
+
+  // 當 data prop 變化時，同步更新 internalData
+  useEffect(() => {
+    if (data) {
+      setInternalData(data);
+    }
+  }, [data]);
+
+
+  // 當 value 或 internalData 變化時，找到對應的預設選項
+  useEffect(() => {
+    if (value && internalData && keyValue) {
+      const found = internalData.find(item => item[keyValue]?.value === value);
+      if (found) {
+        setSelectedOption(found);
+      }
+    } else if (!value) {
+      setSelectedOption(null);
+    }
+  }, [value, internalData, keyValue]);
 
   // 點擊外部時關閉下拉選單
   useEffect(() => {
@@ -158,18 +202,18 @@ const MyDropDown: React.FC<DropdownProps> = ({ data, columns, apiUrl, onSelect, 
     setIsOpen(false); // 收起下拉選單
 
   };
+
+
   return (
     VistaStyles(),
-    <div className="relative inline-block text-left" ref={dropdownRef}>
-      <div>
-
+    <div className="relative inline-block text-left  w-full " ref={dropdownRef}>
+      <div className=' w-full flex justify-center   '>
 
         <button
 
-
           className={cn(`relative flex items-center justify-center ${widthCss} rounded-md border   border-gray-300 shadow-sm px-4 py-2 bg-slate-100  text-sm font-medium
           text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 
-          focus:ring-offset-2 focus:ring-indigo-500 `, `${styles[style1] || styles.default}  ${className} `)}
+          focus:ring-offset-2 focus:ring-indigo-500   `, `${styles[style1] || styles.default}  ${className} `)}
           onClick={handleToggle} >
 
           {/* <div className="absolute left-1">
@@ -215,9 +259,21 @@ const MyDropDown: React.FC<DropdownProps> = ({ data, columns, apiUrl, onSelect, 
             {/* 渲染 DataGrid2，並處理其點選事件 */}
             {/* onRowClick={handleSelect} */}
 
-            <DataGridApi
+            {/* <DataGridApi
               columns={columns}
               data={data} apiUrl={apiUrl} gridCols={mygridCols}
+              onRowClick={item => handleSelect(item)}
+              useSearch={useSearch}
+              havecheckbox={havecheckbox}
+              useBar={useBar}
+            /> */}
+
+            <DataGridApi
+              columns={columns}
+              // 優先使用 internalData（已包含 api fetch 的資料），避免重複 fetch
+              data={internalData}
+              apiUrl={internalData ? undefined : apiUrl}  // 若已有資料就不再讓子元件 fetch
+              gridCols={mygridCols}
               onRowClick={item => handleSelect(item)}
               useSearch={useSearch}
               havecheckbox={havecheckbox}
