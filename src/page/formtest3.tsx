@@ -21,7 +21,8 @@ const App = () => {
     salaryType: '',
     notes: '',
     testdrop: '',
-    ClassID: '5'
+    ClassID: '5',
+    userC:'boyQQ'
   });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -71,7 +72,8 @@ const App = () => {
       salaryType: '',
       notes: '',
       testdrop: '',
-      ClassID: '5'
+      ClassID: '5',
+      userC:''
     });
   };
 
@@ -153,6 +155,13 @@ const App = () => {
                             { name: 'Age', type: 'input', colSpan: 1 },
                             { name: 'Email', type: 'input', colSpan: 2 },
                         ]}
+                        value={formData.userC}
+                        onSelect={(value) =>
+                         // alert(`Clicked Name: ${value['Name']?.value}, Age: ${value['Age']?.value}`) 
+                         funcsetFormData('userC',  `${value['Name']?.value}`) 
+                         // funcsetFormData('userC', value.Name)
+                          }
+  
                         keyValue='Name' keyText='Email' gridCols={4}
 
                     />

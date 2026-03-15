@@ -29,7 +29,7 @@ const MyTempUI: React.FC = () => {
 
               </div>
 
-              <TextInput placeholder="這是simple ui的TextInput" py={1} othercss=' w-60'  
+              <TextInput placeholder="這是simple ui的TextInput"   
                  onChange={() => {}}/>
 
 

@@ -195,12 +195,14 @@ const MyDropDown: React.FC<DropdownProps> = ({ data, columns, apiUrl, onSelect, 
   if (useBar) {
     cssUserbar = " h-full overflow-y-auto "
   }
-
+  //onSelect
   //handleGridSelect 是要給 DataGrid2 用的點選事件處理函數
   const handleSelect = (option: FileItem) => {
     setSelectedOption(option); // 更新當前選擇的選項
     setIsOpen(false); // 收起下拉選單
-
+    if (onSelect) {
+      onSelect(option); // 調用外部傳入的 onSelect 回調
+    }
   };
 
 
@@ -274,7 +276,9 @@ const MyDropDown: React.FC<DropdownProps> = ({ data, columns, apiUrl, onSelect, 
               data={internalData}
               apiUrl={internalData ? undefined : apiUrl}  // 若已有資料就不再讓子元件 fetch
               gridCols={mygridCols}
-              onRowClick={item => handleSelect(item)}
+              onRowClick={(item) => {
+                handleSelect(item);
+                }}
               useSearch={useSearch}
               havecheckbox={havecheckbox}
               useBar={useBar}
