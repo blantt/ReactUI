@@ -1,9 +1,9 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect,useMemo } from "react";
 import Button from "../component/button";
 import MyGetApi, { useMyApi } from "../component/myGetApi";
 import Loading from '../component/myload';
-
+import DataGridApi, { transformToFormField as apitransform } from '../component/myDataGrid';
 //import { MyGetApi } from 'fish-reactui';
 export default function app() {
 
@@ -28,7 +28,7 @@ export default function app() {
         }
     });
 
-
+    
     // 初始化 API Hook
     const { loading: loading3, error: error3, data: data3, status: status3, execute: execute3 } = useMyApi({
         apiUrl: 'https://editor.4kids.com.tw/Portal/apitest/HandlerApiTest.ashx?func=Cehck輪班制一例一休',
@@ -36,24 +36,15 @@ export default function app() {
         asJson: true,
     });
 
-    // 呼叫 API,useEffect範例,是一進入頁面就執行
-    // useEffect(() => {
-    //     fetch("http://localhost:3001/api/data") // 替換為你的 API URL
-    //         .then((response) => {
-    //             if (!response.ok) {
-    //                 throw new Error("Network response was not ok");
-    //             }
-    //             return response.json();
-    //         })
-    //         .then((data) => {
-    //             setData(data);
-    //             setLoading(false);
-    //         })
-    //         .catch((error) => {
-    //             setError(error.message);
-    //             setLoading(false);
-    //         });
-    // }, []);
+      // 用 useMemo，只在 data3 變更時重新轉換，且確保 data3 有值
+    const transformedData_api = useMemo(() => {
+        if (!data3 || !Array.isArray(data3)) return [];
+        return apitransform(data3, [
+            { name: 'empno', type: 'input', showname: 'empno', colSpan: 1  },
+            { name: 'fullname', type: 'input', showname: 'fullname', colSpan: 1 },
+           
+        ]);
+    }, [data3]); // 依賴 data3，data3 更新時才重新執行
 
     // 按下按鈕時觸發 API 呼叫
     const fetchData = () => {
@@ -170,25 +161,21 @@ export default function app() {
                     )}
                 </div>
             </div>
-
-            {/* 結果區域 */}
-            <div className="relative group">
-                <div className="flex justify-between items-center mb-2">
-                    <label className="text-xs font-bold text-gray-400 uppercase">Response Data</label>
-                    {data3 && <span className="text-[10px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-bold">SUCCESS</span>}
-                </div>
-                <div className="w-full bg-gray-900 rounded-xl p-6 min-h-[160px] overflow-hidden">
-                    {data3 ? (
-                        <pre className="text-emerald-400 font-mono text-xs leading-relaxed overflow-auto max-h-[300px] scrollbar-thin scrollbar-thumb-gray-700">
-                            {JSON.stringify(data3, null, 2)}
-                        </pre>
-                    ) : (
-                        <div className="h-full flex items-center justify-center text-gray-600 text-sm italic">
-                            {loading3 ? '正在解析資料回傳中...' : '尚未發送請求或無回傳資料'}
-                        </div>
-                    )}
-                </div>
-            </div>
+     
+            
+           <h2 className="mt-10">使用轉換函式後的 DataGridApi:(grid目前沒接收到值??..有空再研究)</h2>
+            <DataGridApi
+                columns={[
+                    { name: 'empno', type: 'input', colSpan: 1 },
+                    { name: 'fullname', type: 'input', colSpan: 1 },
+                ]}
+                //  data={data}    // 原本的data
+                data={transformedData_api}   // 使用轉換後的data
+                //gridCols={4}
+                onRowClick={(item) => {
+                   // alert(`Clicked Name: ${item['Name']?.value}, Age: ${item['Age']?.value}`);
+                }}
+            />
         </div>
 
     )
