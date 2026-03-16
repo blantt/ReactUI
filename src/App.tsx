@@ -65,11 +65,11 @@ const Tab1 = () => {
   return (
     <div>
       <div className="space-x-4">
-      
-         <Button label="formTest3" onClick={() => callUrl("formTest3")} />
-  <Button label="testfileupload" onClick={() => callUrl("testfileupload")} />
-          
-         <Button label="FBalert" onClick={() => callUrl("FBalert")} />
+
+        <Button label="formTest3" onClick={() => callUrl("formTest3")} />
+        <Button label="testfileupload" onClick={() => callUrl("testfileupload")} />
+        <Button label="testapihook" onClick={() => callUrl("testapihook")} />
+        <Button label="FBalert" onClick={() => callUrl("FBalert")} />
         <Button label="FBmodal" onClick={() => callUrl("FBmodal")} />
         <Button label="FBDatePicker" onClick={() => callUrl("FBDatePicker")} />
         <Button label="testfileControl" onClick={() => callUrl("fileControl")} />
@@ -79,6 +79,7 @@ const Tab1 = () => {
         <Button label="formTest2" onClick={() => callUrl("formTest2")} />
         <Button label="flowbite" onClick={() => callUrl("flowbite")} />
         <Button label="textOtc" onClick={() => callUrl("textOtc")} />
+
 
 
       </div>
@@ -96,17 +97,17 @@ const Tab1 = () => {
       <div className="space-x-4 pt-3">
         <Button label="testVista" onClick={() => callUrl("testVista")} />
         <Button label="uiTemplate" onClick={() => callUrl("uiTemplate")} />
-        <Button label="myTempUI" onClick={() => callUrl("myTempUI")} />  
-        <Button label="myTempUI2" onClick={() => callUrl("myTempUI2")} />  
+        <Button label="myTempUI" onClick={() => callUrl("myTempUI")} />
+        <Button label="myTempUI2" onClick={() => callUrl("myTempUI2")} />
         <Button label="Grid說明文件" onClick={() => callUrl("docGrid")} />
         <Button label="simpleUI" onClick={() => callUrl("simpleUI")} />
-      
+
       </div>
-       <div className="space-x-4 pt-3">
-          <Button label="menuTest" onClick={() => callUrl("menuTest")} />
-          <Button label="menu元件版" onClick={() => callUrl("menuTest2")} />
-         <Button label="testMaster" onClick={() => callUrl("testMaster")} />
-       </div>
+      <div className="space-x-4 pt-3">
+        <Button label="menuTest" onClick={() => callUrl("menuTest")} />
+        <Button label="menu元件版" onClick={() => callUrl("menuTest2")} />
+        <Button label="testMaster" onClick={() => callUrl("testMaster")} />
+      </div>
     </div>
   );
 };
@@ -118,7 +119,7 @@ const Tab2 = () => {
 
         <Button label="考題檢視" onClick={() => callUrl("otcTest")} />
         <Button label="考題測試" onClick={() => callUrl("otcTest2")} />
-        
+
       </div>
     </div>
   );
