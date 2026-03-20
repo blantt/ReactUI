@@ -143,6 +143,40 @@ export const transformToFormField = (data: any[], keyValue?: string, keyText?: s
 
 };
 
+/**
+ * ### MyDropDown 下拉選單元件
+ *
+ * @param {FileItem[]} [options] - 下拉選項資料陣列，每個元素為 `FileItem` 物件（`{ [key: string]: any }`）
+ * @param {string} [keyValue] - 指定 `FileItem` 中作為「值 (value)」的欄位名稱，例如 `"ClassID"`
+ * @param {string} [keyText] - 指定 `FileItem` 中作為「顯示文字 (label)」的欄位名稱，例如 `"ClassName"`
+ * @param {string} [value] - 外部受控值，對應 `keyValue` 欄位的值；變更時會自動同步選取項目
+ * @param {(value: FileItem) => void} [onSelect] - 選取選項後觸發的回調，回傳完整的 `FileItem` 物件
+ * @param {string} [apiUrl] - 遠端資料來源 API URL；設定後元件掛載時自動 fetch 並覆蓋 `options`
+ * @param {boolean} [haveBlank=true] - 是否在選項最前方插入空白「請選擇」選項，預設為 `true`
+ * @param {string} [emptyText="請選擇"] - 未選擇時按鈕上顯示的提示文字，預設為 `"請選擇"`
+ * @param {string} [widthCss="w-48"] - 控制按鈕寬度的 Tailwind CSS class，預設為 `"w-48"`
+ * @param {'default' | 'vistaBlue'} [style1='default'] - 按鈕外觀風格，`'vistaBlue'` 為 Vista 藍色玻璃質感
+ * @param {string} [className] - 額外注入按鈕的 Tailwind / CSS class，優先級高於內建樣式
+ *
+ * @example
+ * // 基本用法（靜態選項）
+ * <MyDropDown
+ *   options={[{ id: 1, name: "選項A" }, { id: 2, name: "選項B" }]}
+ *   keyValue="id"
+ *   keyText="name"
+ *   onSelect={(item) => console.log(item)}
+ * />
+ *
+ * @example
+ * // 遠端 API 資料來源
+ * <MyDropDown
+ *   apiUrl="/api/classes"
+ *   keyValue="ClassID"
+ *   keyText="ClassName"
+ *   value={selectedId}
+ *   onSelect={(item) => setSelectedId(item.ClassID)}
+ * />
+ */
 const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyValue, keyText, haveBlank = true, widthCss = "w-48"
   , emptyText = "請選擇", style1 = 'default', className = "", value }) => {
 
