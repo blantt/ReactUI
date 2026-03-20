@@ -15,6 +15,11 @@ export type MyGetApiProps = {
     }) => React.ReactNode;
 };
 
+/**
+ * ### MyGetApi API 請求元件v3
+ *
+ *  * />
+ */
 const MyGetApi: React.FC<MyGetApiProps> = ({ apiUrl, asJson = true, haveCredentials = false, onProgress, children,
       method = 'GET',       // ✅ 預設 GET
     postData,             // ✅ POST 的資料
@@ -84,6 +89,7 @@ const MyGetApi: React.FC<MyGetApiProps> = ({ apiUrl, asJson = true, haveCredenti
 
 
 //hook版本===================================
+
 export type ApiStatus = 'idle' | 'loading' | 'success' | 'error';
 
 export type MyApiOptions = {
@@ -114,6 +120,11 @@ export type MyGetApi_hook = MyApiOptions & {
     }) => React.ReactNode;
 };
 
+/**
+ * ### useMyApi 自定義 Hook，用於處理 API  
+ *
+ *  * />
+ */
 export const useMyApi = (initialOptions: MyApiOptions): UseMyApiReturn => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<any>(null);
