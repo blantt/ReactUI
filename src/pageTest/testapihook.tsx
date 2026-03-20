@@ -1,4 +1,8 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
+import MyGetApi,{useMyApi as useMyApi2} from '../component/myGetApi';
+
+
+// export { default as MyGetApi, useMyApi   } from './component/myGetApi';
 
 // --- Types 定義 ---
 
@@ -124,11 +128,25 @@ export const useMyApi = (initialOptions: MyApiOptions) => {
 
 const App = () => {
     // 初始化 API Hook
+
+    const { loading: loading2, error : error2, data: data2, status: status2, execute: execute2 } = useMyApi2({
+        apiUrl: 'https://editor.4kids.com.tw/Portal/apitest/HandlerApiTest.ashx?func=Cehck輪班制一例一休',
+        method: 'GET',
+        asJson: true,
+    });
+
+
     const { loading, error, data, status, execute } = useMyApi({
         apiUrl: 'https://editor.4kids.com.tw/Portal/apitest/HandlerApiTest.ashx?func=Cehck輪班制一例一休',
         method: 'GET',
         asJson: true,
     });
+
+    const handleButtonClick2 = () => {
+        // 按下按鈕才觸發 execute
+        //alert('即將發送 API 請求，請查看下方結果區域...');
+        execute2();
+    };
 
     const handleButtonClick = () => {
         // 按下按鈕才觸發 execute
@@ -152,6 +170,30 @@ const App = () => {
                 </div>
 
                 <div className="flex items-center justify-between">
+
+                    <button
+                        onClick={handleButtonClick2}
+                        disabled={loading2}
+                        className={`flex items-center justify-center gap-3 px-8 py-3 rounded-xl font-bold text-white transition-all shadow-lg active:scale-95
+              ${loading2
+                                ? 'bg-gray-400 cursor-not-allowed'
+                                : 'bg-lime-600 shadow-indigo-200'
+                            }`}
+                    >
+                        {loading2 ? (
+                            <>
+                                <svg className="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                                </svg>
+                                傳輸中...
+                            </>
+                        ) : (
+                            '點擊獲取資料(ui版)'
+                        )}
+                    </button>
+
+
                     <button
                         onClick={handleButtonClick}
                         disabled={loading}
@@ -170,7 +212,7 @@ const App = () => {
                                 傳輸中...
                             </>
                         ) : (
-                            '點擊獲取資料'
+                            '點擊獲取資料(本頁版測試用)'
                         )}
                     </button>
 
@@ -199,6 +241,25 @@ const App = () => {
                 )}
 
                 {/* 結果區域 */}
+
+                <div className="relative group">
+                    <div className="flex justify-between items-center mb-2">
+                        <label className="text-xs font-bold text-gray-400 uppercase">Response Data(UI)</label>
+                        {data2 && <span className="text-[10px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-bold">SUCCESS</span>}
+                    </div>
+                    <div className="w-full bg-gray-900 rounded-xl p-6 min-h-[160px] overflow-hidden">
+                        {data2 ? (
+                            <pre className="text-emerald-400 font-mono text-xs leading-relaxed overflow-auto max-h-[300px] scrollbar-thin scrollbar-thumb-gray-700">
+                                {JSON.stringify(data2, null, 2)}
+                            </pre>
+                        ) : (
+                            <div className="h-full flex items-center justify-center text-gray-600 text-sm italic">
+                                {loading2 ? '正在解析資料回傳中...' : '尚未發送請求或無回傳資料'}
+                            </div>
+                        )}
+                    </div>
+                </div>
+
                 <div className="relative group">
                     <div className="flex justify-between items-center mb-2">
                         <label className="text-xs font-bold text-gray-400 uppercase">Response Data</label>

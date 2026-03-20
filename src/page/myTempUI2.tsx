@@ -11,7 +11,8 @@ import { Button2 } from "../component/button";
 import { DiscordIcon, AnotherIcon, AnotherIcon2 } from "../component/mySvg";
 import type { FileItem as DropdownOption } from '../component/myDropGrid'; // 匯入 FileItem 型別
 import SmartModal from '../component/SmartModal';
-import MyGetApi from '../component/myGetApi';
+ 
+import MyGetApi,{useMyApi} from '../component/myGetApi';
 
 const app: React.FC = () => {
 
@@ -20,7 +21,7 @@ const app: React.FC = () => {
     const [showApi, setShowApi] = useState(false);
     const [apiUrl一例一休, setApiUrl] = useState("");
 
-  
+    
     const fetchData = async () => {
 
         try {
