@@ -9,7 +9,7 @@ export { default as Mytab} from './component/myTab';
 export { default as Loading} from './component/myload';
 export { default as Modal} from './component/myModal';
 export { default as AppTitle} from './component/header';
-export { default as MyGetApi, useMyApi, type MyApiOptions, type ApiStatus, type MyGetApi_hook } from './component/myGetApi';
+export { default as MyGetApi, useMyApi, type MyApiOptions, type ApiStatus, type MyGetApi_hook, type UseMyApiReturn } from './component/myGetApi';
 export { default as TextInput} from './component/simpleUI'; 
 export { default as NavItem, MenuItem, type MenuItemData } from './component/myMenuItem';
  

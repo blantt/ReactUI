@@ -95,6 +95,14 @@ export type MyApiOptions = {
     onProgress?: (status: ApiStatus, data?: any, error?: any) => void;
 };
 
+export type UseMyApiReturn = {
+    loading: boolean;
+    error: any;
+    data: any;
+    status: ApiStatus;
+    execute: (overrideOptions?: Partial<MyApiOptions>) => Promise<void>;
+};
+
 
 export type MyGetApi_hook = MyApiOptions & {
     children?: (args: {
@@ -106,7 +114,7 @@ export type MyGetApi_hook = MyApiOptions & {
     }) => React.ReactNode;
 };
 
-export const useMyApi = (initialOptions: MyApiOptions) => {
+export const useMyApi = (initialOptions: MyApiOptions): UseMyApiReturn => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<any>(null);
     const [data, setData] = useState<any>(null);
