@@ -106,7 +106,7 @@ export type UseMyApiReturn = {
     error: any;
     data: any;
     status: ApiStatus;
-    execute: (overrideOptions?: Partial<MyApiOptions>) => Promise<void>;
+   execute: (overrideOptions?: Partial<MyApiOptions>) => Promise<any | null>; // ✅ 改為回傳 any
 };
 
 
@@ -116,7 +116,7 @@ export type MyGetApi_hook = MyApiOptions & {
         error: any;
         data: any;
         status: ApiStatus;
-        execute: (overrideOptions?: Partial<MyApiOptions>) => Promise<void>;
+        execute: (overrideOptions?: Partial<MyApiOptions>) => Promise<any | null>;
     }) => React.ReactNode;
 };
 
@@ -153,7 +153,7 @@ export const useMyApi = (initialOptions: MyApiOptions): UseMyApiReturn => {
         const options = { ...optionsRef.current, ...overrideOptions };
         const { apiUrl, asJson = true, haveCredentials = false, method = 'GET', postData, onProgress } = options;
 
-        if (!isMounted.current) return;
+        if (!isMounted.current) return null;
 
         setLoading(true);
         setError(null);
@@ -192,7 +192,9 @@ export const useMyApi = (initialOptions: MyApiOptions): UseMyApiReturn => {
                 setStatus('success');
                 setLoading(false);
                 onProgress?.('success', result, null);
+                 return result; // ✅ 加上這行！原本漏掉了
             }
+             return null; // ✅ isMounted 為 false 時
         } catch (err) {
             if (isMounted.current) {
                 setError(err);
@@ -200,6 +202,7 @@ export const useMyApi = (initialOptions: MyApiOptions): UseMyApiReturn => {
                 setLoading(false);
                 onProgress?.('error', null, err);
             }
+             return null; // ✅ 錯誤時
         }
      }, []); // ✅ 不需要依賴任何東西
 

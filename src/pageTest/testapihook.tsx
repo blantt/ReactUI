@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-//import MyGetApi,{useMyApi as useMyApi2} from '../component/myGetApi';
-import { MyGetApi,useMyApi as useMyApi2} from 'fish-reactui';
+import MyGetApi,{useMyApi as useMyApi2} from '../component/myGetApi';
+ import { Button } from 'fish-reactui';
 
 // export { default as MyGetApi, useMyApi   } from './component/myGetApi';
 
@@ -142,7 +142,37 @@ const App = () => {
         asJson: true,
     });
 
-   
+    const handle_async = async () => {
+        const baseApiUrl = 'https://editor.4kids.com.tw/Portal/apitest/HandlerApiTest.ashx?func=Cehck輪班制一例一休';
+        const version = Date.now(); // 使用 timestamp 模擬版本號，確保每次請求都是新的
+        const dynamicUrl = `${baseApiUrl}&v=${version}`;
+        
+        try {
+            // 1. 等待 API 執行完成並取得結果
+            const result = await execute2({ apiUrl: dynamicUrl });
+            
+            // 2. 只有在成功回傳且有結果時才進行後續處理
+            if (result) {
+                console.log('API 呼叫成功，開始額外處理數據:', result);
+                
+                // 範例：對結果進行加工（例如加上處理時間標記）
+                const enhancedData = {
+                    ...result,
+                    processedAt: new Date().toLocaleTimeString(),
+                    note: "這是經過 handleCheck 額外處理後的資料"
+                };
+                alert('' + JSON.stringify(enhancedData, null, 2));
+            //    setProcessedInfo(enhancedData);
+                // 你也可以在這裡觸發導向、跳出通知(Toast)等動作
+            }
+        } catch (err) {
+            // 這裡可以處理「僅限於這一次點擊」的錯誤邏輯
+            console.error('執行過程中發生錯誤:', err);
+            alert('執行過程中發生錯誤: ' + String(err));
+           // setProcessedInfo(null);
+        }
+
+    }
 
     const handleButtonClick2 = () => {
         // 按下按鈕才觸發 execute
@@ -176,6 +206,10 @@ const App = () => {
                 </div>
 
                 <div className="flex items-center justify-between">
+
+                  <Button label='async版本'    onClick={handle_async}>
+
+                  </Button>
 
                     <button
                         onClick={handleButtonClick2}
