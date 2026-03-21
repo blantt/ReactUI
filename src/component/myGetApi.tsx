@@ -192,9 +192,13 @@ export const useMyApi = (initialOptions: MyApiOptions): UseMyApiReturn => {
                 setStatus('success');
                 setLoading(false);
                 onProgress?.('success', result, null);
-                 return result; // ✅ 加上這行！原本漏掉了
+                // return result;  
+                 // 明確 Return 給外部呼叫者 (handleCheck)
+                // 這裡回傳的是一個全新的物件，外部透過 await execute() 就能立刻解構出這些欄位
+                // 這樣可以避開 React State 更新緩慢（下一次 Render 才生效）的問題
+                    return { data: result, status: 'success', error: null };
             }
-             return null; // ✅ isMounted 為 false 時
+             return { data: null, status: 'idle', error: null }; // ✅ isMounted 為 false 時
         } catch (err) {
             if (isMounted.current) {
                 setError(err);
@@ -202,7 +206,7 @@ export const useMyApi = (initialOptions: MyApiOptions): UseMyApiReturn => {
                 setLoading(false);
                 onProgress?.('error', null, err);
             }
-             return null; // ✅ 錯誤時
+             return { data: null, status: 'error', error: err }; // ✅ 錯誤時
         }
      }, []); // ✅ 不需要依賴任何東西
 

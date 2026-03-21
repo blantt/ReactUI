@@ -1,135 +1,18 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import MyGetApi,{useMyApi as useMyApi2} from '../component/myGetApi';
+import MyGetApi,{useMyApi  } from '../component/myGetApi';
  import { Button } from 'fish-reactui';
 
 // export { default as MyGetApi, useMyApi   } from './component/myGetApi';
 
 // --- Types 定義 ---
 
-/** API 狀態類型 */
-type ApiStatus = 'idle' | 'loading' | 'success' | 'error';
-
-/** API 配置項類型 */
-type MyApiOptions = {
-    apiUrl: string;
-    asJson?: boolean;
-    haveCredentials?: boolean;
-    method?: 'GET' | 'POST';
-    postData?: Record<string, any>;
-    onProgress?: (status: ApiStatus, data?: any, error?: any) => void;
-};
-
-// --- Custom Hook: useMyApi ---
-
-/**
- * 自定義 Hook，用於處理 API 請求3
- * 採用 Latest Ref Pattern 以確保 execute 函式的穩定性
- */
-export const useMyApi = (initialOptions: MyApiOptions) => {
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<any>(null);
-    const [data, setData] = useState<any>(null);
-    const [status, setStatus] = useState<ApiStatus>('idle');
-
-    const isMounted = useRef(true);
-    const optionsRef = useRef(initialOptions);
-    const abortControllerRef = useRef<AbortController | null>(null);
-
-    // 同步最新的配置到 Ref 中
-    useEffect(() => {
-        optionsRef.current = initialOptions;
-    });
-
-    // 元件卸載時的清理動作
-   useEffect(() => {
-        isMounted.current = true;  // ✅ 每次掛載時重設為 true
-
-        return () => {
-            console.log("元件卸載時的清理動作");
-            isMounted.current = false;
-            abortControllerRef.current?.abort();
-        };
-    }, []);
-
-    const execute = useCallback(async (overrideOptions?: Partial<MyApiOptions>) => {
-        const options = { ...optionsRef.current, ...overrideOptions };
-        const { apiUrl, asJson = true, haveCredentials = false, method = 'GET', postData, onProgress } = options;
-
-        console.log('開始 API 請求:', apiUrl);
-
-        console.log("loading current..", isMounted.current)
-
-        if (!isMounted.current) return;
-
-
-        console.log("loading1..")
-
-        // 取消先前的請求，避免 Race Condition
-        abortControllerRef.current?.abort();
-        abortControllerRef.current = new AbortController();
-
-        setLoading(true);
-        setError(null);
-        setStatus('loading');
-        onProgress?.('loading');
-
-        console.log("loading2..")
-
-        try {
-            const fetchOptions: RequestInit = {
-                signal: abortControllerRef.current.signal
-            };
-
-            if (haveCredentials) {
-                fetchOptions.credentials = 'include';
-            }
-
-            if (method === 'POST' && postData) {
-                fetchOptions.method = 'POST';
-                fetchOptions.headers = {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                };
-                fetchOptions.body = new URLSearchParams(postData).toString();
-            }
-
-            const response = await fetch(apiUrl, fetchOptions);
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
-            let result: any;
-            if (asJson) {
-                const raw = await response.json();
-                result = typeof raw === 'string' ? JSON.parse(raw) : raw;
-            } else {
-                result = await response.text();
-            }
-
-            if (isMounted.current) {
-                setData(result);
-                setStatus('success');
-                setLoading(false);
-                onProgress?.('success', result, null);
-            }
-        } catch (err: any) {
-            if (err.name === 'AbortError') return;
-
-            if (isMounted.current) {
-                setError(err);
-                setStatus('error');
-                setLoading(false);
-                onProgress?.('error', null, err);
-            }
-        }
-    }, []);
-
-    return { loading, error, data, status, execute };
-};
-
+ 
 // --- 主要範例元件 ---
 
 const App = () => {
     // 初始化 API Hook
 
-    const { loading: loading2, error : error2, data: data2, status: status2, execute: execute2 } = useMyApi2({
+    const { loading: loading2, error : error2, data: data2, status: status2, execute: execute2 } = useMyApi({
         apiUrl: 'xxx',
         method: 'GET',
         asJson: true,
@@ -153,15 +36,17 @@ const App = () => {
             
             // 2. 只有在成功回傳且有結果時才進行後續處理
             if (result) {
-                console.log('API 呼叫成功，開始額外處理數據:', result);
-                
+                  
+               alert('API 執行完成，開始處理結果aa...status: ' + result.status);  ;
+                alert('API 執行完成，開始處理結果...data2: ' + JSON.stringify(result.data, null, 2));
+                 console.log('API 執行完成，開始處理結果...result: ', result);
                 // 範例：對結果進行加工（例如加上處理時間標記）
-                const enhancedData = {
-                    ...result,
-                    processedAt: new Date().toLocaleTimeString(),
-                    note: "這是經過 handleCheck 額外處理後的資料"
-                };
-                alert('' + JSON.stringify(enhancedData, null, 2));
+                // const enhancedData = {
+                //     ...result,
+                //     processedAt: new Date().toLocaleTimeString(),
+                //     note: "這是經過 handleCheck 額外處理後的資料"
+                // };
+                // alert('' + JSON.stringify(enhancedData, null, 2));
             //    setProcessedInfo(enhancedData);
                 // 你也可以在這裡觸發導向、跳出通知(Toast)等動作
             }
@@ -207,7 +92,7 @@ const App = () => {
 
                 <div className="flex items-center justify-between">
 
-                  <Button label='async版本'    onClick={handle_async}>
+                  <Button label='async版本a'    onClick={handle_async}>
 
                   </Button>
 
