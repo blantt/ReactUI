@@ -37,7 +37,7 @@ const App = () => {
             // 2. 只有在成功回傳且有結果時才進行後續處理
             if (result) {
                   
-               alert('API 執行完成，開始處理結果aa...status: ' + result.status);  ;
+               alert('API 執行完成，開始處理結果aa...status: ' + result.status); 
                 alert('API 執行完成，開始處理結果...data2: ' + JSON.stringify(result.data, null, 2));
                  console.log('API 執行完成，開始處理結果...result: ', result);
                 // 範例：對結果進行加工（例如加上處理時間標記）

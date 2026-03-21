@@ -91,7 +91,11 @@ const MyGetApi: React.FC<MyGetApiProps> = ({ apiUrl, asJson = true, haveCredenti
 //hook版本===================================
  
 export type ApiStatus = 'idle' | 'loading' | 'success' | 'error';
-
+export type ExecuteResult = {
+    data: any;
+    status: 'success' | 'error' | 'idle';
+    error: any;
+};
 export type MyApiOptions = {
     apiUrl: string;
     asJson?: boolean;
@@ -106,7 +110,7 @@ export type UseMyApiReturn = {
     error: any;
     data: any;
     status: ApiStatus;
-   execute: (overrideOptions?: Partial<MyApiOptions>) => Promise<any | null>; // ✅ 改為回傳 any
+  execute: (overrideOptions?: Partial<MyApiOptions>) => Promise<ExecuteResult | null>;
 };
 
 
@@ -116,7 +120,7 @@ export type MyGetApi_hook = MyApiOptions & {
         error: any;
         data: any;
         status: ApiStatus;
-        execute: (overrideOptions?: Partial<MyApiOptions>) => Promise<any | null>;
+        execute: (overrideOptions?: Partial<MyApiOptions>) => Promise<ExecuteResult | null>;
     }) => React.ReactNode;
 };
 
@@ -196,9 +200,9 @@ export const useMyApi = (initialOptions: MyApiOptions): UseMyApiReturn => {
                  // 明確 Return 給外部呼叫者 (handleCheck)
                 // 這裡回傳的是一個全新的物件，外部透過 await execute() 就能立刻解構出這些欄位
                 // 這樣可以避開 React State 更新緩慢（下一次 Render 才生效）的問題
-                    return { data: result, status: 'success', error: null };
+                    return { data: result, status: 'success' as const, error: null };
             }
-             return { data: null, status: 'idle', error: null }; // ✅ isMounted 為 false 時
+             return { data: null, status: 'idle' as const, error: null }; // ✅ isMounted 為 false 時
         } catch (err) {
             if (isMounted.current) {
                 setError(err);
@@ -206,7 +210,7 @@ export const useMyApi = (initialOptions: MyApiOptions): UseMyApiReturn => {
                 setLoading(false);
                 onProgress?.('error', null, err);
             }
-             return { data: null, status: 'error', error: err }; // ✅ 錯誤時
+             return { data: null, status: 'error' as const, error: err }; // ✅ 錯誤時
         }
      }, []); // ✅ 不需要依賴任何東西
 
