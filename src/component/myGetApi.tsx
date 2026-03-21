@@ -89,7 +89,7 @@ const MyGetApi: React.FC<MyGetApiProps> = ({ apiUrl, asJson = true, haveCredenti
 
 
 //hook版本===================================
-
+ 
 export type ApiStatus = 'idle' | 'loading' | 'success' | 'error';
 
 export type MyApiOptions = {
@@ -122,7 +122,7 @@ export type MyGetApi_hook = MyApiOptions & {
 
 /**
  * ### useMyApi 自定義 Hook，用於處理 API  
- *
+ * ApiStatus = 'idle' | 'loading' | 'success' | 'error'
  *  * />
  */
 export const useMyApi = (initialOptions: MyApiOptions): UseMyApiReturn => {
@@ -148,7 +148,7 @@ export const useMyApi = (initialOptions: MyApiOptions): UseMyApiReturn => {
            
         };
     }, []);
-
+    // 命令式觸發模式, execute 函式接受可選的覆蓋選項，允許在執行時動態修改 API 請求參數
     const execute = useCallback(async (overrideOptions?: Partial<MyApiOptions>) => {
         const options = { ...optionsRef.current, ...overrideOptions };
         const { apiUrl, asJson = true, haveCredentials = false, method = 'GET', postData, onProgress } = options;
@@ -159,7 +159,7 @@ export const useMyApi = (initialOptions: MyApiOptions): UseMyApiReturn => {
         setError(null);
         setStatus('loading');
         onProgress?.('loading');
-
+              
         try {
             const fetchOptions: RequestInit = {};
             

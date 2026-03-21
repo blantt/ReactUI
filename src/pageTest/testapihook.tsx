@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import MyGetApi,{useMyApi as useMyApi2} from '../component/myGetApi';
-
+//import MyGetApi,{useMyApi as useMyApi2} from '../component/myGetApi';
+import { MyGetApi,useMyApi as useMyApi2} from 'fish-reactui';
 
 // export { default as MyGetApi, useMyApi   } from './component/myGetApi';
 
@@ -130,7 +130,7 @@ const App = () => {
     // 初始化 API Hook
 
     const { loading: loading2, error : error2, data: data2, status: status2, execute: execute2 } = useMyApi2({
-        apiUrl: 'https://editor.4kids.com.tw/Portal/apitest/HandlerApiTest.ashx?func=Cehck輪班制一例一休',
+        apiUrl: 'xxx',
         method: 'GET',
         asJson: true,
     });
@@ -142,10 +142,16 @@ const App = () => {
         asJson: true,
     });
 
+   
+
     const handleButtonClick2 = () => {
         // 按下按鈕才觸發 execute
         //alert('即將發送 API 請求，請查看下方結果區域...');
-        execute2();
+        // 在執行時動態組合 URL 並透過 execute2 的參數進行覆蓋
+        const baseApiUrl = 'https://editor.4kids.com.tw/Portal/apitest/HandlerApiTest.ashx?func=Cehck輪班制一例一休';
+        const version = Date.now(); // 使用 timestamp 模擬版本號，確保每次請求都是新的
+        const dynamicUrl = `${baseApiUrl}&v=${version}`;
+        execute2({ apiUrl: dynamicUrl });
     };
 
     const handleButtonClick = () => {
