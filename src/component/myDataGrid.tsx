@@ -270,17 +270,13 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
             fetchData();
         }
     }, [apiUrl, customTransform, refreshKey]); // 當 apiUrl 或 customTransform 變化時重新抓取資料
-
-
-
-
+ 
     const handlePageChange = (newPage: number) => {
         if (newPage > 0 && newPage <= totalPages) {
             setCurrentPage(newPage);
         }
     };
-
-
+ 
     const [checkItems, setCheckItems] = useState<Array<Record<string, FormField>>>([]);
 
     // 有在使用者點選 checkbox 時，才會觸發 onCheckItemsChange，checkedItems_old 
