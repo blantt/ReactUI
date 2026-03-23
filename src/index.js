@@ -13,7 +13,7 @@ export { default as AppTitle } from './component/header';
 export { default as Modal } from './component/myModal';
 export { LoadingInline } from './component/myload';
 export { TextInput } from './component/simpleUI';
-export { default as Alert } from './component/myAlert';
+export { default as MyAlert } from './component/myAlert';
 export { default as MyGetApi, useMyApi } from './component/myGetApi';
 export { default as NavItem, MenuItem } from './component/myMenuItem';
  

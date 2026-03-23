@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Alert from '../component/myAlert';
+import MyAlert from '../component/myAlert';
 import { 
   Info, 
   CheckCircle2, 
@@ -95,16 +95,16 @@ export default function App() {
         </div>
 
         <section className="bg-slate-200/50 p-8 rounded-3xl border-2 border-dashed border-slate-300">
-          <Alert 
+          <MyAlert 
             show={alerts.inline} 
             type="info" 
             title="TSX 成功載入" 
             onClose={() => toggle('inline', false)}
           >
             這是一個型別安全的 TypeScript 組件範例。
-          </Alert>
+          </MyAlert>
 
-          <Alert 
+          <MyAlert 
             show={alerts.auto} 
             type="success" 
             position="top-center"
@@ -113,9 +113,9 @@ export default function App() {
             onClose={() => toggle('auto', false)}
           >
             自動關閉邏輯現在受 TS 嚴格檢查。
-          </Alert>
+          </MyAlert>
 
-          <Alert 
+          <MyAlert 
             show={alerts.top} 
             type="warning" 
             position="top-center" 
@@ -124,9 +124,9 @@ export default function App() {
             onClose={() => toggle('top', false)}
           >
             請確認您的所有 Prop 都符合 Interface 定義。
-          </Alert>
+          </MyAlert>
 
-          <Alert 
+          <MyAlert 
             show={alerts.center} 
             type="dark" 
             position="center" 
@@ -145,7 +145,7 @@ export default function App() {
             }
           >
             使用了 Record 型別來處理樣式映射，解決了隱式 any 的問題。
-          </Alert>
+          </MyAlert>
 
           <div className="h-40 flex items-center justify-center text-slate-300 italic">
             頁面主要內容區域...

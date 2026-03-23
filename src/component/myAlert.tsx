@@ -107,7 +107,7 @@ interface ThemeStyle {
  * @param withAccent     是否顯示頂部強調色邊框，預設 `false`
  *
  */
-const Alert: React.FC<AlertProps> = ({
+const MyAlert: React.FC<AlertProps> = ({
   type = 'info',
   position = 'inline',
   title,
@@ -245,4 +245,4 @@ const Alert: React.FC<AlertProps> = ({
 };
 
 
-export default Alert;
+export default MyAlert;
