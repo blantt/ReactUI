@@ -92,6 +92,7 @@ type DataGridProps = {
     borderColor?: string; // 邊框顏色，例如 "border-gray-300"、"border-blue-500" 等 Tailwind CSS 類別
     styleHeader ?: 'default' | 'empty'  | 'yellow' | 'vistaBlue' | 'green1' | 'green2' | 'white1'; 
     //green1 抺茶歐蕾,green2薄荷晨曦,white1 絲絨銀灰
+     refreshKey?: number; // ← 如外部要強制重抓資料時
 };
 
 export const transformToFormField = (data: any[],
@@ -181,12 +182,12 @@ export const transformToFormField = (data: any[],
  *
  * @param {string} [textSize='text-sm'] - 整體字體大小，使用 Tailwind CSS 類別，
  *   例如 `'text-xs'`、`'text-base'`、`'text-lg'`
- *
+ *  @param {number} [refreshKey] - 監聽此值變化以強制重新抓取 API 資料（僅當 `apiUrl` 設定時有效）
  * @param {number} [gridCols] - 手動指定 grid 欄數（目前以 `widthcss` 自動計算為主，較少使用）
  */
 const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className, PageSize, havecheckbox = false,
     onlyCheckedItems = false, useBar = false, useSearch = false, keycol, gridCols, checkedItems_old, onCheckItemsChange, onRowClick
-    , customTransform, useSubSearch = false ,haveCredentials=false,textSize="text-sm", classNameHeader="", classItem=""
+    , customTransform, useSubSearch = false ,haveCredentials=false,textSize="text-sm", classNameHeader="", classItem="",refreshKey
     , borderColor="border-slate-700", styleHeader = 'default' }) => {
 
      const styles = {
@@ -268,7 +269,7 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
 
             fetchData();
         }
-    }, [apiUrl, customTransform]);
+    }, [apiUrl, customTransform, refreshKey]); // 當 apiUrl 或 customTransform 變化時重新抓取資料
 
 
 

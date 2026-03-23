@@ -33,7 +33,7 @@ const app: React.FC = () => {
                         apiUrl="https://clockappservice.english4u.com.tw/api/clock/selectClockWorkClass"
                           value={dropValue} 
                           onSelect={(option) => {
-                            alert(`Selected name, value: ${option.ClassName} (${option.ClassID})`);
+                            //  alert(`Selected name, value: ${option.ClassName} (${option.ClassID})`);
                             setDropValue(option.ClassID);
                         }}
                         refreshKey={dropRefreshKey}
