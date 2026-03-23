@@ -79,6 +79,7 @@ interface DropdownProps {
   style1?: 'default' | 'vistaBlue';
   className?: string;
   value?: string; // 用於綁定選擇值的屬性
+   refreshKey?: number; // ← 如外部要強制重抓資料時
 }
 
 //FileItem 預計是dropdown選項的型別 
@@ -157,7 +158,7 @@ export const transformToFormField = (data: any[], keyValue?: string, keyText?: s
  * @param {string} [widthCss="w-48"] - 控制按鈕寬度的 Tailwind CSS class，預設為 `"w-48"`
  * @param {'default' | 'vistaBlue'} [style1='default'] - 按鈕外觀風格，`'vistaBlue'` 為 Vista 藍色玻璃質感
  * @param {string} [className] - 額外注入按鈕的 Tailwind / CSS class，優先級高於內建樣式
- *
+ * @param {number} [refreshKey] - 監聽此值變化以強制重新抓取 API 資料（僅當 `apiUrl` 設定時有效）
  * @example
  * // 基本用法（靜態選項）
  * <MyDropDown
@@ -178,7 +179,7 @@ export const transformToFormField = (data: any[], keyValue?: string, keyText?: s
  * />
  */
 const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyValue, keyText, haveBlank = true, widthCss = "w-48"
-  , emptyText = "請選擇", style1 = 'default', className = "", value }) => {
+  , emptyText = "請選擇", style1 = 'default', className = "", value, refreshKey }) => {
 
 
   // const [internalOptions, setInternalOptions] = useState<FileItem[]>(options || []);
@@ -238,6 +239,8 @@ const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyVal
 
         // setLoading(true);
         try {
+ 
+         // console.log('drop 抓資料中');
 
           const response = await fetch(apiUrl);
           // const response = await fetch('/data2.json'); //抓在本地的json檔測試用
@@ -247,10 +250,9 @@ const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyVal
           }
 
           const jsonData = await response.json();
-          // console.log('drop jsonData:', jsonData);
-          // options = transformToFormField(jsonData, keyValue, keyText);
+          
           setInternalOptions(transformToFormField(jsonData, keyValue, keyText, haveBlank));
-          // console.log('com in apichange:', internalOptions);
+           
         } catch (error) {
           console.error('Error fetching data:', error);
           alert('資料取得失敗' + error);
@@ -261,7 +263,7 @@ const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyVal
       //dd
       fetchData()
     }
-  }, [apiUrl, keyValue, keyText, haveBlank]); // 修正依賴陣列
+  }, [apiUrl, keyValue, keyText, haveBlank,refreshKey]); // 修正依賴陣列
 
   // 修正3: 當 options prop 改變時更新 internalOptions
   useEffect(() => {

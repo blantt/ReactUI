@@ -117,7 +117,7 @@ export default function App() {
 
           <MyAlert 
             show={alerts.top} 
-            type="warning" 
+            type="failure" 
             position="top-center" 
             withAccent 
             title="安全提醒" 

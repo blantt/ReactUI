@@ -98,6 +98,7 @@ const MyTempUI: React.FC = () => {
     const [isLoading_smartModal, setIsLoading_smartModal] = useState(false);
 
     const [isLoading_modal_test, setIsLoading_modal_test] = useState(false);
+ const [dropRefreshKey, setDropRefreshKey] = useState(0); // 新增 state
 
     const handleButtonClick_modal = () => {
         setIsLoading_modal(true); // 顯示 Loading
@@ -236,7 +237,11 @@ const MyTempUI: React.FC = () => {
                     <MyDropDown keyValue='ClassID' keyText='ClassName' haveBlank={true} emptyText='dropdown(API)選擇'
                         apiUrl="https://clockappservice.english4u.com.tw/api/clock/selectClockWorkClass"
                         onSelect={handleSelect3}
+                         refreshKey={dropRefreshKey}
                     />
+
+                     <Button2 label="重新載入" onClick={() => setDropRefreshKey(prev => prev + 1)} />
+
                 </div>
 
                 <div className="p-2">

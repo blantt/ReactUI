@@ -13,6 +13,7 @@ import GridTest from './page/gridTest';
 import Uitemplabe from './page/uiTemplate';
 import MytempUI from './page/myTempUI';
 import MytempUI2 from './page/myTempUI2';
+import MytempUI3 from './page/myTempUI3';
 import DocGrid from './page/docGrid';
 import OTCtest from './pageAmc1234/OTCtest';
 import OTCtest2 from './pageAmc1234/OTCtest2';
@@ -62,6 +63,7 @@ async function enableMocking() {
           <Route path="/uiTemplate" element={<Uitemplabe />} />
           <Route path="/myTempUI" element={<MytempUI />} />
            <Route path="/myTempUI2" element={<MytempUI2 />} />
+           <Route path="/myTempUI3" element={<MytempUI3 />} />
           <Route path="/docGrid" element={<DocGrid />} />
           <Route path="/otcTest" element={<OTCtest />} />
           <Route path="/otcTest2" element={<OTCtest2 />} />
