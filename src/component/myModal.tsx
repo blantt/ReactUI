@@ -13,7 +13,7 @@ interface ModalProps {
    
 }
 /**
- * ### Modal 元件
+ * ### myModal 元件
  * @param {boolean} isOpen - 控制 Modal 的開啟與關閉
  * @param {() => void} onClose - 關閉 Modal 時觸發的函式
  * @param {string} [title] - Modal 的標題
