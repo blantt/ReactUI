@@ -24,6 +24,21 @@ interface ModalProps {
  * @param {string} [height] - 設定 Modal 的高度
  * @param {boolean} [isAnimating] - 是否啟用動畫效果
  */
+
+
+/**
+ *  ### myModal 元件 v1
+ *
+ * @param {boolean} isOpen - 控制 Modal 的開啟與關閉
+ * @param {() => void} onClose - 關閉 Modal 時觸發的函式
+ * @param {string} [title] - Modal 的標題
+ * @param {React.ReactNode} [children] - Modal 的內容
+ * @param {React.ReactNode} [myHeader] - 自訂的 Modal 標頭，如果提供，將會取代預設的 title
+ * @param {React.ReactNode} [footer] - 自訂的 Modal 頁腳
+ * @param {string} [width] - 設定 Modal 的寬度 (例如: 'w-1/2', 'max-w-lg')
+ * @param {string} [height] - 設定 Modal 的高度
+ * @param {boolean} [isAnimating] - 是否啟用動畫效果
+ */
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, myHeader, footer, width, height }) => {
   if (!isOpen) return null;
 
