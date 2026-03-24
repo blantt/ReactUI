@@ -2,9 +2,9 @@ import React, { useState, useEffect, use } from 'react';
 import { LoadingInline } from './myload';
 import { twMerge } from 'tailwind-merge';
 import { clsx } from 'clsx';
- 
 
- const styles =  /* css */` 
+
+const styles =  /* css */` 
         .vistaBlue {
             background: linear-gradient(to bottom, 
                rgba(212,240,255,0.5) 0%, 
@@ -32,7 +32,7 @@ export const gridStyles = () => {
 };
 
 function cn(...inputs: Array<string | false | null | undefined>) {
-  return twMerge(clsx(inputs));
+    return twMerge(clsx(inputs));
 }
 export interface FormField {
     name: string;
@@ -66,7 +66,7 @@ type DataGridProps = {
         visible?: boolean; // 控制欄位是否可見
         transform?: (value: any) => FormField; // 動態轉換函數
         subSearch?: boolean; // 是否啟用單一欄位搜尋
-      
+
 
     }>;
 
@@ -90,9 +90,9 @@ type DataGridProps = {
     classNameHeader?: string; // 表頭的自定義樣式
     classItem?: string; // 單元格的自定義樣式
     borderColor?: string; // 邊框顏色，例如 "border-gray-300"、"border-blue-500" 等 Tailwind CSS 類別
-    styleHeader ?: 'default' | 'empty'  | 'yellow' | 'vistaBlue' | 'green1' | 'green2' | 'white1'; 
+    styleHeader?: 'default' | 'empty' | 'yellow' | 'vistaBlue' | 'green1' | 'green2' | 'white1';
     //green1 抺茶歐蕾,green2薄荷晨曦,white1 絲絨銀灰
-     refreshKey?: number; // ← 如外部要強制重抓資料時
+    refreshKey?: number; // ← 如外部要強制重抓資料時
 };
 
 export const transformToFormField = (data: any[],
@@ -187,10 +187,10 @@ export const transformToFormField = (data: any[],
  */
 const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className, PageSize, havecheckbox = false,
     onlyCheckedItems = false, useBar = false, useSearch = false, keycol, gridCols, checkedItems_old, onCheckItemsChange, onRowClick
-    , customTransform, useSubSearch = false ,haveCredentials=false,textSize="text-sm", classNameHeader="", classItem="",refreshKey
-    , borderColor="border-slate-700", styleHeader = 'default' }) => {
+    , customTransform, useSubSearch = false, haveCredentials = false, textSize = "text-sm", classNameHeader = "", classItem = "", refreshKey
+    , borderColor = "border-slate-700", styleHeader = 'default' }) => {
 
-     const styles = {
+    const styles = {
         default: ' bg-gradient-to-br from-indigo-100 to-blue-200 backdrop-blur-xl   shadow-lg ',
         empty: ' nocss',
         yellow: '   bg-gradient-to-br from-orange-100/80 to-orange-200/80 backdrop-blur-xl shadow-lg   ',
@@ -235,8 +235,8 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
             const fetchData = async () => {
                 setLoading(true);
                 try {
-                     const fetchOptions: RequestInit = {};
-                    
+                    const fetchOptions: RequestInit = {};
+
                     if (haveCredentials) {
                         fetchOptions.credentials = 'include'; // 如果條件成立，就加入 credentials
                     }
@@ -270,13 +270,13 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
             fetchData();
         }
     }, [apiUrl, customTransform, refreshKey]); // 當 apiUrl 或 customTransform 變化時重新抓取資料
- 
+
     const handlePageChange = (newPage: number) => {
         if (newPage > 0 && newPage <= totalPages) {
             setCurrentPage(newPage);
         }
     };
- 
+
     const [checkItems, setCheckItems] = useState<Array<Record<string, FormField>>>([]);
 
     // 有在使用者點選 checkbox 時，才會觸發 onCheckItemsChange，checkedItems_old 
@@ -309,9 +309,9 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
 
 
     const [searchText, setSearchText] = useState('');
-     // 新增一個 state 來儲存每個欄位的搜尋文字
+    // 新增一個 state 來儲存每個欄位的搜尋文字
     const [subSearchTexts, setSubSearchTexts] = useState<Record<string, string>>({});
-     // 處理子搜尋欄位變更的函式
+    // 處理子搜尋欄位變更的函式
     const handleSubSearchChange = (colName: string, value: string) => {
         setSubSearchTexts(prev => ({
             ...prev,
@@ -385,12 +385,11 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
 
     const gridColsStyle = `grid-cols-[${gridTemplate}]`;
 
-  
     return (
- // gridStyles(); // 確保樣式被注入
-   
-   <div className={` ${cssUserbar} relative ${textSize} border border-gray-300  bg-slate-100  rounded-md`}>
-       {gridStyles()}
+        // gridStyles(); // 確保樣式被注入
+
+        <div className={` ${cssUserbar} relative ${textSize} border border-gray-300  bg-slate-100  rounded-md`}>
+            {gridStyles()}
             <div className=' text-gray-800 p-2  '>
 
                 {useSearch && (
@@ -405,8 +404,7 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
                 )}
 
                 <div className={`grid  border-r border-b ${borderColor}  ${gridColsStyle}    bg-white/50   ${className || ''} shadow-md `}>
-
-
+ 
                     {/* 表頭 */}
                     {/* <div className={` shadow-md bg-gray-300 text-gray-700    `}> */}
                     {
@@ -414,7 +412,7 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
                             <div className={` sticky top-0 p-1.5  border-l border-t  ${borderColor} text-center `}>
                             </div>
                         )
-                         
+
                     }
 
                     {columns.map((col, index) => (
@@ -422,13 +420,13 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
                         (col.visible === undefined || col.visible === true) && (
                             <div
                                 key={index}
-                               
-                            //   className={`  sticky top-0 p-1.5 outline outline-1 outline-slate-700 text-center ${gridColsClass || ''}`}
-                             className={cn(
-        ` sticky top-0 p-1.5 border-l border-t   ${borderColor}  text-center ${styles[styleHeader] || styles.default}  `,
-         
-       ` ${classNameHeader}  `
-      )}
+
+                                //   className={`  sticky top-0 p-1.5 outline outline-1 outline-slate-700 text-center ${gridColsClass || ''}`}
+                                className={cn(
+                                    ` sticky top-0 p-1.5 border-l border-t   ${borderColor}  text-center ${styles[styleHeader] || styles.default}  `,
+
+                                    ` ${classNameHeader}  `
+                                )}
 
 
                             >
@@ -454,7 +452,7 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
                             {columns.map((col, index) => (
                                 //判斷 col.colSpan
                                 (col.subSearch === true) ? (
-                                    <div  className={`p-1 border-l border-t  ${borderColor}    text-gray-600`} >
+                                    <div className={`p-1 border-l border-t  ${borderColor}    text-gray-600`} >
                                         <input
                                             type="text"
                                             placeholder={`搜尋...${col.showname}`}
@@ -535,11 +533,11 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
                                             onClick={() => onRowClick && onRowClick(row)} // 新增點擊事件
                                             // className={`  p-1.5 outline outline-1   outline-stone-400 text-gray-600 font-medium text-center`}
                                             className={cn(
-        ` p-1.5   border-l border-t   ${borderColor} font-medium text-center `,
-         
-       ` ${classItem}  `
-      )}
-                                     >
+                                                ` p-1.5   border-l border-t   ${borderColor} font-medium text-center `,
+
+                                                ` ${classItem}  `
+                                            )}
+                                        >
 
 
                                             {(col.visible === undefined || col.visible === true) && (
@@ -574,7 +572,7 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
 
 
                     {/* 表身NEW END */}
- 
+
 
                 </div>
 

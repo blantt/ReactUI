@@ -8,13 +8,13 @@ import Modal from '../component/myModal';
 import DataGridApi from '../component/myDataGrid';
 import { Button2 } from "../component/button";
 import { Button } from "../component/button";
+
 // import { Grid_Data1 } from "../data/data.js";
 import { DiscordIcon, AnotherIcon, AnotherIcon2 } from "../component/mySvg";
 import type { FileItem as DropdownOption } from '../component/myDropGrid'; // 匯入 FileItem 型別
 import SmartModal from '../component/SmartModal';
 const MyTempUI: React.FC = () => {
-    //   212, 240, 255
-    //196, 223, 242
+     
     const styles =  /* css */`
         .aero-blur {
             
@@ -98,7 +98,7 @@ const MyTempUI: React.FC = () => {
     const [isLoading_smartModal, setIsLoading_smartModal] = useState(false);
 
     const [isLoading_modal_test, setIsLoading_modal_test] = useState(false);
- const [dropRefreshKey, setDropRefreshKey] = useState(0); // 新增 state
+    const [dropRefreshKey, setDropRefreshKey] = useState(0); // 新增 state
 
     const handleButtonClick_modal = () => {
         setIsLoading_modal(true); // 顯示 Loading
@@ -188,8 +188,7 @@ const MyTempUI: React.FC = () => {
         }, 2000);
     };
 
-
-
+ 
     return (
 
         <div>
@@ -237,10 +236,10 @@ const MyTempUI: React.FC = () => {
                     <MyDropDown keyValue='ClassID' keyText='ClassName' haveBlank={true} emptyText='dropdown(API)選擇'
                         apiUrl="https://clockappservice.english4u.com.tw/api/clock/selectClockWorkClass"
                         onSelect={handleSelect3}
-                         refreshKey={dropRefreshKey}
+                        refreshKey={dropRefreshKey}
                     />
 
-                     <Button2 label="重新載入" onClick={() => setDropRefreshKey(prev => prev + 1)} />
+                    <Button2 label="重新載入" onClick={() => setDropRefreshKey(prev => prev + 1)} />
 
                 </div>
 
@@ -289,8 +288,8 @@ const MyTempUI: React.FC = () => {
 
             <div className="flex justify-center items-center  ">
 
-                 <div>
-                    <Button2 label="test btnstyle4"  style1='vistaBlue'
+                <div>
+                    <Button2 label="test btnstyle4" style1='vistaBlue'
                         onClick={handleButtonClick_modal} />
                 </div>
                 <div>
@@ -364,7 +363,10 @@ const MyTempUI: React.FC = () => {
                 <div className='p-2'>
                     <Button2 icon={<AnotherIcon2 />} label="testLoad" onClick={handleButtonClick} />
                 </div>
-               
+
+                <div className='p-2'>
+
+                </div>
 
             </div>
 

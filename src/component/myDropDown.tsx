@@ -79,7 +79,7 @@ interface DropdownProps {
   style1?: 'default' | 'vistaBlue';
   className?: string;
   value?: string; // 用於綁定選擇值的屬性
-   refreshKey?: number; // ← 如外部要強制重抓資料時
+  refreshKey?: number; // ← 如外部要強制重抓資料時
 }
 
 //FileItem 預計是dropdown選項的型別 
@@ -239,8 +239,8 @@ const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyVal
 
         // setLoading(true);
         try {
- 
-         // console.log('drop 抓資料中');
+
+          // console.log('drop 抓資料中');
 
           const response = await fetch(apiUrl);
           // const response = await fetch('/data2.json'); //抓在本地的json檔測試用
@@ -250,9 +250,9 @@ const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyVal
           }
 
           const jsonData = await response.json();
-          
+
           setInternalOptions(transformToFormField(jsonData, keyValue, keyText, haveBlank));
-           
+
         } catch (error) {
           console.error('Error fetching data:', error);
           alert('資料取得失敗' + error);
@@ -263,7 +263,7 @@ const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyVal
       //dd
       fetchData()
     }
-  }, [apiUrl, keyValue, keyText, haveBlank,refreshKey]); // 修正依賴陣列
+  }, [apiUrl, keyValue, keyText, haveBlank, refreshKey]); // 修正依賴陣列
 
   // 修正3: 當 options prop 改變時更新 internalOptions
   useEffect(() => {
