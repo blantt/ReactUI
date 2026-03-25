@@ -1,7 +1,7 @@
 import Mytab from '../component/myTab';
-
-
-
+import DataGridApi from '../component/myDataGrid';
+import MyDropDown from '../component/myDropDown';
+import TextInput  from "../component/simpleUI";
 
 const App: React.FC = () => {
     const tabs = [
@@ -12,7 +12,7 @@ const App: React.FC = () => {
 
     return (
         <div>
-            <Mytab tabs={tabs} />
+            <Mytab keepAlive={true} tabs={tabs} />
         </div>
     );
 
@@ -22,7 +22,11 @@ const App: React.FC = () => {
 const Tab1 = () => {
     return (
         <div>
-             i am tab1
+           <input type="text" placeholder="測試輸入框" className="border p-2 rounded mb-4" />
+
+           <TextInput placeholder="測試 TextInput 元件" />
+
+          
         </div>
     );
 };
@@ -31,6 +35,7 @@ const Tab2 = () => {
     return (
         <div>
              i am tab2
+               
         </div>
     );
 };
