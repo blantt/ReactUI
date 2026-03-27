@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ArrowBigRightDash, ChevronDown, X, CircleX, DivideIcon, SquareChevronDown } from 'lucide-react';
 import { twMerge } from 'tailwind-merge';
 import { clsx } from 'clsx';
+import { useMyApi } from '../component/myGetApi';
 
 
 const styles =  /* css */`
@@ -80,6 +81,7 @@ interface DropdownProps {
   className?: string;
   value?: string; // 用於綁定選擇值的屬性
   refreshKey?: number; // ← 如外部要強制重抓資料時
+  haveCredentials?: boolean; // 是否在 fetch 請求中包含憑證（如 cookies）
 }
 
 //FileItem 預計是dropdown選項的型別 
@@ -106,7 +108,6 @@ export const transformToFormField = (data: any[], keyValue?: string, keyText?: s
     const result: FileItem = {};
     //這裡目的是要把 item 轉換成 FileItem 型別
 
-    //[{\"ClassID\":4,\"ClassName\":\"全公司(09-18)\"},{\"ClassID\":5,\"ClassName\":\"發行客服(0830-1730)\"}]
 
     if (keyValue) {
       result[keyValue] = item[keyValue];
@@ -159,6 +160,7 @@ export const transformToFormField = (data: any[], keyValue?: string, keyText?: s
  * @param {'default' | 'vistaBlue'} [style1='default'] - 按鈕外觀風格，`'vistaBlue'` 為 Vista 藍色玻璃質感
  * @param {string} [className] - 額外注入按鈕的 Tailwind / CSS class，優先級高於內建樣式
  * @param {number} [refreshKey] - 監聽此值變化以強制重新抓取 API 資料（僅當 `apiUrl` 設定時有效）
+ * @param {boolean} [haveCredentials=false] - 是否在 fetch 請求中包含憑證（如 cookies），預設為 `false`
  * @example
  * // 基本用法（靜態選項）
  * <MyDropDown
@@ -179,7 +181,7 @@ export const transformToFormField = (data: any[], keyValue?: string, keyText?: s
  * />
  */
 const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyValue, keyText, haveBlank = true, widthCss = "w-48"
-  , emptyText = "請選擇", style1 = 'default', className = "", value, refreshKey }) => {
+  , emptyText = "請選擇", style1 = 'default', className = "", value, refreshKey, haveCredentials = false }) => {
 
 
   // const [internalOptions, setInternalOptions] = useState<FileItem[]>(options || []);
@@ -192,6 +194,14 @@ const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyVal
   const [isOpen, setIsOpen] = useState(false);
   // 狀態：儲存當前選擇的選項
   const [selectedOption, setSelectedOption] = useState<FileItem | null>(null);
+
+
+  const { loading: load_apiData, error: error_apiData, data: data_apiData, status: status_apiData, execute: execute_apiData } = useMyApi({
+    apiUrl: '',
+    method: 'GET',
+    haveCredentials: haveCredentials,
+    asJson: true,
+  });
 
   // 修正1: 當 value 或 internalOptions 改變時,同步更新 selectedOption
   useEffect(() => {
@@ -240,18 +250,33 @@ const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyVal
         // setLoading(true);
         try {
 
-          // console.log('drop 抓資料中');
+          // 新版,用元件取api data
+          const result = await execute_apiData({
+            apiUrl: apiUrl,
+          });
 
-          const response = await fetch(apiUrl);
-          // const response = await fetch('/data2.json'); //抓在本地的json檔測試用
-          if (!response.ok) {
-            alert(`HTTP error! status: ${response.status}`);
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
+           if (result) {
+             if (result.status === 'success') {
+              const jsonData = result.data;
+              setInternalOptions(transformToFormField(jsonData, keyValue, keyText, haveBlank));
+             } else {
+               alert('API 回傳錯誤: ' + String(result.data));
+               throw new Error('API 回傳錯誤: ' + String(result.data));
+             }
 
-          const jsonData = await response.json();
+           }
 
-          setInternalOptions(transformToFormField(jsonData, keyValue, keyText, haveBlank));
+           //==舊版
+          // const response = await fetch(apiUrl);
+          // // const response = await fetch('/data2.json'); //抓在本地的json檔測試用
+          // if (!response.ok) {
+          //   alert(`HTTP error! status: ${response.status}`);
+          //   throw new Error(`HTTP error! status: ${response.status}`);
+          // }
+
+          // const jsonData = await response.json();
+
+          //  setInternalOptions(transformToFormField(jsonData, keyValue, keyText, haveBlank));
 
         } catch (error) {
           console.error('Error fetching data:', error);
