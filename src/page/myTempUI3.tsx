@@ -19,7 +19,7 @@ const app: React.FC = () => {
 
     const [dropValue, setDropValue] = useState<string>('');
 
-   
+
     return (
         <div className="p-1  ">
             <AppTitle title="測試頁面tempui3" />
@@ -31,8 +31,8 @@ const app: React.FC = () => {
                     </div>
                     <MyDropDown keyValue='ClassID' keyText='ClassName' haveBlank={true} emptyText='dropdown(API)選擇'
                         apiUrl="https://clockappservice.english4u.com.tw/api/clock/selectClockWorkClass"
-                          value={dropValue} 
-                          onSelect={(option) => {
+                        value={dropValue}
+                        onSelect={(option) => {
                             //  alert(`Selected name, value: ${option.ClassName} (${option.ClassID})`);
                             setDropValue(option.ClassID);
                         }}
@@ -47,6 +47,13 @@ const app: React.FC = () => {
 
                     }} />
                 </div>
+
+                {/* 這裡預計呈現一個美觀的card樣式容器 */}
+                <div className="bg-white rounded-lg shadow-md p-6">
+                    <div className="text-lg font-medium mb-4">Card Title</div>
+                    <div className="text-gray-600">Card Content</div>
+                </div>
+
 
 
             </div>

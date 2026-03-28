@@ -125,9 +125,69 @@ export type MyGetApi_hook = MyApiOptions & {
 };
 
 /**
- * ### useMyApi 自定義 Hook，用於處理 API  
- * ApiStatus = 'idle' | 'loading' | 'success' | 'error'
- *  * />
+ * ### useMyApi 自定義 Hook，用於處理 API 請求
+ *
+ * ---
+ * #### ApiStatus 狀態說明
+ * | 狀態 | 說明 |
+ * |------|------|
+ * | `'idle'`    | 初始狀態，尚未發出任何請求 |
+ * | `'loading'` | 請求進行中 |
+ * | `'success'` | 請求成功 |
+ * | `'error'`   | 請求失敗 |
+ *
+ * ---
+ * #### MyApiOptions 參數說明
+ * @param {string}  options.apiUrl          - **(必填)** API 的 URL 位址
+ * @param {boolean} [options.asJson=true]   - 是否將回應解析為 JSON（預設 `true`，false 時回傳純字串）
+ * @param {boolean} [options.haveCredentials=false] - 是否附帶 Cookie 憑證（跨域 Session 需設為 `true`）
+ * @param {'GET'|'POST'} [options.method='GET'] - HTTP 請求方法（預設 `'GET'`）
+ * @param {Record<string, any>} [options.postData]  - POST 時要傳送的表單資料
+ * @param {Function} [options.onProgress]   - 狀態變更回呼：`(status, data?, error?) => void`
+ *
+ * ---
+ * #### execute 方法（useCallback）
+ * - `execute(overrideOptions?)` 為命令式觸發函式，以 `useCallback` 包裝，確保參考穩定不重複建立。
+ * - 可在呼叫時傳入 `overrideOptions` 覆蓋初始設定（例如動態切換 apiUrl 或 postData）。
+ * - 回傳 `Promise<ExecuteResult>` 可直接 `await` 取得結果，不需等待 React 狀態更新。
+ *   ```ts
+ *   type ExecuteResult = { data: any; status: 'success' | 'error' | 'idle'; error: any }
+ *   ```
+ *
+ * ---
+ * #### 使用範例
+ * ```tsx
+ * // 基本 GET 請求
+ * const { loading, data, status, execute } = useMyApi({
+ *   apiUrl: '/api/user/list',
+ *   asJson: true,
+ * });
+ *
+ * // 手動觸發（例如按鈕點擊）
+ * const handleSubmit = async () => {
+ *   const result = await execute({
+ *     method: 'POST',
+ *     postData: { action: 'login', user: 'admin' },
+ *   });
+ *   if (result?.status === 'success') {
+ *     console.log('回傳資料:', result.data);
+ *   } else {
+ *     console.error('錯誤:', result?.error);
+ *   }
+ * };
+ *
+ * return (
+ *   <div>
+ *     {loading && <p>載入中...</p>}
+ *     {status === 'error' && <p>發生錯誤</p>}
+ *     {status === 'success' && <pre>{JSON.stringify(data, null, 2)}</pre>}
+ *     <button onClick={handleSubmit}>送出</button>
+ *   </div>
+ * );
+ * ```
+ *
+ * @param {MyApiOptions} initialOptions - 初始 API 選項設定
+ * @returns {UseMyApiReturn} `{ loading, error, data, status, execute }`
  */
 export const useMyApi = (initialOptions: MyApiOptions): UseMyApiReturn => {
     const [loading, setLoading] = useState(false);
