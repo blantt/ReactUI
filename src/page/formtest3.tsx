@@ -53,6 +53,10 @@ const App = () => {
     setTimeout(() => setIsSubmitted(false), 3000);
   };
 
+const handleSelectdrop = (value: any, fieldName: string) => {
+    funcsetFormData(fieldName, value);
+  };
+
   const handleSelect3 = (value: any) => {
     funcsetFormData('testdrop', value);
           //alert(`Selected name, value: ${value.ClassName} (${value.ClassID})`);
@@ -126,8 +130,9 @@ const App = () => {
                  <MyDropDown   keyValue='ClassID' keyText='ClassName' haveBlank={true} emptyText='dropdown(API)選擇'
                        value={formData.ClassID}  // 綁定值
                       apiUrl="https://clockappservice.english4u.com.tw/api/clock/selectClockWorkClass"
-                        onSelect={handleSelect3}
-                         className=' w-full'
+                      //  onSelect={handleSelect3}
+                      onSelect={(value) => handleSelectdrop(value, 'ClassID')} 
+                      className=' w-full'
                        
                         />
                 {/* <select
