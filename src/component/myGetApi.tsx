@@ -231,7 +231,15 @@ export const useMyApi = (initialOptions: MyApiOptions): UseMyApiReturn => {
                 fetchOptions.credentials = 'include';
             }
 
-            if (method === 'POST' && postData) {
+            if (postData instanceof FormData) {
+
+                // 如果是 FormData，不需要手動設定 Headers 的 Content-Type
+                // 瀏覽器會自動設為 multipart/form-data 並加上正確的 boundaryww
+                fetchOptions.body = postData;
+
+                // 如果原本 fetchOptions 已經有預設 headers，請確保裡面沒有 Content-Type
+                // fetchOptions.headers = { ...fetchOptions.headers };
+            } else if (method === 'POST' && postData) {
                 fetchOptions.method = 'POST';
                 fetchOptions.headers = {
                     'Content-Type': 'application/x-www-form-urlencoded',
