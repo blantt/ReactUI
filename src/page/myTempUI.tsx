@@ -226,6 +226,7 @@ const MyTempUI: React.FC = () => {
                     <h1 className="text-sm font-bold mb-4">dropdown Example</h1>
                     <MyDropDown keyValue='sname' keyText='svalue'
                         options={fileOptions} style1='vistaBlue'
+                      //  enable={false}
                         // onSelect={handleSelect2}
                         emptyText='我是誰'
                     />
@@ -264,6 +265,7 @@ const MyTempUI: React.FC = () => {
                             { name: 'Age', type: 'input', colSpan: 1 },
                             { name: 'Email', type: 'hyperlink', colSpan: 2 },
                         ]}
+                        //enable={false}
                         value='boyQQ'
                         keyValue='Name' keyText='Email' gridCols={4}
 

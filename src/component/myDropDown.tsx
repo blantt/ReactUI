@@ -82,6 +82,8 @@ interface DropdownProps {
   value?: string; // 用於綁定選擇值的屬性
   refreshKey?: number; // ← 如外部要強制重抓資料時
   haveCredentials?: boolean; // 是否在 fetch 請求中包含憑證（如 cookies）
+  enable?: boolean; // 是否啟用下拉選單
+
 }
 
 //FileItem 預計是dropdown選項的型別 
@@ -161,6 +163,7 @@ export const transformToFormField = (data: any[], keyValue?: string, keyText?: s
  * @param {string} [className] - 額外注入按鈕的 Tailwind / CSS class，優先級高於內建樣式
  * @param {number} [refreshKey] - 監聽此值變化以強制重新抓取 API 資料（僅當 `apiUrl` 設定時有效）
  * @param {boolean} [haveCredentials=false] - 是否在 fetch 請求中包含憑證（如 cookies），預設為 `false`
+ * @param {boolean} [enable=true] - 是否啟用下拉選單，預設為 `true`
  * @example
  * // 基本用法（靜態選項）
  * <MyDropDown
@@ -181,7 +184,7 @@ export const transformToFormField = (data: any[], keyValue?: string, keyText?: s
  * />
  */
 const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyValue, keyText, haveBlank = true, widthCss = "w-48"
-  , emptyText = "請選擇", style1 = 'default', className = "", value, refreshKey, haveCredentials = false }) => {
+  , emptyText = "請選擇", style1 = 'default', className = "", value, refreshKey, haveCredentials = false, enable = true }) => {
 
 
   // const [internalOptions, setInternalOptions] = useState<FileItem[]>(options || []);
@@ -223,6 +226,7 @@ const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyVal
   //  const [loading, setLoading] = useState(!!apiUrl); // 如果有 apiUrl，預設為加載中
   // 切換下拉選單展開/收起的函數
   const handleToggle = () => {
+    if (!enable) return;
     setIsOpen(!isOpen);
   };
 
@@ -255,18 +259,18 @@ const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyVal
             apiUrl: apiUrl,
           });
 
-           if (result) {
-             if (result.status === 'success') {
+          if (result) {
+            if (result.status === 'success') {
               const jsonData = result.data;
               setInternalOptions(transformToFormField(jsonData, keyValue, keyText, haveBlank));
-             } else {
-               alert('API 回傳錯誤: ' + String(result.data));
-               throw new Error('API 回傳錯誤: ' + String(result.data));
-             }
+            } else {
+              alert('API 回傳錯誤: ' + String(result.data));
+              throw new Error('API 回傳錯誤: ' + String(result.data));
+            }
 
-           }
+          }
 
-           //==舊版
+          //==舊版
           // const response = await fetch(apiUrl);
           // // const response = await fetch('/data2.json'); //抓在本地的json檔測試用
           // if (!response.ok) {
@@ -338,14 +342,23 @@ const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyVal
               )
               : emptyText
           }
-          <div className="absolute right-1">
-            <SquareChevronDown
-              //className="w-5 h-5   text-blue-300  "
-              //  className={`w-5 h-5 ${styles[style1] || styles.default}   text-blue-300 `}
-              className={`w-5 h-5  ${style1 === 'vistaBlue' ? 'text-blue-400' : 'text-blue-300'}`}
-            />
-            {/* <img src={`${import.meta.env.BASE_URL}arrow_d.png`} alt="icon" style={{ width: 20, height: 20 }} /> */}
-          </div>
+          {enable ? (
+            <div className="absolute right-1">
+              <SquareChevronDown
+                //className="w-5 h-5   text-blue-300  "
+                //  className={`w-5 h-5 ${styles[style1] || styles.default}   text-blue-300 `}
+                className={`w-5 h-5  ${style1 === 'vistaBlue' ? 'text-blue-400' : 'text-blue-300'}`}
+              />
+              {/* <img src={`${import.meta.env.BASE_URL}arrow_d.png`} alt="icon" style={{ width: 20, height: 20 }} /> */}
+            </div>
+
+          ) :
+            (
+             <div className="absolute right-1 w-5 h-5" />
+            )
+
+          }
+
         </button>
 
 

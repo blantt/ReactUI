@@ -103,6 +103,7 @@ interface DropdownProps {
   style1?: 'default' | 'vistaBlue';
   className?: string;
   value?: string; // 用於綁定選擇值的屬性
+  enable?: boolean; // 是否啟用下拉選單
 }
 
 export interface FileItem {
@@ -111,8 +112,56 @@ export interface FileItem {
 
 export const transformToFormField = apitransform;
 
+
+/**
+ * ### MyDropGrid 下拉選單元件（Grid 版本）
+ * 以表格（DataGrid）形式呈現選項的下拉選單元件。
+ *
+ * @param {Array<Record<string, FormField>>} [data] - 直接傳入的靜態資料陣列；與 `apiUrl` 擇一使用
+ * @param {string} [apiUrl] - 遠端資料來源 API URL；設定後元件掛載時自動 fetch 並覆蓋 `data`
+ * @param {Array<{name: string, colSpan?: number, type: string, transform?: (value: any) => FormField}>} columns - Grid 欄位設定陣列，必填
+ * @param {string} [keyValue] - 指定資料中作為「值 (value)」的欄位名稱，例如 `"ClassID"`
+ * @param {string} [keyText] - 指定資料中作為「顯示文字 (label)」的欄位名稱，例如 `"ClassName"`
+ * @param {string} [value] - 外部受控值，對應 `keyValue` 欄位的值；變更時會自動同步選取項目
+ * @param {(value: FileItem) => void} [onSelect] - 選取列後觸發的回調，回傳完整的資料列物件
+ * @param {number} [gridCols] - 指定 Grid 的欄數；未設定時預設使用 `columns.length`
+ * @param {boolean} [useSearch] - 是否在 Grid 上方顯示搜尋欄位，預設為 `false`
+ * @param {boolean} [havecheckbox] - 是否在 Grid 最左欄顯示 checkbox，預設為 `false`
+ * @param {boolean} [useBar] - 是否啟用捲軸模式（限高並允許縱向捲動），預設為 `false`
+ * @param {string} [widthCss="w-48"] - 控制按鈕寬度的 Tailwind CSS class，預設為 `"w-48"`
+ * @param {string} [emptyText="請選擇"] - 未選擇時按鈕上顯示的提示文字，預設為 `"請選擇"`
+ * @param {'default' | 'vistaBlue'} [style1='default'] - 按鈕外觀風格，`'vistaBlue'` 為 Vista 藍色玻璃質感
+ * @param {string} [className] - 額外注入按鈕的 Tailwind / CSS class，優先級高於內建樣式
+ * @param {boolean} [enable=true] - 是否啟用下拉選單；`false` 時按鈕不可點擊且隱藏清除按鈕，預設為 `true`
+ *
+ * @example
+ * // 基本用法（靜態資料）
+ * <MyDropGrid
+ *   columns={[
+ *     { name: "ClassID", type: "input" },
+ *     { name: "ClassName", type: "input" },
+ *   ]}
+ *   data={transformedData}
+ *   keyValue="ClassID"
+ *   keyText="ClassName"
+ *   onSelect={(item) => console.log(item)}
+ * />
+ *
+ * @example
+ * // 遠端 API 資料來源
+ * <MyDropGrid
+ *   columns={columns}
+ *   apiUrl="/api/classes"
+ *   keyValue="ClassID"
+ *   keyText="ClassName"
+ *   value={selectedId}
+ *   onSelect={(item) => setSelectedId(item.ClassID.value)}
+ *   useSearch
+ *   useBar
+ * />
+ */
 const MyDropDown: React.FC<DropdownProps> = ({ data, columns, apiUrl, onSelect, keyValue, keyText, gridCols
-  , useSearch, havecheckbox, useBar, widthCss = "w-48", emptyText = "請選擇", style1 = 'default', className = "", value }) => {
+  , useSearch, havecheckbox, useBar, widthCss = "w-48", emptyText = "請選擇", style1 = 'default', className = "", value, enable = true }) => {
   // 狀態：管理下拉選單是否展開  
   const [isOpen, setIsOpen] = useState(false);
   // 狀態：儲存當前選擇的選項
@@ -130,6 +179,7 @@ const MyDropDown: React.FC<DropdownProps> = ({ data, columns, apiUrl, onSelect, 
 
   // 切換下拉選單展開/收起的函數
   const handleToggle = () => {
+    if (!enable) return;
     setIsOpen(!isOpen);
   };
 
@@ -227,11 +277,11 @@ const MyDropDown: React.FC<DropdownProps> = ({ data, columns, apiUrl, onSelect, 
 
           <div className="absolute right-1">
 
-            <div className=' flex flex-row'>
-              <SquareChevronDown
-                className={`w-5 h-5  ${style1 === 'vistaBlue' ? 'text-blue-400' : 'text-blue-300'}`}
-              />
-              <div>
+            {enable ? (
+              <div className=' flex flex-row'>
+                <SquareChevronDown
+                  className={`w-5 h-5  ${style1 === 'vistaBlue' ? 'text-blue-400' : 'text-blue-300'}`}
+                />
                 <button
                   onClick={e => {
                     e.stopPropagation(); // 阻止事件冒泡
@@ -243,10 +293,15 @@ const MyDropDown: React.FC<DropdownProps> = ({ data, columns, apiUrl, onSelect, 
                   />
                 </button>
 
+
               </div>
+            ) : (
+              <div className="absolute right-1 w-5 h-5" />
+            )
 
-            </div>
+            }
 
+ 
 
           </div>
 
@@ -278,7 +333,7 @@ const MyDropDown: React.FC<DropdownProps> = ({ data, columns, apiUrl, onSelect, 
               gridCols={mygridCols}
               onRowClick={(item) => {
                 handleSelect(item);
-                }}
+              }}
               useSearch={useSearch}
               havecheckbox={havecheckbox}
               useBar={useBar}
