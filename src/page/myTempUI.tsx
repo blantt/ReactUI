@@ -419,6 +419,12 @@ const MyTempUI: React.FC = () => {
 
             <Modal isOpen={isLoading_modal} onClose={() => setIsLoading_modal(false)} title="我是彈跳視窗"
 
+                myHeader={
+                    <div className="flex items-center justify-center">
+                        <h2 className="text-center text-base font-semibold text-slate-800">自訂標頭</h2>
+                    </div>
+                }
+
                 footer={
                     <div className="flex justify-end">
                         <Button2 label="Close" onClick={() => setIsLoading_modal(false)} />

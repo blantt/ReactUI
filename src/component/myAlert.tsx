@@ -174,16 +174,21 @@ const MyAlert: React.FC<AlertProps> = ({
     'center': 'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[9999] w-[90%] max-w-md shadow-2xl border-2 animate-in zoom-in-95'
   };
 
+  // failure 強制阻擋：使用者必須主動點關閉才能繼續操作
+  const isBlocking = type === 'failure';
+  // failure + inline 時自動升級為 center，避免行內元素無法遮擋頁面
+  const effectivePosition = isBlocking && position === 'inline' ? 'center' : position;
+
   const style = themeStyles[type];
-  const layout = positionClasses[position];
+  const layout = positionClasses[effectivePosition];
 
   const content = (
     <>
-      {/* 遮罩 (僅用於 center) */}
-      {position === 'center' && (
+      {/* 遮罩：center 可點擊關閉；failure 強制不可點擊，必須按關閉按鈕 */}
+      {(effectivePosition === 'center' || isBlocking) && (
         <div 
           className="fixed inset-0 bg-black/40 backdrop-blur-[2px] z-9998 transition-opacity animate-in fade-in" 
-          onClick={onClose}
+          onClick={isBlocking ? undefined : onClose}
         />
       )}
       
@@ -236,8 +241,8 @@ const MyAlert: React.FC<AlertProps> = ({
     </>
   );
 
-  // 如果是 fixed 定位，使用 Portal 確保在最外層
-  if (position !== 'inline') {
+  // fixed 定位或 failure 強制阻擋，均使用 Portal 確保遮罩在最外層
+  if (effectivePosition !== 'inline' || isBlocking) {
     return createPortal(content, document.body);
   }
 

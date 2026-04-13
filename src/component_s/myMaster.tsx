@@ -3,7 +3,7 @@ import NavItem, { MenuItem, type MenuItemData } from '../component/myMenuItem';
 import { Button } from "../component/button";
 import { FileText, ChevronRight, ChevronDown, Folder, File, Layers, Settings, User, Mail, Star, Share2 } from 'lucide-react';
 import TestTab from '../page/testTab';
-import { isLocal, getApiUrl } from '../utils/env';
+import { isLocal, getApiUrl  } from '../utils/env';
 interface MasterProps {
     tabs?: string
 }
@@ -86,7 +86,8 @@ const MyMaster: React.FC<MasterProps> = ({ tabs = "" }) => {
            // console.log(`導向頁面: ${item.label}`);
    
            if (item.url) {
-               window.location.href = getApiUrl(item.url);
+             window.location.href = getApiUrl(item.url);
+           
                // 如果是iframe 時
               //  window.parent.location.href  =  getApiUrl(item.url);
                return;

@@ -43,7 +43,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, myHeade
   if (!isOpen) return null;
 
   return (
-    <div className="      fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div className=" fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div className={`  flex flex-col bg-white rounded-lg shadow-lg  min-w-80 ${width || ''} ${height || ''} `}>
         {/* Header */}
         <div className="relative px-2 py-1 border-b border-gray-200 flex items-center justify-center">
