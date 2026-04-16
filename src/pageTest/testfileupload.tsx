@@ -91,7 +91,7 @@ const App: React.FC = () => {
       <div className="max-w-md w-full bg-white rounded-2xl shadow-xl overflow-hidden">
         {/* Header */}
         <div className="bg-indigo-600 p-6 text-white text-center">
-          <h1 className="text-xl font-bold">資源檔上傳工具</h1>
+          <h1 className="text-xl font-bold">資源檔上傳工具2</h1>
           <p className="text-indigo-100 text-sm mt-1">上傳圖片至專案 public/uploads 目錄</p>
         </div>
 
