@@ -16,7 +16,7 @@ export { TextInput } from './component/simpleUI';
 export { default as MyAlert } from './component/myAlert';
 export { default as MyGetApi, useMyApi } from './component/myGetApi';
 export { default as NavItem, MenuItem } from './component/myMenuItem';
- 
+export { default as MyAudioPlayer} from './component/myAudio'; 
 
  
  

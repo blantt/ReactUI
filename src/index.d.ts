@@ -11,6 +11,7 @@ export { default as Modal} from './component/myModal';
 export { default as AppTitle} from './component/header';
 export { default as MyGetApi, useMyApi, type MyApiOptions, type ApiStatus, type MyGetApi_hook, type UseMyApiReturn } from './component/myGetApi';
 export { default as TextInput} from './component/simpleUI'; 
+export { default as MyAudioPlayer} from './component/myAudio'; 
 export { default as NavItem, MenuItem, type MenuItemData } from './component/myMenuItem';
 export { default as MyAlert} from './component/myAlert'; 
 

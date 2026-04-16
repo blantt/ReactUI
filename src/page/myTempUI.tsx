@@ -8,6 +8,7 @@ import Modal from '../component/myModal';
 import DataGridApi from '../component/myDataGrid';
 import { Button2 } from "../component/button";
 import { Button } from "../component/button";
+import MyAudioPlayer from "../component/myAudio";
 
 // import { Grid_Data1 } from "../data/data.js";
 import { DiscordIcon, AnotherIcon, AnotherIcon2 } from "../component/mySvg";
@@ -198,6 +199,15 @@ const MyTempUI: React.FC = () => {
 
             />
             <div className="flex justify-center items-center ">
+
+               <div>
+                  <MyAudioPlayer
+                        src={"http://192.168.101.34/questionbank/test/Audio_GEPT/a/1/450360_2.mp3"}
+                        title="元件範例"
+                    />
+
+               </div>
+
                 <div className="p-2">
                     <h1 className="text-sm font-bold mb-4">Drop sch check Grid </h1>
                     {/* 在drop 使用 grid havecheckbox 還沒完成,找時間再來處理!! */}
