@@ -31,6 +31,7 @@ const MyGetApi: React.FC<MyGetApiProps> = ({ apiUrl, asJson = true, haveCredenti
 
     useEffect(() => {
         let isMounted = true;
+        onProgress && onProgress('loading');
         setLoading(true);
         setError(null);
         setStatus('loading');
@@ -74,9 +75,9 @@ const MyGetApi: React.FC<MyGetApiProps> = ({ apiUrl, asJson = true, haveCredenti
             }
         };
         fetchData();
-        onProgress && onProgress('loading');
+       
         return () => { isMounted = false; };
-    }, [apiUrl, asJson]);
+    }, [apiUrl, asJson, onProgress]);
 
     if (children) {
         return <>{children({ loading, error, data, status })}</>;
