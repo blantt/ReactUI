@@ -299,6 +299,10 @@ const MyTempUI: React.FC = () => {
             </div>
 
             <div className="flex justify-center items-center  ">
+               <div>
+                    <Button label="atest btnstyle4" style1='vistaGray' className='  text-amber-900  '
+                        onClick={handleButtonClick_modal} />
+                </div>
 
                 <div>
                     <Button label="atest btnstyle4" style1='vistaRed' className='  text-amber-900  '

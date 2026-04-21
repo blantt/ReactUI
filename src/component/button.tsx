@@ -35,7 +35,7 @@ const styles =  /* css */`
                 #fca5a5 100%
             );
             
-            border: 1px solid #fca5a5;
+            border: 1px solid #770404;
           }
            
           .vista-btn-red:hover {
@@ -52,7 +52,7 @@ const styles =  /* css */`
                 #7dd3fc 100%
             );
              
-            border: 1px solid #7dd3fc;
+            border: 1px solid #035277;
           }
           .vista-btn-skyblue:hover {
             filter: brightness(1.05);
@@ -69,7 +69,7 @@ const styles =  /* css */`
                 #fcd34d 100%
             );
             
-            border: 1px solid #fcd34d;
+            border: 1px solid #bd9103;
           }
           .vista-btn-yellow:hover {
             filter: brightness(1.05);
@@ -85,7 +85,7 @@ const styles =  /* css */`
                 #d1d5db 100%
             );
              
-            border: 1px solid #d1d5db;
+            border: 1px solid #6e7b8d;
           }
           .vista-btn-gray:hover {
             filter: brightness(1.03);
