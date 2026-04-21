@@ -6,7 +6,7 @@ import Loading from '../component/myload';
 import { LoadingInline } from '../component/myload';
 import Modal from '../component/myModal';
 import DataGridApi from '../component/myDataGrid';
-import { Button2 } from "../component/button";
+import { Button } from "../component/button";
 import { TextInput } from "../component/simpleUI";
 import { DiscordIcon, AnotherIcon, AnotherIcon2 } from "../component/mySvg";
 import type { FileItem as DropdownOption } from '../component/myDropGrid'; // 匯入 FileItem 型別

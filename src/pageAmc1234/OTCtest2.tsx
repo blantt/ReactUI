@@ -2,7 +2,7 @@ import React, { useState,useRef } from 'react';
 import AppTitle from '../component/header';
 // import { Button2 } from "../component/button.tsx";
 import { DiscordIcon, AnotherIcon, AnotherIcon2 } from "../component/mySvg";
-import { Button2  } from "../component/button";
+import { Button  } from "../component/button";
 import { TextInput  } from "../component/simpleUI";
 
 // 想建一個類別,裡面有參數,在迴圈中使用,每一個迴圈會new它,再給它值
@@ -192,9 +192,9 @@ const App: React.FC = () => {
                     onChange={(e) => setTestDetailID(e.target.value)} >
                 </TextInput>
 
-                <Button2 label="測試結果" icon={<DiscordIcon />} onClick={() => callotc()} />
+                <Button label="測試結果" icon={<DiscordIcon />} onClick={() => callotc()} />
 
-                  <Button2 label="開始測驗api"  onClick={() => callapi()} />
+                  <Button label="開始測驗api"  onClick={() => callapi()} />
  
             </div>
 

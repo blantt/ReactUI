@@ -1,6 +1,6 @@
 import React, { useState,useRef } from 'react';
 import AppTitle from '../component/header';
-import { Button2  } from "../component/button";
+import { Button  } from "../component/button";
 import { DiscordIcon, AnotherIcon, AnotherIcon2 } from "../component/mySvg";
 import { TextInput  } from "../component/simpleUI";
 
@@ -118,7 +118,7 @@ const App: React.FC = () => {
                     onChange={(e) => setTestDetailID(e.target.value)} >
                 </TextInput>
 
-                <Button2 label="測試結果" icon={<DiscordIcon />} onClick={() => callotc()} />
+                <Button label="測試結果" icon={<DiscordIcon />} onClick={() => callotc()} />
 
             </div>
 

@@ -4,7 +4,7 @@ import MyDropGrid, { transformToFormField as apitransform } from '../component/m
 import AppTitle from '../component/header';
 import Loading from '../component/myload';
 import Modal from '../component/myModal';
-import { Button2 } from "../component/button";
+import { Button } from "../component/button";
 
 import type { FileItem as DropdownOption } from '../component/myDropGrid'; // 匯入 FileItem 型別
 

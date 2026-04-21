@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Button2 } from "../component/button";
+ 
 import { Button } from "../component/button";
 import { FileText, ChevronRight, ChevronDown, Folder, File, Layers, Settings, User, Mail, Star, Share2 } from 'lucide-react';
 

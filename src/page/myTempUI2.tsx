@@ -6,7 +6,7 @@ import Loading from '../component/myload';
 import { LoadingInline } from '../component/myload';
 import Modal from '../component/myModal';
 import DataGridApi from '../component/myDataGrid';
-import { Button2 } from "../component/button";
+import { Button } from "../component/button";
 // import { Grid_Data1 } from "../data/data.js";
 import { DiscordIcon, AnotherIcon, AnotherIcon2 } from "../component/mySvg";
 import type { FileItem as DropdownOption } from '../component/myDropGrid'; // 匯入 FileItem 型別
@@ -128,9 +128,9 @@ const app: React.FC = () => {
 
             <div className="flex justify-center items-center ">
 
-                <Button2 label="Old fetch API" onClick={oldGetApi} />
+                <Button label="Old fetch API" onClick={oldGetApi} />
                 <span className="mx-2"></span>
-                <Button2 label="MyGetApi fetch API" onClick={GetApiFromUI} />
+                <Button label="MyGetApi fetch API" onClick={GetApiFromUI} />
 
             </div>
 

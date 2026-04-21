@@ -36,7 +36,6 @@ export default function App() {
   const handleDelete = () => {
     setIsDeleting(true); // 按鈕會變成 loading 轉圈圈狀態
     setTimeout(() => {
-      console.log('已經刪除！');
       setIsDeleting(false);
       setShowConfirm(false);
     }, 2000);

@@ -6,7 +6,7 @@ import Loading from '../component/myload';
 import { LoadingInline } from '../component/myload';
 import Modal from '../component/myModal';
 import DataGridApi from '../component/myDataGrid';
-import { Button2 } from "../component/button";
+ 
 import { Button } from "../component/button";
 import MyAudioPlayer from "../component/myAudio";
 
@@ -250,7 +250,7 @@ const MyTempUI: React.FC = () => {
                         refreshKey={dropRefreshKey}
                     />
 
-                    <Button2 label="重新載入" onClick={() => setDropRefreshKey(prev => prev + 1)} />
+                    <Button label="重新載入" onClick={() => setDropRefreshKey(prev => prev + 1)} />
 
                 </div>
 
@@ -301,15 +301,23 @@ const MyTempUI: React.FC = () => {
             <div className="flex justify-center items-center  ">
 
                 <div>
-                    <Button2 label="test btnstyle4" style1='vistaBlue'
+                    <Button label="atest btnstyle4" style1='vistaRed' className='  text-amber-900  '
+                        onClick={handleButtonClick_modal} />
+                </div>
+                 <div>
+                    <Button label="atest btnstyle4" style1='vistaSkyBlue' className='  text-amber-900  '
                         onClick={handleButtonClick_modal} />
                 </div>
                 <div>
-                    <Button2 label="test btnstyle3" className='  vista-btn-gradient3 '
+                    <Button label="atest btnstyle4" style1='vistaYellow' className='  text-amber-900 border-amber-950  '
                         onClick={handleButtonClick_modal} />
                 </div>
                 <div>
-                    <Button2 label="test btnstyle2" className='  vista-btn-gradient2 '
+                    <Button label="test btnstyle3" className='  vista-btn-gradient3 '
+                        onClick={handleButtonClick_modal} />
+                </div>
+                <div>
+                    <Button label="test btnstyle2" className='  vista-btn-gradient2 '
                         onClick={handleButtonClick_modal} />
                 </div>
 
@@ -336,10 +344,10 @@ const MyTempUI: React.FC = () => {
                         立體按鈕效果(classname)
                     </div>
 
-                    <Button2 label="test btnstyle2" className=' '
+                    <Button label="test btnstyle2" className=' '
                         onClick={handleButtonClick_modal} />
 
-                    <Button2 className=' bg-cyan-100 text-sm text-amber-800 hover:bg-blue-500 hover:text-amber-50 '
+                    <Button className=' bg-cyan-100 text-sm text-amber-800 hover:bg-blue-500 hover:text-amber-50 '
                         label="test button2"
                         onClick={() => setIsLoading_modal2(true)} />
 
@@ -348,18 +356,18 @@ const MyTempUI: React.FC = () => {
 
 
                 <div>
-                    <Button2 icon={<img src={`${import.meta.env.BASE_URL}arrow_r.png`} alt="icon" style={{ width: 20, height: 20 }} />}
+                    <Button icon={<img src={`${import.meta.env.BASE_URL}arrow_r.png`} alt="icon" style={{ width: 20, height: 20 }} />}
                         label="modal_checkgrid"
                         onClick={() => setIsLoading_modal_check(true)} />
                 </div>
                 <div>
-                    <Button2 icon={<img src={`${import.meta.env.BASE_URL}arrow_r.png`} alt="icon" style={{ width: 20, height: 20 }} />}
+                    <Button icon={<img src={`${import.meta.env.BASE_URL}arrow_r.png`} alt="icon" style={{ width: 20, height: 20 }} />}
                         label="smartModal"
                         onClick={() => setIsLoading_smartModal(true)} />
                 </div>
 
                 <div>
-                    <Button2 icon={<img src={`${import.meta.env.BASE_URL}arrow_r.png`} alt="icon" style={{ width: 20, height: 20 }} />}
+                    <Button icon={<img src={`${import.meta.env.BASE_URL}arrow_r.png`} alt="icon" style={{ width: 20, height: 20 }} />}
                         label="test modal new"
                         onClick={() => setIsLoading_modal_test(true)} />
                 </div>
@@ -369,11 +377,11 @@ const MyTempUI: React.FC = () => {
             <div className="flex justify-center items-center  ">
 
                 <div>
-                    <Button2 icon={<DiscordIcon color='rgb(255, 87, 51)' />} label="modaltest"
+                    <Button icon={<DiscordIcon color='rgb(255, 87, 51)' />} label="modaltest"
                         onClick={() => setIsLoading_modal(true)} />
                 </div>
                 <div className='p-2'>
-                    <Button2 icon={<AnotherIcon2 />} label="testLoad" onClick={handleButtonClick} />
+                    <Button icon={<AnotherIcon2 />} label="testLoad" onClick={handleButtonClick} />
                 </div>
 
                 <div className='p-2'>
@@ -384,13 +392,13 @@ const MyTempUI: React.FC = () => {
 
             <Loading isLoading={isLoading} message="加載中..." />
 
-            <Button2 label="test log" onClick={() => console.log(checkedItems_old)} />
+            <Button label="test log" onClick={() => console.log(checkedItems_old)} />
             <Modal isOpen={isLoading_modal_check} onClose={() => setIsLoading_modal_check(false)}
                 title="我是checkbox grid彈跳視窗"
                 width="  w-4/5 " height=' h-4/5'
                 footer={
                     <div className="flex justify-end">
-                        <Button2 label="Close" onClick={() => setIsLoading_modal_check(false)} />
+                        <Button label="Close" onClick={() => setIsLoading_modal_check(false)} />
                     </div>
                 }
             >
@@ -437,19 +445,19 @@ const MyTempUI: React.FC = () => {
 
                 footer={
                     <div className="flex justify-end">
-                        <Button2 label="Close" onClick={() => setIsLoading_modal(false)} />
+                        <Button label="Close" onClick={() => setIsLoading_modal(false)} />
                     </div>
                 }
             >
                 <p  >今天笑了嗎?</p>
-                <Button2 label="close" onClick={() => setIsLoading_modal(false)} />
+                <Button label="close" onClick={() => setIsLoading_modal(false)} />
 
             </Modal>
 
             <Modal isOpen={isLoading_modal2} onClose={() => setIsLoading_modal2(false)} title="我是loading modal">
                 <p>loading modal</p>
                 <div className=' relative w-4/5 '>
-                    <Button2 label="close" onClick={() => setIsLoading_modal2(false)} />
+                    <Button label="close" onClick={() => setIsLoading_modal2(false)} />
                     <LoadingInline isLoading={true} message="資料加載中..." />
                 </div>
 

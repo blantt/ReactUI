@@ -3,7 +3,7 @@
 // import viteLogo from '/vite.svg'
 import './App.css'
 import Button from "./component/button";
-import { Button2 } from "./component/button";
+ 
 import Mytab from './component/myTab';
 function Image1() {
   return (
@@ -165,7 +165,7 @@ function App2() {
 
       <div className="space-x-4">
 
-        <Button2 label="apiTest" icon={<Image1 />} onClick={() => callUrl("apiTest")} />
+        <Button label="apiTest" icon={<Image1 />} onClick={() => callUrl("apiTest")} />
 
         <Button label="formTest" onClick={() => callUrl("formTest")} />
         <Button label="formTest2" onClick={() => callUrl("formTest2")} />
@@ -183,8 +183,8 @@ function App2() {
       <div className="space-x-4 pt-3">
 
         <Button label="uiTemplate" onClick={() => callUrl("uiTemplate")} />
-        <Button2 label="myTempUI" onClick={() => callUrl("myTempUI")} />
-        <Button2 label="Grid說明文件" onClick={() => callUrl("docGrid")} />
+        <Button label="myTempUI" onClick={() => callUrl("myTempUI")} />
+        <Button label="Grid說明文件" onClick={() => callUrl("docGrid")} />
       </div>
 
 
