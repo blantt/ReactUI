@@ -18,5 +18,5 @@ export { default as MyGetApi, useMyApi } from './component/myGetApi';
 export { default as NavItem, MenuItem } from './component/myMenuItem';
 export { default as MyAudioPlayer} from './component/myAudio'; 
 export { default as MyConfirm} from './component/myConfirm';
- 
+export { default as useFileDownload  } from './component/myfileControl'; 
  
