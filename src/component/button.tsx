@@ -35,7 +35,7 @@ const styles =  /* css */`
                 #fca5a5 100%
             );
             
-            border: 1px solid #770404;
+            border: 1px solid #b00606;
           }
            
           .vista-btn-red:hover {
@@ -118,12 +118,24 @@ type ButtonProps = {
     label: string; // label 是字串
     icon?: React.ReactNode; // icon 是可選的 React 節點
     className?: string;
+    disabled?: boolean;
     style1?: 'default' | 'vistaBlue' | 'vistaRed' | 'vistaSkyBlue' | 'vistaYellow' | 'vistaGray';
     onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void; // 允許帶 event
 };
 
-
-export const Button = ({ label, icon, onClick, style1 = 'default', className = "" }: ButtonProps) => {
+/**
+ * ### Button 元件 
+ *
+ * ---
+ * #### ButtonProps 屬性說明
+ * @param {string} [label] - 按鈕顯示的文字
+ * @param {React.ReactNode} [icon] - 可選的圖示，會顯示在文字前面
+ * @param {string} [className] - 額外的 CSS 類別名稱，會與預設樣式合併
+ * @param {boolean} [disabled=false] - 是否禁用按鈕，禁用狀態下按鈕不可點擊且樣式會變淡
+ * @param {'default' | 'vistaBlue' | 'vistaRed' | 'vistaSkyBlue' | 'vistaYellow' | 'vistaGray'} [style1='default'] - 預設樣式類型，提供多種 Vista 風格選擇
+ * @param {function} [onClick] - 點擊按鈕時的回呼函式，會接收點擊事件作為參數
+ */
+export const Button = ({ label, icon, onClick, style1 = 'default', className = "", disabled = false }: ButtonProps) => {
 
     const styles = {
         default: '',
@@ -132,13 +144,12 @@ export const Button = ({ label, icon, onClick, style1 = 'default', className = "
         vistaSkyBlue: 'vista-btn-skyblue',
         vistaYellow: 'vista-btn-yellow',
         vistaGray: 'vista-btn-gray',
-
     };
-
+    
     return (
         VistaStyles(),
         <button onClick={onClick}
-
+           disabled={disabled}
             className={cn(
                 `inline-flex items-center bg-slate-100 border border-gray-300 rounded-lg shadow-md px-6 py-2 text-sm font-medium text-gray-800
          hover:bg-sky-200 focus:outline-none focus:ring-2 

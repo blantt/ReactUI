@@ -66,7 +66,7 @@ const Tab1 = () => {
     <div>
       <div className="space-x-4">
 
-        <Button label="formTest3" onClick={() => callUrl("formTest3")} />
+        <Button  label="formTest3" onClick={() => callUrl("formTest3")} />
         <Button label="testfileupload" onClick={() => callUrl("testfileupload")} />
         <Button label="testapihook" onClick={() => callUrl("testapihook")} />
         <Button label="testAlert" onClick={() => callUrl("testAlert")} />
@@ -165,7 +165,7 @@ function App2() {
 
       <div className="space-x-4">
 
-        <Button label="apiTest" icon={<Image1 />} onClick={() => callUrl("apiTest")} />
+        <Button   label="apiTest" icon={<Image1 />} onClick={() => callUrl("apiTest")} />
 
         <Button label="formTest" onClick={() => callUrl("formTest")} />
         <Button label="formTest2" onClick={() => callUrl("formTest2")} />

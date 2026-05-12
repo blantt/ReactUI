@@ -63,3 +63,5 @@ export const useFileDownload = (): UseFileDownloadReturn => {
 
     return { loading, status, downloadWithBlob };
 };
+
+export default useFileDownload;

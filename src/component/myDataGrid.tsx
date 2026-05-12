@@ -79,6 +79,7 @@ type DataGridProps = {
     useSubSearch?: boolean; // 是否啟用搜尋功能
     havecheckbox?: boolean; // 是否顯示checkbox欄位
     useBar?: boolean; // 是否使用進度條
+    useXBar?: boolean; // 是否使用橫向捲動軸
     keycol?: string; // 指定每列的唯一鍵值欄位名稱
     onCheckItemsChange?: (items: Array<Record<string, FormField>>) => void; // 新增選取項目變更回調
     onRowClick?: (row: Record<string, FormField>) => void; // 新增點擊事件
@@ -144,6 +145,7 @@ export const transformToFormField = (data: any[],
  *
  * @param {number} [PageSize=5] - 每頁顯示筆數。當 `useBar={true}` 時此設定無效，會自動設為 10000（顯示全部）
  *
+ * @param {boolean} [useXBar=false] - 啟用橫向捲軸，當表格寬度超過容器寬度時顯示水平滾動條
  * @param {boolean} [useBar=false] - 啟用捲軸模式，元件高度填滿父容器並可垂直捲動，同時顯示全部資料不分頁
  *
  * @param {boolean} [useSearch=false] - 在表格上方顯示全欄位搜尋輸入框，即時過濾所有欄位內容
@@ -186,7 +188,7 @@ export const transformToFormField = (data: any[],
  * @param {number} [gridCols] - 手動指定 grid 欄數（目前以 `widthcss` 自動計算為主，較少使用）
  */
 const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className, PageSize, havecheckbox = false,
-    onlyCheckedItems = false, useBar = false, useSearch = false, keycol, gridCols, checkedItems_old, onCheckItemsChange, onRowClick
+    onlyCheckedItems = false, useBar = false, useXBar = false, useSearch = false, keycol, gridCols, checkedItems_old, onCheckItemsChange, onRowClick
     , customTransform, useSubSearch = false, haveCredentials = false, textSize = "text-sm", classNameHeader = "", classItem = "", refreshKey
     , borderColor = "border-slate-700", styleHeader = 'default' }) => {
 
@@ -203,7 +205,10 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
     let cssUserbar = "";
     if (useBar) {
         PageSize = 10000
-        cssUserbar = " h-full overflow-y-auto "
+        cssUserbar += " h-full overflow-y-auto ";
+    }
+    if (useXBar) {
+        cssUserbar += " w-full overflow-x-auto ";
     }
     let itemsPerPage = PageSize || 5;
 
@@ -403,8 +408,8 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
                     </div>
                 )}
 
-                <div className={`grid  border-r border-b ${borderColor}  ${gridColsStyle}    bg-white/50   ${className || ''} shadow-md `}>
- 
+                <div className={`grid ${useXBar ? 'min-w-max' : ''} border-r border-b ${borderColor}  ${gridColsStyle}    bg-white/50   ${className || ''} shadow-md `}>
+
                     {/* 表頭 */}
                     {/* <div className={` shadow-md bg-gray-300 text-gray-700    `}> */}
                     {
