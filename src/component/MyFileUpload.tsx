@@ -27,7 +27,7 @@
  * uploadRef.current?.reset();
  * ```
  */
-import { useState, useRef, useImperativeHandle, forwardRef, type ChangeEvent } from 'react';
+import { useState, useEffect, useRef, useImperativeHandle, forwardRef, type ChangeEvent } from 'react';
 import { Upload, X, ImageIcon, Music, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 
 /** 元件的上傳生命週期狀態：idle（初始）、uploading（上傳中）、success（成功）、error（失敗） */
@@ -77,6 +77,11 @@ interface UploadProps {
    * @param responseData - 上傳成功時，伺服器回傳的 JSON 資料
    */
   onStatusChange?: (status: UploadStatus, message: string, responseData?: unknown) => void;
+  /** 預設顯示的資源 URL（可以是圖檔或音檔網址） */
+  defaultUrl?: string;
+  /** 預設資源的檔案名稱（無實體檔案時顯示用的參考名稱） */
+  defaultFileName?: string;
+  footer?: React.ReactNode;
 }
 
 /** 透過 `ref` 由父元件主動呼叫的方法集合 */
@@ -118,12 +123,23 @@ const MyFileUpload = forwardRef<MyFileUploadRef, UploadProps>(({
   onStatusChange,
   bShowTitle = true,
   apiFileName = 'file',
+  defaultUrl,
+  defaultFileName,
+  footer,
+
 }, ref) => {
   const config = ACCEPT_CONFIG[acceptType];
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(defaultUrl || null);
   const [status, setStatus] = useState<UploadStatus>('idle');
   const [message, setMessage] = useState<string>('');
+
+  // 當外部傳入的預設 URL 改變時，且使用者沒有選擇新檔案，自動更新預覽
+  useEffect(() => {
+    if (!selectedFile) {
+      setPreviewUrl(defaultUrl || null);
+    }
+  }, [defaultUrl]);
 
   // 統一更新狀態，並同步通知 parent
   const updateStatus = (nextStatus: UploadStatus, nextMessage: string, data?: unknown) => {
@@ -131,7 +147,7 @@ const MyFileUpload = forwardRef<MyFileUploadRef, UploadProps>(({
     setMessage(nextMessage);
     onStatusChange?.(nextStatus, nextMessage, data);
   };
-  
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // 暴露給 parent 透過 ref 呼叫的方法
@@ -151,7 +167,7 @@ const MyFileUpload = forwardRef<MyFileUploadRef, UploadProps>(({
 
       setSelectedFile(file);
       updateStatus('idle', '');
-      
+
       // 建立預覽 URL
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -159,6 +175,30 @@ const MyFileUpload = forwardRef<MyFileUploadRef, UploadProps>(({
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  // 處理拖放事件
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const file = e.dataTransfer.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith(config.mimePrefix)) {
+      updateStatus('error', config.errorMsg);
+      return;
+    }
+    setSelectedFile(file);
+    updateStatus('idle', '');
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPreviewUrl(reader.result as string);
+    };
+    reader.readAsDataURL(file);
   };
 
   // 移除已選取的檔案
@@ -177,7 +217,7 @@ const MyFileUpload = forwardRef<MyFileUploadRef, UploadProps>(({
 
     // 建立 FormData，並合併外部傳入的額外欄位
     const formData = new FormData();
-    formData.append(apiFileName ||  'file', selectedFile);
+    formData.append(apiFileName || 'file', selectedFile);
     if (extraFormData) {
       Object.entries(extraFormData).forEach(([key, value]) => {
         formData.append(key, value);
@@ -221,9 +261,11 @@ const MyFileUpload = forwardRef<MyFileUploadRef, UploadProps>(({
 
         <div className="p-2">
           {/* 上傳區域 */}
-          {!selectedFile ? (
-            <div 
+          {(!selectedFile && !previewUrl) ? (
+            <div
               onClick={() => fileInputRef.current?.click()}
+              onDragOver={handleDragOver}
+              onDrop={handleDrop}
               className="border-2 border-dashed border-slate-300 rounded-xl p-10 flex flex-col items-center justify-center cursor-pointer hover:border-indigo-400 hover:bg-indigo-50 transition-all group"
             >
               <div className="bg-indigo-100 p-4 rounded-full group-hover:scale-110 transition-transform">
@@ -240,11 +282,12 @@ const MyFileUpload = forwardRef<MyFileUploadRef, UploadProps>(({
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center text-sm text-slate-600 font-medium">
                   <Music className="w-5 h-5 mr-2 text-indigo-500" />
-                  {selectedFile.name}
+                  {selectedFile ? selectedFile.name : (defaultFileName || '預設音訊')}
                 </div>
                 <button
                   onClick={clearSelection}
                   className="bg-red-500 text-white p-1 rounded-full hover:bg-red-600 transition-colors shadow"
+                  title="移除預覽"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -252,34 +295,40 @@ const MyFileUpload = forwardRef<MyFileUploadRef, UploadProps>(({
               {previewUrl && (
                 <audio controls src={previewUrl} className="w-full" />
               )}
-              <p className="text-xs text-slate-400 mt-2 text-right">
-                {(selectedFile.size / 1024).toFixed(1)} KB
-              </p>
+              {selectedFile && (
+                <p className="text-xs text-slate-400 mt-2 text-right">
+                  {(selectedFile.size / 1024).toFixed(1)} KB
+                </p>
+              )}
             </div>
           ) : (
             /* 圖片預覽 */
             <div className="relative">
-              <img 
-                src={previewUrl!} 
-                alt="Preview" 
-                className="w-full h-64 object-cover rounded-xl border border-slate-200" 
+              <img
+                src={previewUrl!}
+                alt="Preview"
+                className="w-full h-64 object-cover rounded-xl border border-slate-200"
               />
-              <button 
+              <button
                 onClick={clearSelection}
                 className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 transition-colors shadow-lg"
+                title="移除預覽"
               >
                 <X className="w-5 h-5" />
               </button>
               <div className="mt-3 flex items-center text-sm text-slate-500 italic">
                 <ImageIcon className="w-4 h-4 mr-2" />
-                {selectedFile.name} ({(selectedFile.size / 1024).toFixed(1)} KB)
+                {selectedFile
+                  ? `${selectedFile.name} (${(selectedFile.size / 1024).toFixed(1)} KB)`
+                  : (defaultFileName || '預設圖片')
+                }
               </div>
             </div>
           )}
 
           {/* 隱藏的 Input */}
-          <input 
-            type="file" 
+          <input
+            type="file"
             ref={fileInputRef}
             onChange={handleFileChange}
             accept={config.inputAccept}
@@ -288,11 +337,10 @@ const MyFileUpload = forwardRef<MyFileUploadRef, UploadProps>(({
 
           {/* 狀態訊息 */}
           {message && (
-            <div className={`mt-4 p-3 rounded-lg flex items-center text-sm ${
-              status === 'success' ? 'bg-green-50 text-green-700 border border-green-200' :
+            <div className={`mt-4 p-3 rounded-lg flex items-center text-sm ${status === 'success' ? 'bg-green-50 text-green-700 border border-green-200' :
               status === 'error' ? 'bg-red-50 text-red-700 border border-red-200' :
-              'bg-blue-50 text-blue-700 border border-blue-200'
-            }`}>
+                'bg-blue-50 text-blue-700 border border-blue-200'
+              }`}>
               {status === 'success' && <CheckCircle2 className="w-4 h-4 mr-2" />}
               {status === 'error' && <AlertCircle className="w-4 h-4 mr-2" />}
               {status === 'uploading' && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
@@ -305,11 +353,10 @@ const MyFileUpload = forwardRef<MyFileUploadRef, UploadProps>(({
             <button
               onClick={handleUpload}
               disabled={!selectedFile || status === 'uploading' || status === 'success'}
-              className={`w-full py-3 rounded-xl font-bold text-white transition-all shadow-md flex items-center justify-center ${
-                !selectedFile || status === 'uploading' || status === 'success'
-                  ? 'bg-slate-300 cursor-not-allowed shadow-none'
-                  : 'bg-indigo-600 hover:bg-indigo-700 active:scale-[0.98]'
-              }`}
+              className={`w-full py-3 rounded-xl font-bold text-white transition-all shadow-md flex items-center justify-center ${!selectedFile || status === 'uploading' || status === 'success'
+                ? 'bg-slate-300 cursor-not-allowed shadow-none'
+                : 'bg-indigo-600 hover:bg-indigo-700 active:scale-[0.98]'
+                }`}
             >
               {status === 'uploading' ? (
                 <>上傳中...</>
@@ -317,7 +364,7 @@ const MyFileUpload = forwardRef<MyFileUploadRef, UploadProps>(({
                 <>開始上傳回專案資源檔</>
               )}
             </button>
-            
+
             {status === 'success' && (
               <button
                 onClick={clearSelection}
@@ -327,6 +374,12 @@ const MyFileUpload = forwardRef<MyFileUploadRef, UploadProps>(({
               </button>
             )}
           </div>
+          {footer && (
+            <div className="flex items-center justify-end   bg-slate-50/50 px-6 py-2">
+              {footer}
+            </div>
+          )}
+
         </div>
       </div>
     </div>

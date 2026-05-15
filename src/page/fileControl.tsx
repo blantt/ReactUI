@@ -178,9 +178,9 @@ const App2 = () => {
     };
 
     const filePaths = [
-        { name: '專案本地文件 (Public)', path: '/mynote.txt', type: 'txt' },
+        { name: '專案本地文件 (Public)', path: '/CarZip_20260514.zip', type: 'txt' },
         { name: '範例文件.txt', path: 'https://www.w3.org/TR/PNG/iso_8859-1.txt', type: 'txt' },
-        { name: '測試壓縮檔.zip', path: 'https://example.com/sample.zip', type: 'zip' },
+        { name: '測試壓縮檔.zip', path: '/CarZip_20260514.zip', type: 'zip' },
         { name: '財務報表.xlsx', path: 'https://example.com/report.xlsx', type: 'excel' }
     ];
 
