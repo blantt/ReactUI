@@ -16,7 +16,7 @@ export { default as NavItem, MenuItem, type MenuItemData } from './component/myM
 export { default as MyAlert} from './component/myAlert'; 
 export { default as MyConfirm} from './component/myConfirm';
 export { default as useFileDownload, type DownLoadProps, type UseFileDownloadReturn } from './component/myfileControl';
-
+export { default as MyFileUpload, type MyFileUploadRef } from './component/MyFileUpload';
   
 export const apitransform: any;
 export const apitransformDrop: any;
