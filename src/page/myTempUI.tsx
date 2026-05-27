@@ -239,6 +239,7 @@ const MyTempUI: React.FC = () => {
                       //  enable={false}
                         // onSelect={handleSelect2}
                         emptyText='我是誰'
+                        icon={<img src={`${import.meta.env.BASE_URL}Linedown.png`} alt="icon" style={{ width: 20, height: 20 }} />}
                     />
                 </div>
 
@@ -248,6 +249,7 @@ const MyTempUI: React.FC = () => {
                         apiUrl="https://clockappservice.english4u.com.tw/api/clock/selectClockWorkClass"
                         onSelect={handleSelect3}
                         refreshKey={dropRefreshKey}
+                        icon={<img src={`${import.meta.env.BASE_URL}Linedown.png`} alt="icon" style={{ width: 20, height: 20 }} />}
                     />
 
                     <Button label="重新載入" onClick={() => setDropRefreshKey(prev => prev + 1)} />
@@ -360,7 +362,7 @@ const MyTempUI: React.FC = () => {
 
 
                 <div>
-                    <Button icon={<img src={`${import.meta.env.BASE_URL}arrow_r.png`} alt="icon" style={{ width: 20, height: 20 }} />}
+                    <Button icon={<img src={`${import.meta.env.BASE_URL}Linedown.png`} alt="icon" style={{ width: 20, height: 20 }} />}
                         label="modal_checkgrid"
                         onClick={() => setIsLoading_modal_check(true)} />
                 </div>
