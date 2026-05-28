@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 interface Tab {
-  id: number;
+  id: string | number;
   label: string;
   content: React.ReactNode;
 }
@@ -20,7 +20,7 @@ interface MyTabProps {
  */
 const MyTab: React.FC<MyTabProps> = ({ tabs, keepAlive = false }) => {
   // 管理選中的 Tab 狀態
-  const [activeTab, setActiveTab] = useState<number>(tabs[0]?.id || 0);
+  const [activeTab, setActiveTab] = useState<string | number>(tabs[0]?.id || 0);
 
   return (
     <div>

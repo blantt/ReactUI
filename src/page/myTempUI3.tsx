@@ -11,22 +11,74 @@ import { Button } from "../component/button";
 import { DiscordIcon, AnotherIcon, AnotherIcon2 } from "../component/mySvg";
 import type { FileItem as DropdownOption } from '../component/myDropGrid'; // 匯入 FileItem 型別
 import SmartModal from '../component/SmartModal';
-
+import { Plus, Trash2, Save, ChevronRight, ChevronDown, Delete, Image as ImageIcon, AudioLines, MessageSquareMore, Pen, Icon } from 'lucide-react';
 import MyGetApi, { useMyApi } from '../component/myGetApi';
-
+import MyTab_v2 from '../component/myTab_v2';
+import MyTab from '../component/myTab';
 const app: React.FC = () => {
     const [dropRefreshKey, setDropRefreshKey] = useState(0); // 新增 state
 
     const [dropValue, setDropValue] = useState<string>('');
 
 
+    const tabData = [
+        {
+            id: 'server',
+            label: 'Server Admin',
+            icon: <Plus size={18} />,
+            content: (
+                <div>
+                    <h2 className="text-lg font-bold text-gray-700 mb-2">🖥️ Server Admin</h2>
+                    <p className="text-gray-500 text-sm">Manage your servers, configure environments, and monitor uptime.</p>
+                </div>
+            )
+        },
+        {
+            id: 'web',
+            label: 'Web Design',
+            icon: <Delete size={18} />,
+            content: (
+                <div>
+                    <h2 className="text-lg font-bold text-gray-700 mb-2">🎨 Web Design</h2>
+                    <p className="text-gray-500 text-sm">Craft beautiful, responsive interfaces with modern design tools.</p>
+                </div>
+            )
+        },
+        {
+            id: 'marketing',
+            label: 'Marketing',
+            content: (
+                <div>
+                    <h2 className="text-lg font-bold text-gray-700 mb-2">📣 Marketing</h2>
+                    <p className="text-gray-500 text-sm">Drive growth with data-driven campaigns and brand strategies.</p>
+                </div>
+            )
+        }
+    ];
+
     return (
         <div className="p-1  ">
             <AppTitle title="測試頁面tempui3" />
-            <div className="flex justify-center items-center ">
+            <MyTab
+                tabs={tabData}
+                keepAlive={true}
 
-                <div className="p-2">
-                    <div>
+            />
+
+            <MyTab_v2
+                tabs={tabData}
+                keepAlive={true}
+                onChange={(activeId) => console.log('目前選中頁籤：', activeId)}
+            />
+
+            <div>
+
+                <div className="flex justify-center items-center ">
+
+
+
+                    <div className="p-2">
+
                         test DropDown refresh
                     </div>
                     <MyDropDown keyValue='ClassID' keyText='ClassName' haveBlank={true} emptyText='dropdown(API)選擇'
