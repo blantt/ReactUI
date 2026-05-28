@@ -2,7 +2,7 @@ import Mytab from '../component/myTab';
 import DataGridApi from '../component/myDataGrid';
 import MyDropDown from '../component/myDropDown';
 import TextInput  from "../component/simpleUI";
-
+ import MyTab_v2 from '../component/myTab_v2';
 const App: React.FC = () => {
     const tabs = [
         { id: 1, label: 'Tab 1', content: <Tab1 /> },
@@ -12,7 +12,7 @@ const App: React.FC = () => {
 
     return (
         <div>
-            <Mytab keepAlive={true} tabs={tabs} />
+            <MyTab_v2 keepAlive={true} tabs={tabs} />
         </div>
     );
 

@@ -5,7 +5,7 @@ export { default as DynamicForm} from './component/DynamicForm';
 export { default as SmartModal} from './component/SmartModal';
 export { default as MyDropDown} from './component/myDropDown';
 export { default as MyDropGrid,type FileItem as DropdownOption} from './component/myDropGrid';
-export { default as MyTab} from './component/myTab';
+export { default as Mytab} from './component/myTab';
 export { default as MyTab_v2} from './component/myTab_v2';
 export { default as Loading} from './component/myload';
 export { default as Modal} from './component/myModal';
