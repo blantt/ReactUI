@@ -132,7 +132,7 @@ const Example = () => {
         <div className='h-[400px] p-1  '>
           <DataGridApi
             columns={[
-              { name: 'empno', type: 'input', showname: '員工編號', colSpan: 1 , subSearch: true},
+              { name: 'empno', type: 'input', showname: '員工編號', colSpan: 1  },
               { name: 'fullname', type: 'input', showname: '全名2', colSpan: 1, widthcss: 'minmax(50px,150px)', subSearch: true}
             ]}
             useBar={true}
@@ -158,7 +158,7 @@ const Example = () => {
 
             }}
             // customTransform={customTransform}
-            apiUrl="https://editor.4kids.com.tw/Portal/apitest/HandlerApiTest.ashx?func=Cehck輪班制一例一休"
+            apiUrl="https://editor.4kids.com.tw/Portal/api/api_db.ashx?func=Cehck輪班制一例一休"
           />
         </div>
 
@@ -210,7 +210,7 @@ const Example = () => {
             
              customTransform={customTransform2}
             // customTransform={customTransform}
-            apiUrl="https://editor.4kids.com.tw/Portal/apitest/HandlerApiTest.ashx?func=Cehck輪班制一例一休"
+            apiUrl="https://editor.4kids.com.tw/Portal/api/api_db.ashx?func=Cehck輪班制一例一休"
           />
         </div>
 

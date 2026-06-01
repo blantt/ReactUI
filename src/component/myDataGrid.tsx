@@ -455,8 +455,8 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
                             }
 
                             {columns.map((col, index) => (
-                                //判斷 col.colSpan
-                                (col.subSearch === true) ? (
+                                          col.visible === false ? null :
+                                          (col.subSearch === true) ? (
                                     <div className={`p-1 border-l border-t  ${borderColor}    text-gray-600`} >
                                         <input
                                             type="text"
@@ -514,6 +514,7 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
                                 )
                             }
                             {columns.map((col, colIndex) => {
+                                if (col.visible === false) return null;
                                 const field = row[col.name];
                                 if (!field) {
                                     return (

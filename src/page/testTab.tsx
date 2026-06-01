@@ -3,9 +3,10 @@ import DataGridApi from '../component/myDataGrid';
 import MyDropDown from '../component/myDropDown';
 import TextInput  from "../component/simpleUI";
  import MyTab_v2 from '../component/myTab_v2';
+ import { Plus, Trash2, Save, ChevronRight, ChevronDown, Delete, Image as ImageIcon, AudioLines, MessageSquareMore, Pen, Icon } from 'lucide-react';
 const App: React.FC = () => {
     const tabs = [
-        { id: 1, label: 'Tab 1', content: <Tab1 /> },
+        { id: 1, label: 'Tab 1', icon: <Plus size={18} />, content: <Tab1 /> },
         { id: 2, label: 'Tab 2', content: <Tab2 /> },
         { id: 3, label: 'Tab 3', content: <Tab3 /> },
     ];
