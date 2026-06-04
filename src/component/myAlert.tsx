@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { createPortal } from 'react-dom';
-import { 
-  Info, 
-  CheckCircle2, 
-  AlertTriangle, 
-  X, 
+import {
+  Info,
+  CheckCircle2,
+  AlertTriangle,
+  X,
   Bell,
   Terminal,
   AlertCircle
@@ -119,15 +119,25 @@ const MyAlert: React.FC<AlertProps> = ({
   rounded = true,
   withAccent = false
 }) => {
-  // 自動消失邏輯
+  // 用 ref 保存最新的 onClose，避免 inline function 每次 render 產生新 reference
+  // 導致 timer 被不必要地 clearTimeout + 重啟
+  const onCloseRef = React.useRef(onClose);
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
+
+  // 自動消失邏輯：只依賴 show 和 duration，不依賴 onClose
+  // 這樣父元件 re-render 不會重置 timer
   useEffect(() => {
     if (show && duration && duration > 0) {
+      console.log('duration:', duration);
       const timer = setTimeout(() => {
-        if (onClose) onClose();
+        console.log('自動關閉', 'A');
+        if (onCloseRef.current) onCloseRef.current();
       }, duration);
       return () => clearTimeout(timer);
     }
-  }, [show, duration, onClose]);
+  }, [show, duration]); // ✅ 移除 onClose，改由 ref 取得最新值
 
   if (!show) return null;
 
@@ -186,13 +196,13 @@ const MyAlert: React.FC<AlertProps> = ({
     <>
       {/* 遮罩：center 可點擊關閉；failure 強制不可點擊，必須按關閉按鈕 */}
       {(effectivePosition === 'center' || isBlocking) && (
-        <div 
-          className="fixed inset-0 bg-black/40 backdrop-blur-[2px] z-9998 transition-opacity animate-in fade-in" 
+        <div
+          className="fixed inset-0 bg-black/40 backdrop-blur-[2px] z-9998 transition-opacity animate-in fade-in"
           onClick={isBlocking ? undefined : onClose}
         />
       )}
-      
-      <div 
+
+      <div
         className={`
           flex flex-col p-4 text-sm border transition-all
           animate-in fade-in slide-in-from-top-4 duration-300
@@ -231,7 +241,7 @@ const MyAlert: React.FC<AlertProps> = ({
         {/* 自動消失進度條 */}
         {duration && duration > 0 && (
           <div className="absolute bottom-0 left-0 h-1 bg-current opacity-10 rounded-b-xl overflow-hidden w-full">
-            <div 
+            <div
               className="h-full bg-current opacity-30 animate-shrink-width"
               style={{ animationDuration: `${duration}ms`, animationTimingFunction: 'linear' }}
             />

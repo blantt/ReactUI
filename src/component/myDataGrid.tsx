@@ -461,7 +461,7 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
                                         <input
                                             type="text"
                                             placeholder={`搜尋...${col.showname}`}
-                                            className="w-full p-1  border  text-gray-600 rounded"
+                                            className="w-full p-1  border border-blue-400  text-gray-600 rounded"
                                             value={subSearchTexts[col.name] || ''}
                                             onChange={e => handleSubSearchChange(col.name, e.target.value)}
                                         />

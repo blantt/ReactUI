@@ -139,10 +139,10 @@ const Example = () => {
             havecheckbox={true}
             useSearch={true}
             useSubSearch={true}
-            textSize="text-[14px]"
+            textSize="text-[14px]  tracking-[0.08em] "
            // classNameHeader='  text-amber-900 font-bold p-2 bg-gradient-to-br from-orange-100/80 to-orange-200/80 backdrop-blur-xl shadow-lg      '
             borderColor='  border-slate-400 '
-            classItem=' text-cyan-800  '
+            classItem=' text-[18px]  '
             styleHeader='green1'
             onCheckItemsChange={items => {
               // items 就是最新的 checkItems
