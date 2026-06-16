@@ -70,6 +70,7 @@ export interface FormField {
   value?: string;
   colSpan?: number;
   visible?: boolean; // 控制欄位是否可見
+  showname?: string; // 顯示名稱
   type: string; // 支援 "input"、"hyperlink" 和 "empty"
   href?: string; // 當 type 為 hyperlink 時，指定超連結的目標 URL
   child?: React.ReactNode; // 當 type 為 empty 時，允許外部傳入子元素
@@ -88,6 +89,7 @@ interface DropdownProps {
   columns: Array<{
     name: string; // 欄位名稱
     colSpan?: number; // 欄位寬度
+    showname?: string; // 顯示名稱
     visible?: boolean; // 控制欄位是否可見
     type: string; // 欄位型態，例如 "input"、"hyperlink"、"empty"
     transform?: (value: any) => FormField; // 動態轉換函數
