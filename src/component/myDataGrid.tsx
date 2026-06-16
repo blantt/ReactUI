@@ -208,7 +208,7 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
         cssUserbar += " h-full overflow-y-auto ";
     }
     if (useXBar) {
-        cssUserbar += " w-full overflow-x-auto ";
+        cssUserbar += " w-full overflow-x-auto min-w-0 ";
     }
     let itemsPerPage = PageSize || 5;
 
@@ -455,26 +455,26 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
                             }
 
                             {columns.map((col, index) => (
-                                          col.visible === false ? null :
-                                          (col.subSearch === true) ? (
-                                    <div className={`p-1 border-l border-t  ${borderColor}    text-gray-600`} >
-                                        <input
-                                            type="text"
-                                            placeholder={`搜尋...${col.showname}`}
-                                            className="w-full p-1  border border-blue-400  text-gray-600 rounded"
-                                            value={subSearchTexts[col.name] || ''}
-                                            onChange={e => handleSubSearchChange(col.name, e.target.value)}
-                                        />
-                                    </div>
-                                    // <div className={` p-1.5 outline outline-1   outline-stone-400 text-gray-600 font-medium text-center`}>
-                                    //     我是搜尋
-                                    // </div>
-                                ) : (
-                                    // 這裡放 col.subSearch 不為 true 時要顯示的內容
-                                    <div className={` p-1.5  border-l border-t  ${borderColor}   text-gray-600 font-medium text-center`}>
-                                        {/* 留白或其他內容 */}
-                                    </div>
-                                )
+                                col.visible === false ? null :
+                                    (col.subSearch === true) ? (
+                                        <div className={`p-1 border-l border-t  ${borderColor}    text-gray-600`} >
+                                            <input
+                                                type="text"
+                                                placeholder={`搜尋...${col.showname}`}
+                                                className="w-full p-1  border border-blue-400  text-gray-600 rounded"
+                                                value={subSearchTexts[col.name] || ''}
+                                                onChange={e => handleSubSearchChange(col.name, e.target.value)}
+                                            />
+                                        </div>
+                                        // <div className={` p-1.5 outline outline-1   outline-stone-400 text-gray-600 font-medium text-center`}>
+                                        //     我是搜尋
+                                        // </div>
+                                    ) : (
+                                        // 這裡放 col.subSearch 不為 true 時要顯示的內容
+                                        <div className={` p-1.5  border-l border-t  ${borderColor}   text-gray-600 font-medium text-center`}>
+                                            {/* 留白或其他內容 */}
+                                        </div>
+                                    )
 
 
                             ))}

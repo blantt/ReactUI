@@ -4,7 +4,7 @@ import DataGridApi, { transformToFormField as apitransform } from './myDataGrid'
 import { Down } from "../component/mySvg";
 import { twMerge } from 'tailwind-merge';
 import { clsx } from 'clsx';
-
+import { useMyApi } from '../component/myGetApi';
 import { ArrowBigRightDash, ChevronDown, X, CircleX, DivideIcon, SquareChevronDown } from 'lucide-react';
 // 定義下拉選單元件的屬性介面
 
@@ -104,6 +104,8 @@ interface DropdownProps {
   className?: string;
   value?: string; // 用於綁定選擇值的屬性
   enable?: boolean; // 是否啟用下拉選單
+  haveCredentials?: boolean; // 是否在 fetch 請求中包含憑證（如 cookies）
+  refreshKey?: number; // ← 如外部要強制重抓資料時
 }
 
 export interface FileItem {
@@ -133,6 +135,8 @@ export const transformToFormField = apitransform;
  * @param {'default' | 'vistaBlue'} [style1='default'] - 按鈕外觀風格，`'vistaBlue'` 為 Vista 藍色玻璃質感
  * @param {string} [className] - 額外注入按鈕的 Tailwind / CSS class，優先級高於內建樣式
  * @param {boolean} [enable=true] - 是否啟用下拉選單；`false` 時按鈕不可點擊且隱藏清除按鈕，預設為 `true`
+ * @param {boolean} [haveCredentials] - 是否在 fetch 請求中包含憑證（如 cookies）
+ * @param {number} [refreshKey] - 監聽此值變化以強制重新抓取 API 資料（僅當 `apiUrl` 設定時有效）
  *
  * @example
  * // 基本用法（靜態資料）
@@ -155,13 +159,22 @@ export const transformToFormField = apitransform;
  *   keyValue="ClassID"
  *   keyText="ClassName"
  *   value={selectedId}
- *   onSelect={(item) => setSelectedId(item.ClassID.value)}
+ *   onSelect={(item) => {
+     *   if (Object.keys(item).length === 0) {
+     *    // 使用者按了清除（空物件）
+     *      alert('清除');
+     *      } else {
+     *      // 正常選取
+     *      alert(item.Name.value)
+     *       }
+      }}
  *   useSearch
  *   useBar
  * />
  */
 const MyDropDown: React.FC<DropdownProps> = ({ data, columns, apiUrl, onSelect, keyValue, keyText, gridCols
-  , useSearch, havecheckbox, useBar, widthCss = "w-48", emptyText = "請選擇", style1 = 'default', className = "", value, enable = true }) => {
+  , useSearch, havecheckbox, useBar, widthCss = "w-48", emptyText = "請選擇", style1 = 'default', className = ""
+  , value, enable = true, haveCredentials = false, refreshKey }) => {
   // 狀態：管理下拉選單是否展開  
   const [isOpen, setIsOpen] = useState(false);
   // 狀態：儲存當前選擇的選項
@@ -171,6 +184,13 @@ const MyDropDown: React.FC<DropdownProps> = ({ data, columns, apiUrl, onSelect, 
   // 使用 useRef 來參考下拉選單的 DOM 節點
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  const { loading: load_apiData, error: error_apiData, data: data_apiData, status: status_apiData, execute: execute_apiData } = useMyApi({
+    apiUrl: '',
+    method: 'GET',
+    haveCredentials: haveCredentials,
+    asJson: true,
+  });
+
   const styles = {
     default: '',
     vistaBlue: 'vista-dropGrid-blue',
@@ -179,6 +199,9 @@ const MyDropDown: React.FC<DropdownProps> = ({ data, columns, apiUrl, onSelect, 
 
   // 切換下拉選單展開/收起的函數
   const handleToggle = () => {
+    if (load_apiData) {
+
+    };
     if (!enable) return;
     setIsOpen(!isOpen);
   };
@@ -192,19 +215,35 @@ const MyDropDown: React.FC<DropdownProps> = ({ data, columns, apiUrl, onSelect, 
     if (apiUrl) {
       const fetchData = async () => {
         try {
-          const response = await fetch(apiUrl);
-          if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-          const jsonData = await response.json();
-          // 使用相同的 transform 轉換資料
-          const transformed = transformToFormField(jsonData, columns);
-          setInternalData(transformed);
+          // 新版,用元件取api data
+          const result = await execute_apiData({
+            apiUrl: apiUrl,
+          });
+
+          if (result) {
+            if (result.status === 'success') {
+              const jsonData = result.data;
+              const transformed = transformToFormField(jsonData, columns);
+              setInternalData(transformed);
+            } else {
+              alert('API 回傳錯誤: ' + String(result.data));
+              throw new Error('API 回傳錯誤: ' + String(result.data));
+            }
+
+          }
+          // const response = await fetch(apiUrl);
+          // if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+          // const jsonData = await response.json();
+          // // 使用相同的 transform 轉換資料
+          // const transformed = transformToFormField(jsonData, columns);
+          // setInternalData(transformed);
         } catch (error) {
           console.error('MyDropDown fetch error:', error);
         }
       };
       fetchData();
     }
-  }, [apiUrl]);
+  }, [apiUrl, refreshKey]);
 
   // 當 data prop 變化時，同步更新 internalData
   useEffect(() => {
@@ -287,6 +326,9 @@ const MyDropDown: React.FC<DropdownProps> = ({ data, columns, apiUrl, onSelect, 
                     e.stopPropagation(); // 阻止事件冒泡
                     setSelectedOption(null);
                     setIsOpen(false);
+                    if (onSelect) {
+                      onSelect({}); // 通知父元件已清除選擇
+                    }
                   }}>
                   {/* <img src={`${import.meta.env.BASE_URL}arrow_del.png`} alt="icon" style={{ width: 20, height: 20 }} /> */}
                   <CircleX className={`w-5 h-5  ${style1 === 'vistaBlue' ? 'text-blue-400' : 'text-blue-300'}`}
@@ -301,7 +343,7 @@ const MyDropDown: React.FC<DropdownProps> = ({ data, columns, apiUrl, onSelect, 
 
             }
 
- 
+
 
           </div>
 

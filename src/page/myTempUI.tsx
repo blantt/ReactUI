@@ -6,7 +6,7 @@ import Loading from '../component/myload';
 import { LoadingInline } from '../component/myload';
 import Modal from '../component/myModal';
 import DataGridApi from '../component/myDataGrid';
- 
+
 import { Button } from "../component/button";
 import MyAudioPlayer from "../component/myAudio";
 
@@ -15,7 +15,7 @@ import { DiscordIcon, AnotherIcon, AnotherIcon2 } from "../component/mySvg";
 import type { FileItem as DropdownOption } from '../component/myDropGrid'; // 匯入 FileItem 型別
 import SmartModal from '../component/SmartModal';
 const MyTempUI: React.FC = () => {
-     
+
     const styles =  /* css */`
         .aero-blur {
             
@@ -124,9 +124,9 @@ const MyTempUI: React.FC = () => {
 
 
     const fileOptions: DropdownOption[] = [
-        { sname: "name 1", svalue: "value 1", sother: "other1" },
-        { sname: "name 2", svalue: "value 2", sother: "other2" },
-        { sname: "name 3", svalue: "value 3", sother: "other3" },
+        { sname: "namea", svalue: "value 1", sother: "other1" },
+        { sname: "nameb", svalue: "value 2", sother: "other2" },
+        { sname: "namec ", svalue: "value 3", sother: "other3" },
     ];
 
     const fileOptions2: DropdownOption[] = [
@@ -189,7 +189,7 @@ const MyTempUI: React.FC = () => {
         }, 2000);
     };
 
- 
+
     return (
 
         <div>
@@ -200,13 +200,13 @@ const MyTempUI: React.FC = () => {
             />
             <div className="flex justify-center items-center ">
 
-               <div>
-                  <MyAudioPlayer
+                <div>
+                    <MyAudioPlayer
                         src={"http://192.168.101.34/questionbank/test/Audio_GEPT/a/1/450360_2.mp3"}
                         title="元件範例"
                     />
 
-               </div>
+                </div>
 
                 <div className="p-2">
                     <h1 className="text-sm font-bold mb-4">Drop sch check Grid </h1>
@@ -234,11 +234,11 @@ const MyTempUI: React.FC = () => {
 
                 <div className="p-4">
                     <h1 className="text-sm font-bold mb-4">dropdown Example</h1>
-                    <MyDropDown keyValue='sname' keyText='svalue'
+                    <MyDropDown keyValue='svalue' keyText='sname'
                         options={fileOptions} style1='vistaBlue'
-                      //  enable={false}
-                        // onSelect={handleSelect2}
-                        emptyText='我是誰'
+                        //  enable={false}
+                        onSelect={(item) => alert(item.svalue)}
+                        emptyText='未選擇'
                         icon={<img src={`${import.meta.env.BASE_URL}Linedown.png`} alt="icon" style={{ width: 20, height: 20 }} />}
                     />
                 </div>
@@ -259,6 +259,16 @@ const MyTempUI: React.FC = () => {
                 <div className="p-2">
                     <h1 className="text-sm font-bold mb-4">DropGrid(直接給數據)</h1>
                     <MyDropGrid data={fileOptions2} style1='vistaBlue'
+                        emptyText='要選哦'
+                        onSelect={(item) => {
+                            if (Object.keys(item).length === 0) {
+                                // 使用者按了清除（空物件）
+                                alert('清除');
+                            } else {
+                                // 正常選取
+                                alert(item.Name.value)
+                            }
+                        }}
                         columns={[
                             { name: 'Name', type: 'input', colSpan: 1 },
                             { name: 'Age', type: 'input', colSpan: 1 },
@@ -301,7 +311,7 @@ const MyTempUI: React.FC = () => {
             </div>
 
             <div className="flex justify-center items-center  ">
-               <div>
+                <div>
                     <Button label="atest btnstyle4" style1='vistaGray' className='  text-amber-900  '
                         onClick={handleButtonClick_modal} />
                 </div>
@@ -310,7 +320,7 @@ const MyTempUI: React.FC = () => {
                     <Button label="atest btnstyle4" style1='vistaRed' className='  text-amber-900  '
                         onClick={handleButtonClick_modal} />
                 </div>
-                 <div>
+                <div>
                     <Button label="atest btnstyle4" style1='vistaSkyBlue' className='  text-amber-900  '
                         onClick={handleButtonClick_modal} />
                 </div>

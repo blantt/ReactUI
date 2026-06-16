@@ -347,18 +347,18 @@ const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyVal
           {enable ? (
             <div className="absolute right-1">
               {icon ? icon
-               :  <SquareChevronDown
-                //className="w-5 h-5   text-blue-300  "
-                //  className={`w-5 h-5 ${styles[style1] || styles.default}   text-blue-300 `}
-                className={`w-5 h-5  ${style1 === 'vistaBlue' ? 'text-blue-400' : 'text-blue-300'}`}
-              />}
+                : <SquareChevronDown
+                  //className="w-5 h-5   text-blue-300  "
+                  //  className={`w-5 h-5 ${styles[style1] || styles.default}   text-blue-300 `}
+                  className={`w-5 h-5  ${style1 === 'vistaBlue' ? 'text-blue-400' : 'text-blue-300'}`}
+                />}
 
-              
+
             </div>
 
           ) :
             (
-             <div className="absolute right-1 w-5 h-5" />
+              <div className="absolute right-1 w-5 h-5" />
             )
 
           }
