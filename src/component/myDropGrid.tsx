@@ -69,6 +69,7 @@ export interface FormField {
   name: string;
   value?: string;
   colSpan?: number;
+  visible?: boolean; // 控制欄位是否可見
   type: string; // 支援 "input"、"hyperlink" 和 "empty"
   href?: string; // 當 type 為 hyperlink 時，指定超連結的目標 URL
   child?: React.ReactNode; // 當 type 為 empty 時，允許外部傳入子元素
@@ -87,6 +88,7 @@ interface DropdownProps {
   columns: Array<{
     name: string; // 欄位名稱
     colSpan?: number; // 欄位寬度
+    visible?: boolean; // 控制欄位是否可見
     type: string; // 欄位型態，例如 "input"、"hyperlink"、"empty"
     transform?: (value: any) => FormField; // 動態轉換函數
 
@@ -121,8 +123,8 @@ export const transformToFormField = apitransform;
  *
  * @param {Array<Record<string, FormField>>} [data] - 直接傳入的靜態資料陣列；與 `apiUrl` 擇一使用
  * @param {string} [apiUrl] - 遠端資料來源 API URL；設定後元件掛載時自動 fetch 並覆蓋 `data`
- * @param {Array<{name: string, colSpan?: number, type: string, transform?: (value: any) => FormField}>} columns - Grid 欄位設定陣列，必填
- * @param {string} [keyValue] - 指定資料中作為「值 (value)」的欄位名稱，例如 `"ClassID"`
+ * @param {Array<{name: string, colSpan?: number,visible?: boolean, type: string, transform?: (value: any) => FormField}>} columns - Grid 欄位設定陣列，必填
+* @param {string} [keyValue] - 指定資料中作為「值 (value)」的欄位名稱，例如 `"ClassID"`
  * @param {string} [keyText] - 指定資料中作為「顯示文字 (label)」的欄位名稱，例如 `"ClassName"`
  * @param {string} [value] - 外部受控值，對應 `keyValue` 欄位的值；變更時會自動同步選取項目
  * @param {(value: FileItem) => void} [onSelect] - 選取列後觸發的回調，回傳完整的資料列物件
