@@ -82,6 +82,7 @@ interface UploadProps {
   /** 預設資源的檔案名稱（無實體檔案時顯示用的參考名稱） */
   defaultFileName?: string;
   footer?: React.ReactNode;
+  haveCredentials?: boolean;
 }
 
 /** 透過 `ref` 由父元件主動呼叫的方法集合 */
@@ -99,7 +100,7 @@ export interface MyFileUploadRef {
  * @param onStatusChange - 上傳狀態變更時的回呼，父元件可藉此同步取得最新狀態與訊息
  * @param bShowTitle - 是否顯示頂部標題列，預設為 `true`
  * @param apiFileName - 上傳時 FormData 中檔案欄位的名稱，預設為 `'file'`
- *
+ *@param haveCredentials - 是否需要帶入cookie
  * @example
  * // 基本用法（靜態選項）
  * <MyFileUpload
@@ -126,6 +127,7 @@ const MyFileUpload = forwardRef<MyFileUploadRef, UploadProps>(({
   defaultUrl,
   defaultFileName,
   footer,
+  haveCredentials = false
 
 }, ref) => {
   const config = ACCEPT_CONFIG[acceptType];
@@ -133,6 +135,8 @@ const MyFileUpload = forwardRef<MyFileUploadRef, UploadProps>(({
   const [previewUrl, setPreviewUrl] = useState<string | null>(defaultUrl || null);
   const [status, setStatus] = useState<UploadStatus>('idle');
   const [message, setMessage] = useState<string>('');
+
+
 
   // 當外部傳入的預設 URL 改變時，且使用者沒有選擇新檔案，自動更新預覽
   useEffect(() => {
@@ -225,8 +229,11 @@ const MyFileUpload = forwardRef<MyFileUploadRef, UploadProps>(({
     }
 
     try {
+
+
       const response = await fetch(apiUrl, {
         method: 'POST',
+        credentials: haveCredentials ? 'include' : 'same-origin',
         body: formData,
         // 注意：使用 FormData 時，fetch 會自動設定 Content-Type multipart/form-data
         // 請勿手動設定 Content-Type Header
