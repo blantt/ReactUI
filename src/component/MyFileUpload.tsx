@@ -136,8 +136,6 @@ const MyFileUpload = forwardRef<MyFileUploadRef, UploadProps>(({
   const [status, setStatus] = useState<UploadStatus>('idle');
   const [message, setMessage] = useState<string>('');
 
-
-
   // 當外部傳入的預設 URL 改變時，且使用者沒有選擇新檔案，自動更新預覽
   useEffect(() => {
     if (!selectedFile) {

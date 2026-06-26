@@ -1,8 +1,7 @@
 import React, { useState, useEffect, use } from 'react';
-import { LoadingInline } from './myload';
+import { LoadingInline } from '../component/myload';
 import { twMerge } from 'tailwind-merge';
 import { clsx } from 'clsx';
-
 
 const styles =  /* css */` 
         .vistaBlue {
@@ -66,7 +65,7 @@ type DataGridProps = {
         visible?: boolean; // 控制欄位是否可見
         transform?: (value: any) => FormField; // 動態轉換函數
         subSearch?: boolean; // 是否啟用單一欄位搜尋
-
+        outPutSearchText?: string; // 外部搜尋文字(此文字暫不會過濾內容,但表身的文字如符合關鍵字,文字會有底色標記)
 
     }>;
 
@@ -208,7 +207,7 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
         cssUserbar += " h-full overflow-y-auto ";
     }
     if (useXBar) {
-        cssUserbar += " w-full overflow-x-auto min-w-0 ";
+        cssUserbar += " w-full overflow-x-auto  min-w-0 ";
     }
     let itemsPerPage = PageSize || 5;
 
@@ -390,6 +389,46 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
 
     const gridColsStyle = `grid-cols-[${gridTemplate}]`;
 
+    /**
+     * 將文字中符合關鍵字的部分用 <mark> 包住
+     * @param text      - 原始文字
+     * @param keywords  - 關鍵字陣列，每個元素格式為 { word: string; color: string }
+     *   color 對應 Tailwind bg class，例如 'bg-yellow-200'（subSearch）或 'bg-blue-200'（outPutSearchText）
+     */
+    const highlightText = (
+        text: string,
+        keywords: { word: string; color: string }[]
+    ): React.ReactNode => {
+        const activeKeywords = keywords.filter(k => k.word.trim());
+        if (activeKeywords.length === 0) return <>{text}</>;
+
+        // 建立 word -> color 的對照表（小寫 key）
+        const colorMap: Record<string, string> = {};
+        activeKeywords.forEach(k => {
+            colorMap[k.word.toLowerCase()] = k.color;
+        });
+
+        // 合成多關鍵字 regex: (word1|word2|...)
+        const pattern = activeKeywords
+            .map(k => k.word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+            .join('|');
+        const regex = new RegExp(`(${pattern})`, 'gi');
+        const parts = text.split(regex);
+
+        return (
+            <>
+                {parts.map((part, i) => {
+                    const bgColor = colorMap[part.toLowerCase()];
+                    return bgColor ? (
+                        <mark key={i} className={`${bgColor} text-inherit rounded-sm px-0.5`}>{part}</mark>
+                    ) : (
+                        <span key={i}>{part}</span>
+                    );
+                })}
+            </>
+        );
+    };
+
     return (
         // gridStyles(); // 確保樣式被注入
 
@@ -540,7 +579,6 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
                                             // className={`  p-1.5 outline outline-1   outline-stone-400 text-gray-600 font-medium text-center`}
                                             className={cn(
                                                 ` p-1.5   border-l border-t   ${borderColor} font-medium text-center `,
-
                                                 ` ${classItem}  `
                                             )}
                                         >
@@ -550,7 +588,27 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
                                                 <>
 
 
-                                                    {field.type === 'input' && field.value}
+                                                    {field.type === 'input' && (() => {
+                                                        // 收集所有高亮關鍵字
+                                                        const kws: { word: string; color: string }[] = [];
+
+                                                        // 來源1: subSearch input（黃色）
+                                                        if (useSubSearch && subSearchTexts[col.name]?.trim()) {
+                                                            kws.push({ word: subSearchTexts[col.name], color: 'bg-yellow-200' });
+                                                        }
+
+                                                        // 來源2: outPutSearchText 外部傳入，用 @@ 分隔多關鍵字（藍色）
+                                                        if (col.outPutSearchText?.trim()) {
+                                                            col.outPutSearchText.split('@@')
+                                                                .map(k => k.trim())
+                                                                .filter(k => k)
+                                                                .forEach(k => kws.push({ word: k, color: 'bg-blue-200' }));
+                                                        }
+
+                                                        return kws.length > 0
+                                                            ? highlightText(field.value ?? '', kws)
+                                                            : field.value;
+                                                    })()}
                                                     {field.type === 'hyperlink' && field.href && (
                                                         <a href={field.href}
                                                             target="_blank"
