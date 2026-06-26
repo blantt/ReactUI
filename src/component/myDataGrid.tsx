@@ -235,9 +235,7 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
         setCurrentPage(1);
     }, [searchText, subSearchTexts]);
 
-    const totalPages = Math.ceil(internalData.length / itemsPerPage);
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const paginatedData = internalData.slice(startIndex, startIndex + itemsPerPage);
+    // totalPages / startIndex 移至 filteredData1 計算完後（見下方）
 
     //keycol 如果是空值,則預設使用 columns 的第一個欄位名稱
     const keyColumn = keycol || (columns.length > 0 ? columns[0].name : undefined);
@@ -380,6 +378,9 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
         );
     }
 
+    // 根據過濾後的資料計算分頁（必須在 filteredData1 確定後才計算）
+    const totalPages = Math.ceil(filteredData1.length / itemsPerPage);
+    const startIndex = (currentPage - 1) * itemsPerPage;
 
     // let mygridCols = gridCols || columns.length;
     // if (havecheckbox) {
@@ -665,7 +666,7 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
                     <div>
                         {/* total count: {data.length} items */}
                         {/* 呈現 Page 2 of 17 (510 items) */}
-                        Page {currentPage} of {totalPages} ({internalData.length} items)
+                        Page {currentPage} of {totalPages} ({filteredData1.length} items)
 
                     </div>
                     <div>
