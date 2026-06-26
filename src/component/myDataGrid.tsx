@@ -216,6 +216,25 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
 
     const [currentPage, setCurrentPage] = useState(1);
 
+    const [searchText, setSearchText] = useState('');
+    // 新增一個 state 來儲存每個欄位的搜尋文字
+    const [subSearchTexts, setSubSearchTexts] = useState<Record<string, string>>({});
+
+    // 當 API 來源或強制刷新 key 改變時，回到第一頁
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [apiUrl, refreshKey]);
+
+    // 當外部直接傳入的 data 改變時，回到第一頁
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [data]);
+
+    // 當本地搜尋條件改變時，回到第一頁
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [searchText, subSearchTexts]);
+
     const totalPages = Math.ceil(internalData.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
     const paginatedData = internalData.slice(startIndex, startIndex + itemsPerPage);
@@ -312,9 +331,7 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
     }, [checkedItems_old]);
 
 
-    const [searchText, setSearchText] = useState('');
-    // 新增一個 state 來儲存每個欄位的搜尋文字
-    const [subSearchTexts, setSubSearchTexts] = useState<Record<string, string>>({});
+    // （searchText / subSearchTexts 已移至上方 useEffect 之前宣告）
     // 處理子搜尋欄位變更的函式
     const handleSubSearchChange = (colName: string, value: string) => {
         setSubSearchTexts(prev => ({
