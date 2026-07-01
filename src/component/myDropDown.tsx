@@ -119,7 +119,6 @@ export const transformToFormField = (data: any[], keyValue?: string, keyText?: s
       result[keyText] = item[keyText];
     }
 
-    // console.log(`轉換後的第 ${itemIndex + 1} 列:`, result); // 確認整列轉換結果
     return result;
   });
 
@@ -172,7 +171,7 @@ export const transformToFormField = (data: any[], keyValue?: string, keyText?: s
  *   options={[{ id: 1, name: "選項A" }, { id: 2, name: "選項B" }]}
  *   keyValue="id"
  *   keyText="name"
- *   onSelect={(item) => console.log(item)}
+ *   onSelect={(item) => 
  * />
  *
  * @example
@@ -376,7 +375,7 @@ const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyVal
           <div className="py-1">
             {/* 渲染每個選項作為按鈕 */}
             {/* 如果沒有傳進 keyValue, keyText ,預設使用 option.value 和 option.name */}
-            {/* 在這裡可以在前端先console.log internalOptions */}
+
 
             {internalOptions.map((option) => (
               <button

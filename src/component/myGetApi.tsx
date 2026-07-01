@@ -1,10 +1,10 @@
-import React, { useEffect, useState ,useRef,useCallback} from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 
 export type MyGetApiProps = {
     apiUrl: string;
     asJson?: boolean; // true: 回傳 JSON，false: 回傳字串
     haveCredentials?: boolean; // 是否包含憑證(後端可讀取到session)
-     method?: 'GET' | 'POST';
+    method?: 'GET' | 'POST';
     postData?: Record<string, string>; // POST 的資料，例如 { action: 'blanttApi', func: 'testabc' }
     onProgress?: (status: 'loading' | 'success' | 'error', data?: any, error?: any) => void;
     children?: (args: {
@@ -21,9 +21,9 @@ export type MyGetApiProps = {
  *  * />
  */
 const MyGetApi: React.FC<MyGetApiProps> = ({ apiUrl, asJson = true, haveCredentials = false, onProgress, children,
-      method = 'GET',       // ✅ 預設 GET
+    method = 'GET',       // ✅ 預設 GET
     postData,             // ✅ POST 的資料
- }) => {
+}) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<any>(null);
     const [data, setData] = useState<any>(null);
@@ -36,7 +36,7 @@ const MyGetApi: React.FC<MyGetApiProps> = ({ apiUrl, asJson = true, haveCredenti
         setError(null);
         setStatus('loading');
         setData(null);
-        
+
         const fetchData = async () => {
             try {
                 const fetchOptions: RequestInit = {};
@@ -75,7 +75,7 @@ const MyGetApi: React.FC<MyGetApiProps> = ({ apiUrl, asJson = true, haveCredenti
             }
         };
         fetchData();
-       
+
         return () => { isMounted = false; };
     }, [apiUrl, asJson, onProgress]);
 
@@ -90,7 +90,7 @@ const MyGetApi: React.FC<MyGetApiProps> = ({ apiUrl, asJson = true, haveCredenti
 
 
 //hook版本===================================
- 
+
 export type ApiStatus = 'idle' | 'loading' | 'success' | 'error';
 export type ExecuteResult = {
     data: any;
@@ -111,7 +111,7 @@ export type UseMyApiReturn = {
     error: any;
     data: any;
     status: ApiStatus;
-  execute: (overrideOptions?: Partial<MyApiOptions>) => Promise<ExecuteResult | null>;
+    execute: (overrideOptions?: Partial<MyApiOptions>) => Promise<ExecuteResult | null>;
 };
 
 
@@ -171,9 +171,9 @@ export type MyGetApi_hook = MyApiOptions & {
  *     postData: { action: 'login', user: 'admin' },
  *   });
  *   if (result?.status === 'success') {
- *     console.log('回傳資料:', result.data);
+ *     
  *   } else {
- *     console.error('錯誤:', result?.error);
+ *     
  *   }
  * };
  *
@@ -195,10 +195,10 @@ export const useMyApi = (initialOptions: MyApiOptions): UseMyApiReturn => {
     const [error, setError] = useState<any>(null);
     const [data, setData] = useState<any>(null);
     const [status, setStatus] = useState<ApiStatus>('idle');
-    
+
     // 使用 useRef 來追蹤組件是否還掛載著，避免記憶體洩漏
     const isMounted = useRef(true);
-     // ✅ 用 useRef 儲存最新的 options，避免閉包問題
+    // ✅ 用 useRef 儲存最新的 options，避免閉包問題
     const optionsRef = useRef(initialOptions);
     useEffect(() => {
         optionsRef.current = initialOptions;
@@ -208,9 +208,9 @@ export const useMyApi = (initialOptions: MyApiOptions): UseMyApiReturn => {
         isMounted.current = true;  // ✅ 每次掛載時重設為 true
 
         return () => {
-          // console.log("元件卸載時的清理動作");
+
             isMounted.current = false;
-           
+
         };
     }, []);
     // 命令式觸發模式, execute 函式接受可選的覆蓋選項，允許在執行時動態修改 API 請求參數
@@ -224,10 +224,10 @@ export const useMyApi = (initialOptions: MyApiOptions): UseMyApiReturn => {
         setError(null);
         setStatus('loading');
         onProgress?.('loading');
-              
+
         try {
             const fetchOptions: RequestInit = {};
-            
+
             if (haveCredentials) {
                 fetchOptions.credentials = 'include';
             }
@@ -266,12 +266,12 @@ export const useMyApi = (initialOptions: MyApiOptions): UseMyApiReturn => {
                 setLoading(false);
                 onProgress?.('success', result, null);
                 // return result;  
-                 // 明確 Return 給外部呼叫者 (handleCheck)
+                // 明確 Return 給外部呼叫者 (handleCheck)
                 // 這裡回傳的是一個全新的物件，外部透過 await execute() 就能立刻解構出這些欄位
                 // 這樣可以避開 React State 更新緩慢（下一次 Render 才生效）的問題
-                    return { data: result, status: 'success' as const, error: null };
+                return { data: result, status: 'success' as const, error: null };
             }
-             return { data: null, status: 'idle' as const, error: null }; // ✅ isMounted 為 false 時
+            return { data: null, status: 'idle' as const, error: null }; // ✅ isMounted 為 false 時
         } catch (err) {
             if (isMounted.current) {
                 setError(err);
@@ -279,16 +279,16 @@ export const useMyApi = (initialOptions: MyApiOptions): UseMyApiReturn => {
                 setLoading(false);
                 onProgress?.('error', null, err);
             }
-             return { data: null, status: 'error' as const, error: err }; // ✅ 錯誤時
+            return { data: null, status: 'error' as const, error: err }; // ✅ 錯誤時
         }
-     }, []); // ✅ 不需要依賴任何東西
+    }, []); // ✅ 不需要依賴任何東西
 
     return { loading, error, data, status, execute };
 };
- 
+
 
 export default MyGetApi;
 
- 
+
 
 

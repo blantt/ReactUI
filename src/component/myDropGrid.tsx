@@ -152,7 +152,7 @@ export const transformToFormField = apitransform;
  *   data={transformedData}
  *   keyValue="ClassID"
  *   keyText="ClassName"
- *   onSelect={(item) => console.log(item)}
+ *   onSelect={(item) => 
  * />
  *
  * @example

@@ -104,16 +104,15 @@ export const transformToFormField = (data: any[],
         const transformedRow: Record<string, FormField> = {};
         columns.forEach((col, colIndex) => {
             const value = item[col.name];
-            // console.log(`處理第 ${itemIndex + 1} 列，第 ${colIndex + 1} 欄 (${col.name}):`, value); // 確認每個欄位的值
 
             transformedRow[col.name] = customTransform
                 ? customTransform(item, col) // 使用外部提供的邏輯
                 : col.transform
                     ? col.transform(value) // 使用欄位的 transform
                     : { name: col.name, value: String(value), type: col.type }; // 預設邏輯
-            //  console.log(`轉換後的欄位 (${col.name}):`, transformedRow[col.name]); // 確認轉換後的欄位
+
         });
-        // console.log(`轉換後的第 ${itemIndex + 1} 列:`, transformedRow); // 確認整列轉換結果
+
         return transformedRow;
     });
 };
@@ -244,9 +243,6 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
     useEffect(() => {
         if (checkedItems_old) {
 
-            //console.log('接收到的已勾選資料b:', checkedItems_old);
-
-            // setCheckItems(checkedItems_old);
         }
     }, [checkedItems_old]);
 
@@ -270,7 +266,7 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
                     }
 
                     const jsonData = await response.json();
-                    // console.log('grid jsonData:', jsonData);
+
                     const transformedData = transformToFormField(jsonData, columns, customTransform);
 
                     setTimeout(() => {

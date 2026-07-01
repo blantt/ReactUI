@@ -55,7 +55,7 @@ interface ThemeStyle {
  *   show={showConfirm}
  *   type="warning"
  *   title="確定要刪除嗎？"
- *   onConfirm={() => console.log('已刪除')}
+ *   onConfirm={() =>  
  *   onCancel={() => setShowConfirm(false)}
  * >
  *   這個操作無法復原，請謹慎評估。
