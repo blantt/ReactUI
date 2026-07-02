@@ -1,4 +1,4 @@
- 
+
 
 export { default as Button } from './component/button';
 export { default as DataGridApi } from './component/myDataGrid';// 這樣會同時匯出組件與型別
@@ -13,13 +13,12 @@ export { default as MyDropDown } from './component/myDropDown';
 export { default as AppTitle } from './component/header';
 export { default as Modal } from './component/myModal';
 export { LoadingInline } from './component/myload';
-export { TextInput } from './component/simpleUI';
+export { default as TextInput, RadioboxList } from './component/simpleUI';
 export { default as MyAlert } from './component/myAlert';
 export { default as MyGetApi, useMyApi } from './component/myGetApi';
 export { default as NavItem, MenuItem } from './component/myMenuItem';
-export { default as MyAudioPlayer} from './component/myAudio'; 
-export { default as MyConfirm} from './component/myConfirm';
-export { default as useFileDownload  } from './component/myfileControl'; 
-export { default as MyFileUpload  } from './component/MyFileUpload' 
+export { default as MyAudioPlayer } from './component/myAudio';
+export { default as MyConfirm } from './component/myConfirm';
+export { default as useFileDownload } from './component/myfileControl';
+export { default as MyFileUpload } from './component/MyFileUpload'
 
- 
