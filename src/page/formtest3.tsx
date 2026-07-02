@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import Button from "../component/button";
-import TextInput, { RadioboxList } from "../component/simpleUI";
+import TextInput from "../component/simpleUI";
 import MyDropDown from "../component/myDropDown";
 import type { FileItem as DropdownOption } from '../component/myDropGrid';
-import type { RadioOption } from '../component/simpleUI';
+import { RadioboxList } from '../component/myRadioBoxList';
+import type { RadioOption } from '../component/myRadioBoxList';
 import MyDropGrid, { transformToFormField as apitransform } from '../component/myDropGrid';
 import { User, Mail, Phone, Briefcase, Calendar, MapPin, DollarSign, MessageSquare, Save, Trash2 } from 'lucide-react';
 
@@ -305,6 +306,7 @@ const App = () => {
               <label className={labelClasses}>radio</label>
               <RadioboxList
                 options={magOptions}
+                size="small"
                 value={formData.MagType}
                 name="MagTypeRadio"
                 onChange={(val) => funcsetFormData('MagType', val)}

@@ -11,7 +11,8 @@ export { default as Loading } from './component/myload';
 export { default as Modal } from './component/myModal';
 export { default as AppTitle } from './component/header';
 export { default as MyGetApi, useMyApi, type MyApiOptions, type ApiStatus, type MyGetApi_hook, type UseMyApiReturn } from './component/myGetApi';
-export { default as TextInput, RadioboxList, type RadioOption } from './component/simpleUI';
+export { default as TextInput } from './component/simpleUI';
+export { default as RadioboxList, type RadioOption } from './component/myRadioBoxList';
 export { default as MyAudioPlayer } from './component/myAudio';
 export { default as NavItem, MenuItem, type MenuItemData } from './component/myMenuItem';
 export { default as MyAlert } from './component/myAlert';
@@ -22,5 +23,7 @@ export { default as MyFileUpload, type MyFileUploadRef } from './component/MyFil
 export const apitransform: any;
 export const apitransformDrop: any;
 export const LoadingInline: any;
+
+
 
 
