@@ -152,7 +152,7 @@ export const transformToFormField = apitransform;
  *   data={transformedData}
  *   keyValue="ClassID"
  *   keyText="ClassName"
- *   onSelect={(item) => 
+ *   onSelect={(item) => console.log(item)}
  * />
  *
  * @example
@@ -304,17 +304,16 @@ const MyDropDown: React.FC<DropdownProps> = ({ data, columns, apiUrl, onSelect, 
     <div className="relative inline-block text-left  w-full " ref={dropdownRef}>
       <div className=' w-full flex justify-center   '>
 
-        <button
-
+        {/* 外層改用 div 模擬 button，避免 <button> 巢狀在 <button> 內的 HTML 非法問題 */}
+        <div
+          role="button"
+          tabIndex={0}
           className={cn(`relative flex items-center justify-center ${widthCss} rounded-md border   border-gray-300 shadow-sm px-4 py-2 bg-slate-100  text-sm font-medium
           text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 
-          focus:ring-offset-2 focus:ring-indigo-500   `, `${styles[style1] || styles.default}  ${className} `)}
-          onClick={handleToggle} >
-
-          {/* <div className="absolute left-1">
-            
-             <img src={`${import.meta.env.BASE_URL}arrow_del.png`} alt="icon" style={{ width: 20, height: 20 }} />
-          </div> */}
+          focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer  `, `${styles[style1] || styles.default}  ${className} `)}
+          onClick={handleToggle}
+          onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') handleToggle(); }}
+        >
 
           {selectedOption ? (keyText ? selectedOption[keyText]?.value : selectedOption.Name?.value) : emptyText}
 
@@ -334,7 +333,6 @@ const MyDropDown: React.FC<DropdownProps> = ({ data, columns, apiUrl, onSelect, 
                       onSelect({}); // 通知父元件已清除選擇
                     }
                   }}>
-                  {/* <img src={`${import.meta.env.BASE_URL}arrow_del.png`} alt="icon" style={{ width: 20, height: 20 }} /> */}
                   <CircleX className={`w-5 h-5  ${style1 === 'vistaBlue' ? 'text-blue-400' : 'text-blue-300'}`}
                   />
                 </button>
@@ -351,7 +349,7 @@ const MyDropDown: React.FC<DropdownProps> = ({ data, columns, apiUrl, onSelect, 
 
           </div>
 
-        </button>
+        </div>
       </div>
 
 
