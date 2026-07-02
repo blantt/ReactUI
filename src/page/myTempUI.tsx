@@ -239,6 +239,7 @@ const MyTempUI: React.FC = () => {
                         //  enable={false}
                         onSelect={(item) => alert(item.svalue)}
                         emptyText='未選擇'
+                        size="small"
                         icon={<img src={`${import.meta.env.BASE_URL}Linedown.png`} alt="icon" style={{ width: 20, height: 20 }} />}
                     />
                 </div>

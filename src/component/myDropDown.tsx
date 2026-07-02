@@ -84,7 +84,7 @@ interface DropdownProps {
   haveCredentials?: boolean; // 是否在 fetch 請求中包含憑證（如 cookies）
   enable?: boolean; // 是否啟用下拉選單
   icon?: React.ReactNode; // 自訂下拉icon
-
+  size?: 'default' | 'small'; // 尺寸：預設 or 小型
 }
 
 //FileItem 預計是dropdown選項的型別 
@@ -185,7 +185,21 @@ export const transformToFormField = (data: any[], keyValue?: string, keyText?: s
  * />
  */
 const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyValue, keyText, haveBlank = true, widthCss = "w-48"
-  , emptyText = "請選擇", style1 = 'default', className = "", value, refreshKey, haveCredentials = false, enable = true, icon }) => {
+  , emptyText = "請選擇", style1 = 'default', className = "", value, refreshKey, haveCredentials = false, enable = true, icon, size = 'default' }) => {
+
+  // size 對應的尺寸 token
+  const sizeConfig = {
+    default: {
+      btn: 'px-4 py-2 text-sm',
+      icon: 'w-5 h-5',
+      item: 'px-4 py-2 text-sm',
+    },
+    small: {
+      btn: 'px-2 py-0.5 text-xs',
+      icon: 'w-4 h-4',
+      item: 'px-3 py-1 text-xs',
+    },
+  }[size];
 
 
   // const [internalOptions, setInternalOptions] = useState<FileItem[]>(options || []);
@@ -324,9 +338,8 @@ const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyVal
           //   focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 `}
           //vista-drop-blue  abc2
           className={cn(
-            `relative flex items-center justify-center ${widthCss} rounded-md border   border-gray-300 shadow-sm px-4 py-2 bg-slate-100 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none 
-          focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500  `,
-
+            `relative flex items-center justify-center ${widthCss} rounded-md border border-gray-300 shadow-sm bg-slate-100 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`,
+            sizeConfig.btn,
             `${styles[style1] || styles.default}  ${className} `
           )}
 
@@ -349,7 +362,7 @@ const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyVal
                 : <SquareChevronDown
                   //className="w-5 h-5   text-blue-300  "
                   //  className={`w-5 h-5 ${styles[style1] || styles.default}   text-blue-300 `}
-                  className={`w-5 h-5  ${style1 === 'vistaBlue' ? 'text-blue-400' : 'text-blue-300'}`}
+                  className={`${sizeConfig.icon}  ${style1 === 'vistaBlue' ? 'text-blue-400' : 'text-blue-300'}`}
                 />}
 
 
@@ -380,7 +393,7 @@ const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyVal
             {internalOptions.map((option) => (
               <button
                 key={keyValue ? option[keyValue] : option.value} // 根據 keyValue 判斷使用哪個 key
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left"
+                className={cn('block text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left', sizeConfig.item)}
                 onClick={() => {
                   setIsOpen(false);
                   handleSelect(option);
