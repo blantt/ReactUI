@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import Button  from "../component/button";
-import TextInput  from "../component/simpleUI";
-import MyDropDown  from "../component/myDropDown";
+import Button from "../component/button";
+import TextInput, { RadioboxList } from "../component/simpleUI";
+import MyDropDown from "../component/myDropDown";
 import type { FileItem as DropdownOption } from '../component/myDropGrid';
+import type { RadioOption } from '../component/simpleUI';
 import MyDropGrid, { transformToFormField as apitransform } from '../component/myDropGrid';
 import { User, Mail, Phone, Briefcase, Calendar, MapPin, DollarSign, MessageSquare, Save, Trash2 } from 'lucide-react';
 
@@ -22,8 +23,15 @@ const App = () => {
     notes: '',
     testdrop: '',
     ClassID: '5',
-    userC:'boyQQ'
+    userC: 'boyQQ',
+    MagType: ''
   });
+
+  const magOptions: RadioOption[] = [
+    { sname: 'A+ English', svalue: 'A+' },
+    { sname: 'English4U', svalue: '4U' },
+    { sname: 'EnglishDigest', svalue: 'ED' },
+  ];
 
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -31,7 +39,7 @@ const App = () => {
   // [name]: value // 2. 只更新當前改變的那一項（後面的會覆蓋前面的）
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-   funcsetFormData(name, value);
+    funcsetFormData(name, value);
     // setFormData(prev => ({
     //   ...prev,
     //   [name]: value
@@ -53,14 +61,14 @@ const App = () => {
     setTimeout(() => setIsSubmitted(false), 3000);
   };
 
-const handleSelectdrop = (value: any, fieldName: string) => {
+  const handleSelectdrop = (value: any, fieldName: string) => {
     funcsetFormData(fieldName, value);
   };
 
   const handleSelect3 = (value: any) => {
     funcsetFormData('testdrop', value);
-          //alert(`Selected name, value: ${value.ClassName} (${value.ClassID})`);
-      };
+    //alert(`Selected name, value: ${value.ClassName} (${value.ClassID})`);
+  };
   const handleReset = () => {
     setFormData({
       fullName: '小光',
@@ -77,7 +85,8 @@ const handleSelectdrop = (value: any, fieldName: string) => {
       notes: '',
       testdrop: '',
       ClassID: '5',
-      userC:''
+      userC: '',
+      MagType: ''
     });
   };
 
@@ -97,45 +106,45 @@ const handleSelectdrop = (value: any, fieldName: string) => {
         <div className="bg-white rounded-b-2xl shadow-xl p-8">
           {/* onSubmit={handleSubmit}  */}
           {/* <form className="space-y-6"> */}
-            
-            {/* 3欄 網格系統 */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              
-              {/* 第 1 列 */}
-              <div>
-                <label className={labelClasses}><User size={16} /> 員工姓名</label>
-                <input
-                  type="text"
-                  name="fullName"
-                  placeholder="例如：張小明"
-                  value={formData.fullName}
-                  onChange={handleChange}
-                  className={inputClasses}
-                  required
-                />
-              </div>
-              <div  >
-                <label className={labelClasses}><Briefcase size={16} /> 員工編號</label>
-                <TextInput
-                  placeholder="員工編號"
-                  name='employeeId'
-                  value={formData.employeeId}
-                  onChange={handleChange}
-                  //className={inputClasses}
-                />
-                 
-              </div>
-              <div >
-                <label className={labelClasses}>testdrop</label>
-                 <MyDropDown   keyValue='ClassID' keyText='ClassName' haveBlank={true} emptyText='dropdown(API)選擇'
-                       value={formData.ClassID}  // 綁定值
-                      apiUrl="https://clockappservice.english4u.com.tw/api/clock/selectClockWorkClass"
-                      //  onSelect={handleSelect3}
-                      onSelect={(value) => handleSelectdrop(value, 'ClassID')} 
-                      className=' w-full'
-                       
-                        />
-                {/* <select
+
+          {/* 3欄 網格系統 */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+            {/* 第 1 列 */}
+            <div>
+              <label className={labelClasses}><User size={16} /> 員工姓名</label>
+              <input
+                type="text"
+                name="fullName"
+                placeholder="例如：張小明"
+                value={formData.fullName}
+                onChange={handleChange}
+                className={inputClasses}
+                required
+              />
+            </div>
+            <div  >
+              <label className={labelClasses}><Briefcase size={16} /> 員工編號</label>
+              <TextInput
+                placeholder="員工編號"
+                name='employeeId'
+                value={formData.employeeId}
+                onChange={handleChange}
+              //className={inputClasses}
+              />
+
+            </div>
+            <div >
+              <label className={labelClasses}>testdrop</label>
+              <MyDropDown keyValue='ClassID' keyText='ClassName' haveBlank={true} emptyText='dropdown(API)選擇'
+                value={formData.ClassID}  // 綁定值
+                apiUrl="https://clockappservice.english4u.com.tw/api/clock/selectClockWorkClass"
+                //  onSelect={handleSelect3}
+                onSelect={(value) => handleSelectdrop(value, 'ClassID')}
+                className=' w-full'
+
+              />
+              {/* <select
                   name="gender"
                   value={formData.gender}
                   onChange={handleChange}
@@ -147,30 +156,30 @@ const handleSelectdrop = (value: any, fieldName: string) => {
                   <option value="female">女性 (Female)</option>
                   <option value="other">其他</option>
                 </select> */}
-              </div>
+            </div>
 
-              
-              <div>
 
-               <label className={labelClasses}>MyDropGrid</label>
-               <MyDropGrid apiUrl="https://clockappservice.english4u.com.tw/api/testdata"
-                        className='  w-full '
-                        columns={[
-                            { name: 'Name', type: 'input', colSpan: 1 },
-                            { name: 'Age', type: 'input', colSpan: 1 },
-                            { name: 'Email', type: 'input', colSpan: 2 },
-                        ]}
-                        value={formData.userC}
-                        onSelect={(value) =>
-                         // alert(`Clicked Name: ${value['Name']?.value}, Age: ${value['Age']?.value}`) 
-                         funcsetFormData('userC',  `${value['Name']?.value}`) 
-                         // funcsetFormData('userC', value.Name)
-                          }
-  
-                        keyValue='Name' keyText='Email' gridCols={4}
+            <div>
 
-                    />
-                 {/*<label className={labelClasses}>所屬部門</label>
+              <label className={labelClasses}>MyDropGrid</label>
+              <MyDropGrid apiUrl="https://clockappservice.english4u.com.tw/api/testdata"
+                className='  w-full '
+                columns={[
+                  { name: 'Name', type: 'input', colSpan: 1 },
+                  { name: 'Age', type: 'input', colSpan: 1 },
+                  { name: 'Email', type: 'input', colSpan: 2 },
+                ]}
+                value={formData.userC}
+                onSelect={(value) =>
+                  // alert(`Clicked Name: ${value['Name']?.value}, Age: ${value['Age']?.value}`) 
+                  funcsetFormData('userC', `${value['Name']?.value}`)
+                  // funcsetFormData('userC', value.Name)
+                }
+
+                keyValue='Name' keyText='Email' gridCols={4}
+
+              />
+              {/*<label className={labelClasses}>所屬部門</label>
                 <select
                   name="department"
                   value={formData.department}
@@ -184,16 +193,16 @@ const handleSelectdrop = (value: any, fieldName: string) => {
                   <option value="marketing">行銷部</option>
                   <option value="sales">業務部</option>
                 </select> */}
-              </div>
-              <div>
-                <label className={labelClasses}>職位名稱2</label>
-                <TextInput
-                  placeholder="例如：高級工程師"
-                  value={formData.position}
-                  onChange={handleChange}
-                  className={inputClasses}
-                />
-                {/* <input
+            </div>
+            <div>
+              <label className={labelClasses}>職位名稱2</label>
+              <TextInput
+                placeholder="例如：高級工程師"
+                value={formData.position}
+                onChange={handleChange}
+                className={inputClasses}
+              />
+              {/* <input
                   type="text"
                   name="position"
                   placeholder="例如：高級工程師"
@@ -201,124 +210,134 @@ const handleSelectdrop = (value: any, fieldName: string) => {
                   onChange={handleChange}
                   className={inputClasses}
                 /> */}
-              </div>
-              <div>
-                <label className={labelClasses}><Calendar size={16} /> 入職日期</label>
-                <input
-                  type="date"
-                  name="joinDate"
-                  value={formData.joinDate}
-                  onChange={handleChange}
-                  className={inputClasses}
-                />
-              </div>
-
-              {/* 第 3 列 */}
-              <div>
-                <label className={labelClasses}><Phone size={16} /> 聯絡電話</label>
-                <input
-                  type="tel"
-                  name="phone"
-                  placeholder="0912-345-678"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className={inputClasses}
-                />
-              </div>
-              <div>
-                <label className={labelClasses}><Mail size={16} /> 電子郵件</label>
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="user@example.com"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className={inputClasses}
-                />
-              </div>
-              <div>
-                <label className={labelClasses}>緊急聯絡人</label>
-                <input
-                  type="text"
-                  name="emergencyContact"
-                  placeholder="姓名與關係"
-                  value={formData.emergencyContact}
-                  onChange={handleChange}
-                  className={inputClasses}
-                />
-              </div>
-
-              {/* 第 4 列 - 包含合併欄位範例 */}
-              <div>
-                <label className={labelClasses}><MapPin size={16} /> 工作地點</label>
-                <select
-                  name="location"
-                  value={formData.location}
-                  onChange={handleChange}
-                  className={inputClasses}
-                >
-                  <option value="">請選擇地點</option>
-                  <option value="taipei">台北辦公室</option>
-                  <option value="hsinchu">新竹辦公室</option>
-                  <option value="remote">遠端辦公</option>
-                </select>
-              </div>
-
-              {/* 合併欄位：備註事項橫跨 2 個欄位 (md:col-span-2) */}
-              <div className="md:col-span-2">
-                <label className={labelClasses}><MessageSquare size={16} /> 備註事項 (已合併兩欄位)</label>
-                <textarea
-                  name="notes"
-                  rows={1}
-                  placeholder="在此輸入額外說明，此欄位在桌面版會橫跨兩格..."
-                  value={formData.notes}
-                  onChange={handleChange}
-                  className={`${inputClasses} resize-none`}
-                />
-              </div>
-
-              {/* 額外測試列 (原薪資類別移至此處) */}
-              <div>
-                <label className={labelClasses}><DollarSign size={16} /> 薪資類別</label>
-                <select
-                  name="salaryType"
-                  value={formData.salaryType}
-                  onChange={handleChange}
-                  className={inputClasses}
-                >
-                  <option value="">選擇類別</option>
-                  <option value="monthly">月薪</option>
-                  <option value="hourly">時薪</option>
-                  <option value="contract">合約計件</option>
-                </select>
-              </div>
+            </div>
+            <div>
+              <label className={labelClasses}><Calendar size={16} /> 入職日期</label>
+              <input
+                type="date"
+                name="joinDate"
+                value={formData.joinDate}
+                onChange={handleChange}
+                className={inputClasses}
+              />
             </div>
 
-            {/* 按鈕區域 */}
-            <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-100">
-              <button
-                type="submit"
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-xl transition-colors duration-200 flex items-center justify-center gap-2 shadow-lg shadow-blue-200"
-              >
-                <Save size={20} />
-                儲存資料
-              </button>
-              <button
-                type="button"
-                onClick={handleReset}
-                className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-3 px-6 rounded-xl transition-colors duration-200 flex items-center justify-center gap-2"
-              >
-                <Trash2 size={20} />
-                清空重填
-              </button>
+            {/* 第 3 列 */}
+            <div>
+              <label className={labelClasses}><Phone size={16} /> 聯絡電話</label>
+              <input
+                type="tel"
+                name="phone"
+                placeholder="0912-345-678"
+                value={formData.phone}
+                onChange={handleChange}
+                className={inputClasses}
+              />
+            </div>
+            <div>
+              <label className={labelClasses}><Mail size={16} /> 電子郵件</label>
+              <input
+                type="email"
+                name="email"
+                placeholder="user@example.com"
+                value={formData.email}
+                onChange={handleChange}
+                className={inputClasses}
+              />
+            </div>
+            <div>
+              <label className={labelClasses}>緊急聯絡人</label>
+              <input
+                type="text"
+                name="emergencyContact"
+                placeholder="姓名與關係"
+                value={formData.emergencyContact}
+                onChange={handleChange}
+                className={inputClasses}
+              />
             </div>
 
-            {/* 成功提示 */}
-            {isSubmitted && (
-              <div className="mt-4 p-4 bg-green-50 border border-green-200 text-green-700 rounded-xl text-center animate-bounce">
-                表單已成功提交！
-              </div>
-            )}
+            {/* 第 4 列 - 包含合併欄位範例 */}
+            <div>
+              <label className={labelClasses}><MapPin size={16} /> 工作地點</label>
+              <select
+                name="location"
+                value={formData.location}
+                onChange={handleChange}
+                className={inputClasses}
+              >
+                <option value="">請選擇地點</option>
+                <option value="taipei">台北辦公室</option>
+                <option value="hsinchu">新竹辦公室</option>
+                <option value="remote">遠端辦公</option>
+              </select>
+            </div>
+
+            {/* 合併欄位：備註事項橫跨 2 個欄位 (md:col-span-2) */}
+            <div className="md:col-span-2">
+              <label className={labelClasses}><MessageSquare size={16} /> 備註事項 (已合併兩欄位)</label>
+              <textarea
+                name="notes"
+                rows={1}
+                placeholder="在此輸入額外說明，此欄位在桌面版會橫跨兩格..."
+                value={formData.notes}
+                onChange={handleChange}
+                className={`${inputClasses} resize-none`}
+              />
+            </div>
+
+            {/* 額外測試列 (原薪資類別移至此處) */}
+            <div>
+              <label className={labelClasses}><DollarSign size={16} /> 薪資類別</label>
+              <select
+                name="salaryType"
+                value={formData.salaryType}
+                onChange={handleChange}
+                className={inputClasses}
+              >
+                <option value="">選擇類別</option>
+                <option value="monthly">月薪</option>
+                <option value="hourly">時薪</option>
+                <option value="contract">合約計件</option>
+              </select>
+            </div>
+            <div>
+              <label className={labelClasses}>radio</label>
+              <RadioboxList
+                options={magOptions}
+                value={formData.MagType}
+                name="MagTypeRadio"
+                onChange={(val) => funcsetFormData('MagType', val)}
+              />
+            </div>
+          </div>
+
+
+          {/* 按鈕區域 */}
+          <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-100">
+            <button
+              type="submit"
+              className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-xl transition-colors duration-200 flex items-center justify-center gap-2 shadow-lg shadow-blue-200"
+            >
+              <Save size={20} />
+              儲存資料
+            </button>
+            <button
+              type="button"
+              onClick={handleReset}
+              className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-3 px-6 rounded-xl transition-colors duration-200 flex items-center justify-center gap-2"
+            >
+              <Trash2 size={20} />
+              清空重填
+            </button>
+          </div>
+
+          {/* 成功提示 */}
+          {isSubmitted && (
+            <div className="mt-4 p-4 bg-green-50 border border-green-200 text-green-700 rounded-xl text-center animate-bounce">
+              表單已成功提交！
+            </div>
+          )}
           {/* </form> */}
         </div>
 
