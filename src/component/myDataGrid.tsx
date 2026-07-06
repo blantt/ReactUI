@@ -1,4 +1,4 @@
-import React, { useState, useEffect, use } from 'react';
+import React, { useState, useEffect, useRef, use } from 'react';
 import { LoadingInline } from '../component/myload';
 import { twMerge } from 'tailwind-merge';
 import { clsx } from 'clsx';
@@ -219,6 +219,14 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
     // 新增一個 state 來儲存每個欄位的搜尋文字
     const [subSearchTexts, setSubSearchTexts] = useState<Record<string, string>>({});
 
+    // 浮動水平捲軸相關 refs & state
+    const scrollContainerRef = useRef<HTMLDivElement>(null);
+    const floatingBarRef = useRef<HTMLDivElement>(null);
+    const floatingBarInnerRef = useRef<HTMLDivElement>(null);
+    const isSyncingRef = useRef(false);
+    const [showFloatingBar, setShowFloatingBar] = useState(false);
+    const [floatingBarRect, setFloatingBarRect] = useState({ left: 0, width: 0 });
+
     // 當 API 來源或強制刷新 key 改變時，回到第一頁
     useEffect(() => {
         setCurrentPage(1);
@@ -233,6 +241,66 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
     useEffect(() => {
         setCurrentPage(1);
     }, [searchText, subSearchTexts]);
+
+    // ── 浮動水平捲軸：雙向 scroll 同步 ──────────────────────────
+    useEffect(() => {
+        if (!useXBar) return;
+
+        const container = scrollContainerRef.current;
+        const floatingBar = floatingBarRef.current;
+        const floatingBarInner = floatingBarInnerRef.current;
+        if (!container || !floatingBar || !floatingBarInner) return;
+
+        // 更新浮動捲軸內層寬度（等於 grid 的 scrollWidth）
+        const updateInnerWidth = () => {
+            floatingBarInner.style.width = `${container.scrollWidth}px`;
+            setShowFloatingBar(container.scrollWidth > container.clientWidth);
+        };
+
+        // 更新浮動捲軸的水平位置與寬度
+        const updatePosition = () => {
+            const rect = container.getBoundingClientRect();
+            setFloatingBarRect({ left: rect.left, width: rect.width });
+        };
+
+        updateInnerWidth();
+        updatePosition();
+
+        // grid → 浮動捲軸（grid 被拖動時同步浮動捲軸）
+        const handleContainerScroll = () => {
+            if (isSyncingRef.current) return;
+            isSyncingRef.current = true;
+            floatingBar.scrollLeft = container.scrollLeft;
+            requestAnimationFrame(() => { isSyncingRef.current = false; });
+        };
+
+        // 浮動捲軸 → grid（拖動浮動捲軸時同步 grid）
+        const handleFloatingScroll = () => {
+            if (isSyncingRef.current) return;
+            isSyncingRef.current = true;
+            container.scrollLeft = floatingBar.scrollLeft;
+            requestAnimationFrame(() => { isSyncingRef.current = false; });
+        };
+
+        container.addEventListener('scroll', handleContainerScroll);
+        floatingBar.addEventListener('scroll', handleFloatingScroll);
+        window.addEventListener('resize', updatePosition);
+        window.addEventListener('scroll', updatePosition);
+
+        const resizeObserver = new ResizeObserver(() => {
+            updateInnerWidth();
+            updatePosition();
+        });
+        resizeObserver.observe(container);
+
+        return () => {
+            container.removeEventListener('scroll', handleContainerScroll);
+            floatingBar.removeEventListener('scroll', handleFloatingScroll);
+            window.removeEventListener('resize', updatePosition);
+            window.removeEventListener('scroll', updatePosition);
+            resizeObserver.disconnect();
+        };
+    }, [useXBar, internalData]); // internalData 變化代表資料載入完成，scrollWidth 可能改變
 
     // totalPages / startIndex 移至 filteredData1 計算完後（見下方）
 
@@ -446,7 +514,7 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
     return (
         // gridStyles(); // 確保樣式被注入
 
-        <div className={` ${cssUserbar} relative ${textSize} border border-gray-300  bg-slate-100  rounded-md`}>
+        <div ref={scrollContainerRef} className={` ${cssUserbar} relative ${textSize} border border-gray-300  bg-slate-100  rounded-md`}>
             {gridStyles()}
             <div className=' text-gray-800 p-2  '>
 
@@ -704,6 +772,32 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
             <div>
             </div>
             <LoadingInline isLoading={loading} message="i am loading..." />
+
+            {/* ── 浮動水平捲軸：固定在視窗底部，隨時可用 ── */}
+            {/* 注意：不能用 showFloatingBar 做條件渲染，否則 ref 初始為 null 造成循環死結 */}
+            {/* 改用 height: 0 隱藏，確保 ref 永遠有值讓 useEffect 可正確執行 */}
+            {useXBar && (
+                <div
+                    ref={floatingBarRef}
+                    style={{
+                        position: 'fixed',
+                        bottom: 0,
+                        left: floatingBarRect.left,
+                        width: floatingBarRect.width,
+                        height: showFloatingBar ? '14px' : '0px',
+                        overflowX: showFloatingBar ? 'auto' : 'hidden',
+                        overflowY: 'hidden',
+                        zIndex: 1000,
+                        background: 'rgba(226,232,240,0.97)',
+                        borderTop: showFloatingBar ? '2px solid #94a3b8' : 'none',
+                        boxShadow: showFloatingBar ? '0 -3px 10px rgba(0,0,0,0.13)' : 'none',
+                        transition: 'height 0.15s ease',
+                    }}
+                >
+                    {/* 內層 div 的寬度 = grid 的 scrollWidth，產生可捲動空間 */}
+                    <div ref={floatingBarInnerRef} style={{ height: '1px' }} />
+                </div>
+            )}
         </div>
 
     );
