@@ -169,8 +169,42 @@ export const transformToFormField = (data: any[],
  *
  * @param {(row: Record<string, FormField>) => void} [onRowClick] - 點擊任一列時觸發的回調，回傳該列資料
  *
- * @param {(item: any, col: ColumnDef) => FormField} [customTransform] - 
- *   全域自訂資料轉換函式，優先於各欄位的 `transform`，適合統一處理複雜轉換邏輯
+ * @param {(item: any, col: ColumnDef) => FormField} [customTransform] -
+ *   **第一層轉換**：全域自訂資料轉換函式，優先於各欄位的 `transform`。
+ *   在資料進入 grid 前，對每個 row × col 逐一執行，適合統一決定欄位的 type / value / href 等。
+ *   執行時機：原始 JSON → FormField 轉換階段（per row, per column）。
+ *
+ *   @example
+ *   ```tsx
+ *   customTransform={(item, col) => {
+ *       if (col.name === 'status') {
+ *           return { name: col.name, type: 'input', value: item.status === 1 ? '啟用' : '停用' };
+ *       }
+ *       return { name: col.name, type: col.type, value: String(item[col.name] ?? '') };
+ *   }}
+ *   ```
+ *
+ * @param {(data: Array<Record<string, FormField>>) => void} [setTransformedData] -
+ *   **第二層轉換**：資料全部轉換完後的回調，可對整批已轉換的資料做進一步修改（mutation）。
+ *   執行時機：`customTransform` 跑完 → `setTransformedData` → grid 寫入 state。
+ *   適用場景：注入按鈕元件（type: 'empty'）、依其他欄位的值動態調整某欄、跨欄位邏輯。
+ *   **同時支援 `rawData` 和 `apiUrl` 兩種資料來源。**
+ *
+ *   @example
+ *   ```tsx
+ *   setTransformedData={(transformed) => {
+ *       transformed.forEach((row) => {
+ *           const id = row['id']?.value ?? '';
+ *           row['action'] = {
+ *               name: 'action',
+ *               type: 'empty',
+ *               child: (
+ *                   <button onClick={() => alert('id: ' + id)}>檢視</button>
+ *               ),
+ *           };
+ *       });
+ *   }}
+ *   ```
  *
  * @param {'default'|'empty'|'yellow'|'vistaBlue'|'green1'|'green2'|'white1'} [styleHeader='default'] -
  *   表頭預設主題樣式：
@@ -185,8 +219,9 @@ export const transformToFormField = (data: any[],
  *
  * @param {string} [textSize='text-sm'] - 整體字體大小，使用 Tailwind CSS 類別，
  *   例如 `'text-xs'`、`'text-base'`、`'text-lg'`
- *  @param {number} [refreshKey] - 監聽此值變化以強制重新抓取 API 資料（僅當 `apiUrl` 設定時有效）
+ * @param {number} [refreshKey] - 監聽此值變化以強制重新抓取 API 資料（僅當 `apiUrl` 設定時有效）
  * @param {number} [gridCols] - 手動指定 grid 欄數（目前以 `widthcss` 自動計算為主，較少使用）
+
  */
 const DataGridApi: React.FC<DataGridProps> = ({ columns, data, rawData, setTransformedData, apiUrl, className, PageSize, havecheckbox = false,
     onlyCheckedItems = false, useBar = false, useXBar = false, useSearch = false, keycol, gridCols, checkedItems_old, onCheckItemsChange, onRowClick
@@ -353,6 +388,10 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, rawData, setTrans
                     const jsonData = await response.json();
 
                     const transformedData = transformToFormField(jsonData, columns, customTransform);
+
+                    if (setTransformedData) {
+                        setTransformedData(transformedData); // 外部可在此 mutation transformedData（與 rawData 行為一致）
+                    }
 
                     setTimeout(() => {
 
