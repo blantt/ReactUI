@@ -130,9 +130,9 @@ const MyAlert: React.FC<AlertProps> = ({
   // 這樣父元件 re-render 不會重置 timer
   useEffect(() => {
     if (show && duration && duration > 0) {
-      console.log('duration:', duration);
+
       const timer = setTimeout(() => {
-        console.log('自動關閉', 'A');
+
         if (onCloseRef.current) onCloseRef.current();
       }, duration);
       return () => clearTimeout(timer);

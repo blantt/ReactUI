@@ -50,7 +50,7 @@ const Example = () => {
         'bb.com',
     },
     {
-      Name: 'boy',
+      Name: 'boy99',
       Age: 'fish Components',
       Tel: '234-567-8901',
       Email:
@@ -94,7 +94,7 @@ const Example = () => {
 
     //  console.log(`customTransform 被呼叫:`, { item, col });
     if (col.name === 'fullname') {
-     // console.log(`customTransform 正在處理 Age 欄位`);
+      // console.log(`customTransform 正在處理 Age 欄位`);
       // return {
       //   name: col.name,
       //   value: 'age new value',
@@ -103,9 +103,9 @@ const Example = () => {
       // };
       return {
         name: col.name,
-        value:'transnew:' + String(item[col.name]),
+        value: 'transnew:' + String(item[col.name]),
         type: 'input',
-       // child: <Button label="取得值" onClick={() => handleSelect2(item)} ></Button>, // 確保 href 有值
+        // child: <Button label="取得值" onClick={() => handleSelect2(item)} ></Button>, // 確保 href 有值
       };
 
     }
@@ -115,32 +115,32 @@ const Example = () => {
 
   // 將jsondata轉換成FormField格式
   const transformedData_api = apitransform(Grid_Data2, [
-    { name: 'Name', type: 'input', showname: '員工編號', colSpan: 1, widthcss: 'minmax(80px,120px)' },
+    { name: 'Name', type: 'input', showname: '員工編號2', colSpan: 1, widthcss: 'minmax(80px,120px)' },
     { name: 'Age', type: 'input', showname: '全名', colSpan: 1 },
     { name: 'Email', type: 'input', showname: '電子郵件', colSpan: 2 }
-  ], customTransform);
+  ],);
 
 
-  
+
 
   return (
     <div>
-      
-{/* minmax(80px,120px) */}
+
+      {/* minmax(80px,120px) */}
       <div className='w-1/2 '>
         <h1>AMC GRID api new(一例一休)</h1>
         <div className='h-[400px] p-1  '>
           <DataGridApi
             columns={[
-              { name: 'empno', type: 'input', showname: '員工編號', colSpan: 1  },
-              { name: 'fullname', type: 'input', showname: '全名2', colSpan: 1, widthcss: 'minmax(50px,150px)', subSearch: true}
+              { name: 'empno', type: 'input', showname: '員工編號', colSpan: 1 },
+              { name: 'fullname', type: 'input', showname: '全名2', colSpan: 1, widthcss: 'minmax(50px,150px)', subSearch: true }
             ]}
             useBar={true}
             havecheckbox={true}
             useSearch={true}
             useSubSearch={true}
             textSize="text-[14px]  tracking-[0.08em] "
-           // classNameHeader='  text-amber-900 font-bold p-2 bg-gradient-to-br from-orange-100/80 to-orange-200/80 backdrop-blur-xl shadow-lg      '
+            // classNameHeader='  text-amber-900 font-bold p-2 bg-gradient-to-br from-orange-100/80 to-orange-200/80 backdrop-blur-xl shadow-lg      '
             borderColor='  border-slate-400 '
             classItem=' text-[18px]  '
             styleHeader='green1'
@@ -183,7 +183,7 @@ const Example = () => {
         <div> 選擇local資料, 並轉成FormField格式,並且搭配transformedData,對每一列再做客制化調整</div>
         <DataGridApi
           columns={[
-            { name: 'Name', type: 'input', colSpan: 1 },
+            { name: 'Name', showname: '員工編號3', type: 'input', colSpan: 1 },
             { name: 'Age', type: 'input', colSpan: 1 },
             { name: 'Email', type: 'hyperlink', colSpan: 2 },
           ]}
@@ -197,22 +197,22 @@ const Example = () => {
 
       </div>
 
-   
 
-     <h1>api grid have transform</h1>
-        <div >
-          <DataGridApi
-            PageSize={5}
-            columns={[
-              { name: 'empno', type: 'input', showname: '員工編號', colSpan: 1, widthcss: 'minmax(80px,120px)' },
-              { name: 'fullname', type: 'input', showname: '全名', colSpan: 1 }
-            ]}
-            
-             customTransform={customTransform2}
-            // customTransform={customTransform}
-            apiUrl="https://editor.4kids.com.tw/Portal/api/api_db.ashx?func=Cehck輪班制一例一休"
-          />
-        </div>
+
+      <h1>api grid have transform</h1>
+      <div >
+        <DataGridApi
+          PageSize={5}
+          columns={[
+            { name: 'empno', type: 'input', showname: '員工編號', colSpan: 1, widthcss: 'minmax(80px,120px)' },
+            { name: 'fullname', type: 'input', showname: '全名', colSpan: 1 }
+          ]}
+
+          customTransform={customTransform2}
+          // customTransform={customTransform}
+          apiUrl="https://editor.4kids.com.tw/Portal/api/api_db.ashx?func=Cehck輪班制一例一休"
+        />
+      </div>
 
 
 

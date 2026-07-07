@@ -41,6 +41,23 @@ const styles =  /* css */`
                 inset 0 1px 3px rgba(0, 0, 0, 0.1), 
                 0 0 6px rgba(60, 127, 177, 0.4);
         }
+
+        /* ===== 有選擇值時的內陰影效果 ===== */
+
+        /* default 風格：有選值時顯示藍綠色內陰影 */
+        .drop-has-value {
+            box-shadow: inset 0 -3px 6px rgba(59, 130, 246, 0.2);
+            transition: box-shadow 0.2s ease-in-out;
+        }
+
+        /* vistaBlue 風格：有選值時只比未選擇略深一些 */
+        .vista-drop-blue.drop-has-value {
+            box-shadow:
+                inset 0 2px 5px rgba(84, 105, 133, 0.28),
+                inset 1px 0 3px rgba(84, 105, 133, 0.1),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.4),
+                0 1px 0 rgba(255, 255, 255, 0.8);
+        }
  
      `;
 export const VistaStyles = () => {
@@ -327,6 +344,11 @@ const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyVal
     vistaBlue: 'vista-drop-blue',
   };
 
+  // 判斷目前是否有有效的選擇值（不是空值也不是 emptyText）
+  const displayText = selectedOption
+    ? (keyText ? selectedOption[keyText] : selectedOption.name)
+    : null;
+  const hasValue = !!displayText && displayText !== emptyText && displayText !== '請選擇';
 
   return (
     VistaStyles(),
@@ -340,7 +362,8 @@ const MyDropDown: React.FC<DropdownProps> = ({ options, apiUrl, onSelect, keyVal
           className={cn(
             `relative flex items-center justify-center ${widthCss} rounded-md border border-gray-300 shadow-sm bg-slate-100 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`,
             sizeConfig.btn,
-            `${styles[style1] || styles.default}  ${className} `
+            `${styles[style1] || styles.default}  ${className} `,
+            hasValue ? 'drop-has-value' : ''
           )}
 
           onClick={handleToggle} >

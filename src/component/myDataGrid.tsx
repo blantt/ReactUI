@@ -65,11 +65,14 @@ type DataGridProps = {
         visible?: boolean; // 控制欄位是否可見
         transform?: (value: any) => FormField; // 動態轉換函數
         subSearch?: boolean; // 是否啟用單一欄位搜尋
-        outPutSearchText?: string; // 外部搜尋文字(此文字暫不會過濾內容,但表身的文字如符合關鍵字,文字會有底色標記)
+        //  outPutSearchText?: string; // 外部搜尋文字(此文字暫不會過濾內容,但表身的文字如符合關鍵字,文字會有底色標記)
 
     }>;
 
-    data?: Array<Record<string, FormField>>; // 直接傳入的資料
+
+    data?: Array<Record<string, FormField>>; // 直接傳入的資料（已轉換好的 FormField 格式）
+    rawData?: any[]; // 傳入原始 JSON，元件內部自動以 columns 轉換（擇一使用）
+    setTransformedData?: (data: Array<Record<string, FormField>>) => void; // rawData 轉換完後的回調，可取得轉換結果做細部調整
     apiUrl?: string; // API 資料來源 URL
     className?: string; // 自定義樣式
     gridCols?: number; // 動態控制grid列數
@@ -185,7 +188,7 @@ export const transformToFormField = (data: any[],
  *  @param {number} [refreshKey] - 監聽此值變化以強制重新抓取 API 資料（僅當 `apiUrl` 設定時有效）
  * @param {number} [gridCols] - 手動指定 grid 欄數（目前以 `widthcss` 自動計算為主，較少使用）
  */
-const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className, PageSize, havecheckbox = false,
+const DataGridApi: React.FC<DataGridProps> = ({ columns, data, rawData, setTransformedData, apiUrl, className, PageSize, havecheckbox = false,
     onlyCheckedItems = false, useBar = false, useXBar = false, useSearch = false, keycol, gridCols, checkedItems_old, onCheckItemsChange, onRowClick
     , customTransform, useSubSearch = false, haveCredentials = false, textSize = "text-sm", classNameHeader = "", classItem = "", refreshKey
     , borderColor = "border-slate-700", styleHeader = 'default' }) => {
@@ -211,6 +214,19 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
     let itemsPerPage = PageSize || 5;
 
     const [internalData, setInternalData] = useState<Array<Record<string, FormField>>>(data || []);
+
+    // rawData 變化時，使用自身 columns 自動轉換
+    // setTransformedData 先執行（讓外部可 mutate transformed），再寫入 state
+    useEffect(() => {
+        if (rawData) {
+            const transformed = transformToFormField(rawData, columns, customTransform);
+            if (setTransformedData) {
+                setTransformedData(transformed); // 外部可在此修改 transformed（mutation）
+            }
+            setInternalData([...transformed]); // 展開新陣列，確保 React 偵測到變化
+            setCurrentPage(1);
+        }
+    }, [rawData]); // eslint-disable-line react-hooks/exhaustive-deps
     const [loading, setLoading] = useState(!!apiUrl); // 如果有 apiUrl，預設為加載中
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -232,8 +248,9 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
         setCurrentPage(1);
     }, [apiUrl, refreshKey]);
 
-    // 當外部直接傳入的 data 改變時，回到第一頁
+    // 當外部直接傳入的 data 改變時，同步更新 internalData 並回到第一頁
     useEffect(() => {
+        setInternalData(data || []);
         setCurrentPage(1);
     }, [data]);
 
@@ -494,7 +511,12 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
         const pattern = activeKeywords
             .map(k => k.word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
             .join('|');
+        // outPutSearchType: '精準' 用 \b 只比對完整單字；'模糊' 則維持部分比對
+        // const regex = outPutSearchType === '精準'
+        //     ? new RegExp(`\\b(${pattern})\\b`, 'gi')
+        //     : new RegExp(`(${pattern})`, 'gi');
         const regex = new RegExp(`(${pattern})`, 'gi');
+
         const parts = text.split(regex);
 
         return (
@@ -578,7 +600,7 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
                             {columns.map((col, index) => (
                                 col.visible === false ? null :
                                     (col.subSearch === true) ? (
-                                        <div className={`p-1 border-l border-t  ${borderColor}    text-gray-600`} >
+                                        <div key={index} className={`p-1 border-l border-t  ${borderColor}    text-gray-600`} >
                                             <input
                                                 type="text"
                                                 placeholder={`搜尋...${col.showname}`}
@@ -587,12 +609,9 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
                                                 onChange={e => handleSubSearchChange(col.name, e.target.value)}
                                             />
                                         </div>
-                                        // <div className={` p-1.5 outline outline-1   outline-stone-400 text-gray-600 font-medium text-center`}>
-                                        //     我是搜尋
-                                        // </div>
                                     ) : (
                                         // 這裡放 col.subSearch 不為 true 時要顯示的內容
-                                        <div className={` p-1.5  border-l border-t  ${borderColor}   text-gray-600 font-medium text-center`}>
+                                        <div key={index} className={` p-1.5  border-l border-t  ${borderColor}   text-gray-600 font-medium text-center`}>
                                             {/* 留白或其他內容 */}
                                         </div>
                                     )
@@ -651,64 +670,56 @@ const DataGridApi: React.FC<DataGridProps> = ({ columns, data, apiUrl, className
                                 //colSpan 優先使用 field.colSpan , 若無則使用 header 的 colSpan, 若 header 也無則預設為1
                                 const colSpan = field.colSpan || header_colSpan || 1; // Default colSpan to 1 if not provided
 
+                                // key 必須在 return 的最頂層元素，不能藏在 && 條件裡
                                 return (
-                                    (col.visible === undefined || col.visible === true) && (
+                                    <React.Fragment key={colIndex}>
+                                        {(col.visible === undefined || col.visible === true) && (
+                                            <div
+                                                onClick={() => onRowClick && onRowClick(row)} // 新增點擊事件
+                                                // className={`  p-1.5 outline outline-1   outline-stone-400 text-gray-600 font-medium text-center`}
+                                                className={cn(
+                                                    ` p-1.5   border-l border-t   ${borderColor} font-medium text-center `,
+                                                    ` ${classItem}  `
+                                                )}
+                                            >
+                                                {(col.visible === undefined || col.visible === true) && (
+                                                    <>
+                                                        {field.type === 'input' && (() => {
+                                                            // 收集所有高亮關鍵字
+                                                            const kws: { word: string; color: string }[] = [];
 
+                                                            // 來源1: subSearch input（黃色）
+                                                            if (useSubSearch && subSearchTexts[col.name]?.trim()) {
+                                                                kws.push({ word: subSearchTexts[col.name], color: 'bg-yellow-200' });
+                                                            }
 
-                                        <div
-                                            key={colIndex}
-                                            onClick={() => onRowClick && onRowClick(row)} // 新增點擊事件
-                                            // className={`  p-1.5 outline outline-1   outline-stone-400 text-gray-600 font-medium text-center`}
-                                            className={cn(
-                                                ` p-1.5   border-l border-t   ${borderColor} font-medium text-center `,
-                                                ` ${classItem}  `
-                                            )}
-                                        >
+                                                            // 來源2: outPutSearchText 外部傳入，用 @@ 分隔多關鍵字（藍色）
+                                                            // if (col.outPutSearchText?.trim()) {
+                                                            //     col.outPutSearchText.split('@@')
+                                                            //         .map(k => k.trim())
+                                                            //         .filter(k => k)
+                                                            //         .forEach(k => kws.push({ word: k, color: 'bg-blue-200' }));
+                                                            // }
 
-
-                                            {(col.visible === undefined || col.visible === true) && (
-                                                <>
-
-
-                                                    {field.type === 'input' && (() => {
-                                                        // 收集所有高亮關鍵字
-                                                        const kws: { word: string; color: string }[] = [];
-
-                                                        // 來源1: subSearch input（黃色）
-                                                        if (useSubSearch && subSearchTexts[col.name]?.trim()) {
-                                                            kws.push({ word: subSearchTexts[col.name], color: 'bg-yellow-200' });
-                                                        }
-
-                                                        // 來源2: outPutSearchText 外部傳入，用 @@ 分隔多關鍵字（藍色）
-                                                        if (col.outPutSearchText?.trim()) {
-                                                            col.outPutSearchText.split('@@')
-                                                                .map(k => k.trim())
-                                                                .filter(k => k)
-                                                                .forEach(k => kws.push({ word: k, color: 'bg-blue-200' }));
-                                                        }
-
-                                                        return kws.length > 0
-                                                            ? highlightText(field.value ?? '', kws)
-                                                            : field.value;
-                                                    })()}
-                                                    {field.type === 'hyperlink' && field.href && (
-                                                        <a href={field.href}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            className="text-blue-500 hover:underline"
-                                                        >
-                                                            {field.value}
-                                                        </a>
-                                                    )}
-                                                    {field.type === 'empty' && field.child}
-                                                </>
-                                            )}
-
-                                        </div>
-                                    )
-
-
-
+                                                            return kws.length > 0
+                                                                ? highlightText(field.value ?? '', kws)
+                                                                : field.value;
+                                                        })()}
+                                                        {field.type === 'hyperlink' && field.href && (
+                                                            <a href={field.href}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                className="text-blue-500 hover:underline"
+                                                            >
+                                                                {field.value}
+                                                            </a>
+                                                        )}
+                                                        {field.type === 'empty' && field.child}
+                                                    </>
+                                                )}
+                                            </div>
+                                        )}
+                                    </React.Fragment>
                                 );
                             })}
 

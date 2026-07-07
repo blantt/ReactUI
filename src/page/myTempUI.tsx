@@ -228,8 +228,6 @@ const MyTempUI: React.FC = () => {
 
             </div>
 
-
-
             <div className="flex justify-center items-center ">
 
                 <div className="p-4">
