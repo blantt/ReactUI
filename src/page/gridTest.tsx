@@ -118,7 +118,7 @@ const Example = () => {
     { name: 'Name', type: 'input', showname: '員工編號2', colSpan: 1, widthcss: 'minmax(80px,120px)' },
     { name: 'Age', type: 'input', showname: '全名', colSpan: 1 },
     { name: 'Email', type: 'input', showname: '電子郵件', colSpan: 2 }
-  ],);
+  ], customTransform);
 
 
 

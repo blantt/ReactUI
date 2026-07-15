@@ -25,7 +25,7 @@ const MyTab: React.FC<MyTabProps> = ({ tabs, keepAlive = false }) => {
   return (
     <div>
       {/* 渲染 Tab 標籤 */}
-      <div className="tab-header" style={{ display: 'flex', cursor: 'pointer' }}>
+      <div className="tab-header  " style={{ display: 'flex', cursor: 'pointer' }}>
         {tabs.map((tab) => (
           <div
             key={tab.id}
@@ -45,7 +45,7 @@ const MyTab: React.FC<MyTabProps> = ({ tabs, keepAlive = false }) => {
         {tabs.find((tab) => tab.id === activeTab)?.content}
       </div> */}
 
-       {/* 新版 Tab內容,可決定是否要自動渲染 */}
+      {/* 新版 Tab內容,可決定是否要自動渲染 */}
       <div className="tab-content" style={{ marginTop: '20px' }}>
         {keepAlive ? (
           tabs.map(tab => (

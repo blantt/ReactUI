@@ -11,7 +11,7 @@ import { clsx } from 'clsx';
 /** RadioboxList 的單一選項格式 */
 export interface RadioOption {
     sname: string;  // 顯示文字
-    svalue: string; // 選項值
+    svalue: string | number | boolean; // 選項值
 }
 
 
@@ -20,11 +20,11 @@ type RadioboxListProps = {
     /** 選項陣列，每個元素需有 sname（顯示文字）與 svalue（值） */
     options: RadioOption[];
     /** 目前選取的值（受控模式） */
-    value?: string;
+    value?: string | number | boolean;
     /** input name 屬性（同一組 radio 必須相同） */
     name?: string;
-    /** 選項改變時觸發，回傳新的 svalue 字串 */
-    onChange?: (value: string) => void;
+    /** 選項改變時觸發，回傳新的 svalue */
+    onChange?: (value: string | number | boolean) => void;
     /** 排列方向：水平 horizontal（預設）或垂直 vertical */
     direction?: 'horizontal' | 'vertical';
     /** 額外 className 套用於外層容器 */
@@ -67,7 +67,7 @@ export const RadioboxList = ({
     disabled = false,
     size = 'default',
 }: RadioboxListProps) => {
-    const [internalValue, setInternalValue] = useState<string>(value ?? '');
+    const [internalValue, setInternalValue] = useState<string | number | boolean>(value ?? '');
 
     // 同步受控值
     useEffect(() => {
@@ -76,7 +76,7 @@ export const RadioboxList = ({
         }
     }, [value]);
 
-    const handleChange = (svalue: string) => {
+    const handleChange = (svalue: string | number | boolean) => {
         setInternalValue(svalue);
         if (onChange) onChange(svalue);
     };
@@ -109,12 +109,12 @@ export const RadioboxList = ({
     return (
         <div className={wrapperCls} role="radiogroup">
             {options.map((opt) => {
-                const isChecked = internalValue === opt.svalue;
-                const itemId = `${name}_${opt.svalue}`;
+                const isChecked = String(internalValue) === String(opt.svalue);
+                const itemId = `${name}_${String(opt.svalue)}`;
 
                 return (
                     <label
-                        key={opt.svalue}
+                        key={String(opt.svalue)}
                         htmlFor={itemId}
                         className={twMerge(clsx(
                             // 外框：圓角、邊框、transition（size-aware）
@@ -134,7 +134,7 @@ export const RadioboxList = ({
                             type="radio"
                             id={itemId}
                             name={name}
-                            value={opt.svalue}
+                            value={String(opt.svalue)}
                             checked={isChecked}
                             disabled={disabled}
                             onChange={() => handleChange(opt.svalue)}
