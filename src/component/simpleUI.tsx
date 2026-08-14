@@ -47,7 +47,7 @@ export const TextInput = ({ placeholder, value, onChange, name, className, enabl
             onChange={onChange}
             name={name}
             disabled={!enable}
-            className={twMerge(clsx(` w-full px-4 py-2 border border-gray-300 text-sm rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 bg-white hover:border-gray-400 disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed disabled:hover:border-gray-300`
+            className={twMerge(clsx(` w-full px-4 py-2 border border-gray-300 text-sm rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 bg-white hover:border-gray-400 disabled:bg-gray-50/60 disabled:border-gray-200 disabled:text-gray-500 disabled:cursor-not-allowed disabled:hover:border-gray-200`
                 , className))}
         />
     );
