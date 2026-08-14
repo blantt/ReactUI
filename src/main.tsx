@@ -27,67 +27,70 @@ import TestVista from './page/testVista';
 import Menutest from './page/menuTest';
 import Menutest2 from './page/menuTest2';
 import TestMaster from './pageTest/testMaster';
-import FileControl from './page/fileControl';  
-import FBalert from './Flowbite/FBalert';  
-import FBmodal from './Flowbite/FBmodal';  
+import FileControl from './page/fileControl';
+import FBalert from './Flowbite/FBalert';
+import FBmodal from './Flowbite/FBmodal';
 import FBDatePicker from './Flowbite/FBDatePicker';
-import Formtest3 from './page/formtest3'; 
-import Testfileupload from './pageTest/testfileupload';  
-import Testapihook from './pageTest/testapihook';  
+import Formtest3 from './page/formtest3';
+import Testfileupload from './pageTest/testfileupload';
+import Testapihook from './pageTest/testapihook';
 import TestAlert from './page/testAlert';
+import Testtiptap from './pageTest/testtiptap';
 
 async function enableMocking() {
   if (import.meta.env.MODE !== 'development') {
     return
   }
- 
+
 
   // `worker.start()` 會回傳一個 Promise，
   // 當 Service Worker 啟動並運作後，它會被解析。
-  
+
 }
 
 // 呼叫 enableMocking 並等待它完成(這裡目前有問題，先註解起來)
 // enableMocking().then(() => {
-  createRoot(document.getElementById('root')!).render(
-    <StrictMode>
-      <BrowserRouter >
-        <Routes>
-          <Route path="/" element={<App />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/home2" element={<Home2 />} />
-          <Route path="/apiTest" element={<ApiTest />} />
-          <Route path="/formTest" element={<FormTest />} />
-          <Route path="/formTest2" element={<FormTest2 />} />
-          <Route path="/gridTest" element={<GridTest />} />
-          <Route path="/uiTemplate" element={<Uitemplabe />} />
-          <Route path="/myTempUI" element={<MytempUI />} />
-           <Route path="/myTempUI2" element={<MytempUI2 />} />
-           <Route path="/myTempUI3" element={<MytempUI3 />} />
-          <Route path="/docGrid" element={<DocGrid />} />
-          <Route path="/otcTest" element={<OTCtest />} />
-          <Route path="/otcTest2" element={<OTCtest2 />} />
-          <Route path="/tabTest" element={<TabTest />} />
-          <Route path="/testHtmlPage" element={<TestHtmlPage />} />
-          <Route path="/testHtmlPage2" element={<TestHtmlPage2 />} />
-          <Route path="/textOtc" element={<TextOtc />} />
-          <Route path="/testModal" element={<TestModal />} />
-          <Route path="/simpleUI" element={<SimpleUItest />} />
-          <Route path="/testVista" element={<TestVista />} />
-          <Route path="/menuTest" element={<Menutest />} />
-          <Route path="/menuTest2" element={<Menutest2 />} />
-         <Route path="/testMaster" element={<TestMaster />} />
-         <Route path="/fileControl" element={<FileControl />} />
-         <Route path="/FBmodal" element={<FBmodal />} />
-          <Route path="/FBalert" element={<FBalert />} />
-          <Route path="/FBDatePicker" element={<FBDatePicker />} />
-          <Route path="/formTest3" element={<Formtest3 />} />
-          <Route path="/testfileupload" element={<Testfileupload />} />
-          <Route path="/testapihook" element={<Testapihook />} />
-          <Route path="/testAlert" element={<TestAlert />} />
-        </Routes>
-      </BrowserRouter>
-    </StrictMode>,
-  )
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <BrowserRouter >
+      <Routes>
+        <Route path="/" element={<App />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/home2" element={<Home2 />} />
+        <Route path="/apiTest" element={<ApiTest />} />
+        <Route path="/formTest" element={<FormTest />} />
+        <Route path="/formTest2" element={<FormTest2 />} />
+        <Route path="/gridTest" element={<GridTest />} />
+        <Route path="/uiTemplate" element={<Uitemplabe />} />
+        <Route path="/myTempUI" element={<MytempUI />} />
+        <Route path="/myTempUI2" element={<MytempUI2 />} />
+        <Route path="/myTempUI3" element={<MytempUI3 />} />
+        <Route path="/docGrid" element={<DocGrid />} />
+        <Route path="/otcTest" element={<OTCtest />} />
+        <Route path="/otcTest2" element={<OTCtest2 />} />
+        <Route path="/tabTest" element={<TabTest />} />
+        <Route path="/testHtmlPage" element={<TestHtmlPage />} />
+        <Route path="/testHtmlPage2" element={<TestHtmlPage2 />} />
+        <Route path="/textOtc" element={<TextOtc />} />
+        <Route path="/testModal" element={<TestModal />} />
+        <Route path="/simpleUI" element={<SimpleUItest />} />
+        <Route path="/testVista" element={<TestVista />} />
+        <Route path="/menuTest" element={<Menutest />} />
+        <Route path="/menuTest2" element={<Menutest2 />} />
+        <Route path="/testMaster" element={<TestMaster />} />
+        <Route path="/fileControl" element={<FileControl />} />
+        <Route path="/FBmodal" element={<FBmodal />} />
+        <Route path="/FBalert" element={<FBalert />} />
+        <Route path="/FBDatePicker" element={<FBDatePicker />} />
+        <Route path="/formTest3" element={<Formtest3 />} />
+        <Route path="/testfileupload" element={<Testfileupload />} />
+        <Route path="/testapihook" element={<Testapihook />} />
+        <Route path="/testAlert" element={<TestAlert />} />
+
+        <Route path="/testtiptap" element={<Testtiptap />} />
+      </Routes>
+    </BrowserRouter>
+  </StrictMode>,
+)
 
 // });
