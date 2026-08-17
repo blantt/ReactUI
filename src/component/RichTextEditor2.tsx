@@ -6,7 +6,7 @@ import { TableRow } from '@tiptap/extension-table-row'
 import { TableCell } from '@tiptap/extension-table-cell'
 import { TableHeader } from '@tiptap/extension-table-header'
 import { TextAlign } from '@tiptap/extension-text-align'
-import '../css/testtiptap.css' // 或移至 component 專屬的 css
+//import "../css/tiptap.css" // 或移至 component 專屬的 css
 
 export interface ToolbarControls {
     bold?: boolean
@@ -28,12 +28,12 @@ const defaultControls: Required<ToolbarControls> = {
     alignLeft: true,
     alignCenter: true,
     alignRight: true,
-    insertTable: false,
-    addColumn: false,
-    deleteColumn: false,
-    addRow: false,
-    deleteRow: false,
-    deleteTable: false,
+    insertTable: true,
+    addColumn: true,
+    deleteColumn: true,
+    addRow: true,
+    deleteRow: true,
+    deleteTable: true,
 }
 
 interface RichTextEditorProps {
@@ -43,6 +43,42 @@ interface RichTextEditorProps {
     controls?: ToolbarControls
 }
 
+
+/**
+ * ### RichTextEditor2 編輯器元件
+ * 
+ * 基於 Tiptap 的文字編輯器，支援 Markdown 語法和表格功能。
+ * 
+ * @example
+ * // 基本用法
+ * <RichTextEditor2 value={text} onChange={setText} />
+ * 
+ * @example
+ * // 禁用編輯器
+ * <RichTextEditor2 value={text} disabled />
+ * 
+ * @example
+ * // 自訂工具列顯示
+ * <RichTextEditor2
+ *   value={text}
+ *   controls={{
+ *     bold: true,
+ *     italic: true,
+ *     insertTable: true,
+ *     addColumn: true,
+ *     deleteColumn: true,
+ *     addRow: true,
+ *     deleteRow: true,
+ *     deleteTable: true,
+ *   }}
+ * />
+ * 
+ * @param value           編輯器的 HTML 格式文字內容。
+ * @param onChange        內容變更時的回調函式，傳入最新 HTML。
+ * @param disabled        設為 `true` 可切換為唯讀/禁用狀態。
+ * @param controls        控制工具列各個按鈕的顯示/隱藏設定。
+ *
+ */
 export const RichTextEditor2: React.FC<RichTextEditorProps> = ({
     value = '',
     onChange,
