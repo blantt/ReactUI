@@ -28,12 +28,12 @@ const defaultControls: Required<ToolbarControls> = {
     alignLeft: true,
     alignCenter: true,
     alignRight: true,
-    insertTable: true,
-    addColumn: true,
-    deleteColumn: true,
-    addRow: true,
-    deleteRow: true,
-    deleteTable: true,
+    insertTable: false,
+    addColumn: false,
+    deleteColumn: false,
+    addRow: false,
+    deleteRow: false,
+    deleteTable: false,
 }
 
 interface RichTextEditorProps {
