@@ -13,6 +13,7 @@ import type { FileItem as DropdownOption } from '../component/myDropGrid'; // åŒ
 import SmartModal from '../component/SmartModal';
 
 import MyGetApi, { useMyApi } from '../component/myGetApi';
+import { RichTextEditor2 } from '../component/RichTextEditor2'
 
 const app: React.FC = () => {
 
@@ -162,7 +163,10 @@ const app: React.FC = () => {
                     ))}
                 </div>
             ))}
+            <RichTextEditor2
+                value={'aaaaaaaabcccc'}
 
+            />
 
         </div>
 

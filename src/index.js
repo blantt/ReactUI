@@ -22,4 +22,5 @@ export { default as MyAudioPlayer } from './component/myAudio';
 export { default as MyConfirm } from './component/myConfirm';
 export { default as useFileDownload } from './component/myfileControl';
 export { default as MyFileUpload } from './component/MyFileUpload'
+export { default as RichTextEditor2 } from './component/RichTextEditor2'
 

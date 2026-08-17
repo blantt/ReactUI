@@ -17,6 +17,7 @@ export { default as MyAudioPlayer } from './component/myAudio';
 export { default as NavItem, MenuItem, type MenuItemData } from './component/myMenuItem';
 export { default as MyAlert } from './component/myAlert';
 export { default as MyConfirm } from './component/myConfirm';
+export { default as RichTextEditor2 } from './component/RichTextEditor2'
 export { default as useFileDownload, type DownLoadProps, type UseFileDownloadReturn } from './component/myfileControl';
 export { default as MyFileUpload, type MyFileUploadRef } from './component/MyFileUpload';
 
