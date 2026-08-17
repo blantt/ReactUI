@@ -6,7 +6,90 @@ import { TableRow } from '@tiptap/extension-table-row'
 import { TableCell } from '@tiptap/extension-table-cell'
 import { TableHeader } from '@tiptap/extension-table-header'
 import { TextAlign } from '@tiptap/extension-text-align'
-//import "../css/tiptap.css" // 或移至 component 專屬的 css
+// 內嵌編輯器樣式，無需引用外部 CSS
+const editorStyles = `
+/* Tiptap 編輯器外框與內容容器 */
+.tiptap-container {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 16px;
+    background-color: #fff;
+    color: #333;
+}
+
+.tiptap-container .ProseMirror {
+    outline: none;
+    min-height: 200px;
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    text-align: left;
+}
+
+/* 表格專屬樣式 */
+.tiptap-container .ProseMirror table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+    margin: 12px 0;
+    overflow: hidden;
+    border: 2px solid #1a202c; /* 外框邊框 */
+}
+
+.tiptap-container .ProseMirror td,
+.tiptap-container .ProseMirror th {
+    min-width: 1em;
+    border: 1px solid #a0aec0; /* 格子邊框 */
+    padding: 8px 12px;
+    vertical-align: top;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.tiptap-container .ProseMirror th {
+    font-weight: bold;
+    text-align: left;
+    background-color: #edf2f7;
+}
+
+/* 被選取的儲存格高亮 */
+.tiptap-container .ProseMirror .selectedCell:after {
+    z-index: 2;
+    position: absolute;
+    content: "";
+    left: 0; right: 0; top: 0; bottom: 0;
+    background: rgba(66, 153, 225, 0.2);
+    pointer-events: none;
+}
+
+/* 表格拉動欄寬的軸線 */
+.tiptap-container .ProseMirror .column-resize-handle {
+    position: absolute;
+    right: -2px;
+    top: 0;
+    bottom: -0.5px;
+    width: 4px;
+    background-color: #3182ce;
+    pointer-events: none;
+}
+
+/* 按鈕美化 */
+.tiptap-btn-group button {
+    background-color: #f7fafc;
+    border: 1px solid #cbd5e0;
+    color: #2d3748;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.tiptap-btn-group button:hover {
+    background-color: #edf2f7;
+    border-color: #a0aec0;
+}
+`
 
 export interface ToolbarControls {
     bold?: boolean
@@ -117,6 +200,7 @@ export const RichTextEditor2: React.FC<RichTextEditorProps> = ({
 
     return (
         <div className="tiptap-container">
+            <style>{editorStyles}</style>
             {/* 工具列 */}
             {!disabled && (
                 <div className="tiptap-btn-group" style={{ borderBottom: '1px solid #eee', paddingBottom: '12px', marginBottom: '12px', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
