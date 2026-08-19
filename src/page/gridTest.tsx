@@ -6,8 +6,53 @@ import Button from "../component/button";
 import Loading from '../component/myload';
 
 
-const Example = () => {
+//TODO:customTransform2
+const customTransform2 = (item: any, col: { name: string; type: string }) => {
+  if (col.name === 'view') {
+    // return {
+    //   name: col.name,
+    //   value: '',
+    //   type: 'empty',
+    //   child: <Button label="取得值2" onClick={() => handleSelect2(item)} ></Button>, // 確保 href 有值
+    // };
 
+    return {
+      name: col.name,
+      value: '',
+      type: 'empty',
+      child: <Button label="改變欄位值" onClick={() => {
+        console.log("empno", item['empno']);
+        item['empno'] = 'bill88888';
+        console.log("new empno", item['empno']);
+        //就算更新了InternalRefreshKey,但因為api也重取了,所以grid內容還是沒變
+        // setInternalRefreshKey(prev => prev + 1);
+      }} ></Button>,
+    };
+
+  }
+  //  console.log(`customTransform 被呼叫:`, { item, col });
+  if (col.name === 'fullname') {
+    // console.log(`customTransform 正在處理 Age 欄位`);
+    // return {
+    //   name: col.name,
+    //   value: 'age new value',
+    //   type: 'hyperlink',
+    //   href: `https://example.com/age/${item[col.name]}`, // 確保 href 有值
+    // };
+    return {
+      name: col.name,
+      value: 'transnew:' + String(item[col.name]),
+      type: 'input',
+      // child: <Button label="取得值" onClick={() => handleSelect2(item)} ></Button>, // 確保 href 有值
+    };
+
+  }
+
+  return { name: col.name, value: String(item[col.name]), type: col.type };
+};
+
+const Example = () => {
+  const [RefreshKeylocal, setRefreshKeylocal] = useState(0);
   const columns = ['Name', 'Age', 'Email'];
   const data = [
     {
@@ -39,38 +84,55 @@ const Example = () => {
     Age: string;
     Email?: string | null;
   }
-
-  const Grid_Data2 = [
-
+  const [gridData2, setGridData2] = useState([
     {
       Name: 'blantt',
       Age: 'blantt Components',
       Tel: '123-456-7890',
-      Email:
-        'bb.com',
+      Email: 'bb.com',
     },
     {
       Name: 'boy99',
       Age: 'fish Components',
       Tel: '234-567-8901',
-      Email:
-        'bb2.com',
+      Email: 'bb2.com',
     },
-    {
-      Name: 'girl',
-      Age: 'QQQ Components',
-      Tel: '345-678-9012',
-      Email:
-        '',
-    },
+  ]);
 
-  ];
-
-  const customTransform = (item: any, col: { name: string; type: string }) => {
+  //TODO: customTransform_local
+  const customTransform_local = (item: any, col: { name: string; type: string }) => {
 
     //  console.log(`customTransform 被呼叫:`, { item, col });
+    if (col.name === 'view') {
+      return {
+        name: col.name,
+        value: '',
+        type: 'empty',
+        child: <Button label="改變欄位值" onClick={() => {
+          console.log("Name old", item['Name']);
+          setGridData2(prevData =>
+            prevData.map(row =>
+              row.Name === item.Name
+                ? { ...row, Name: 'bill88888' }
+                : row
+            )
+          );
+        }} ></Button>,
+      };
+      // return {
+      //   name: col.name,
+      //   value: '',
+      //   type: 'empty',
+      //   child: <Button label="改變欄位值" onClick={() => {
+      //     item['Name'].value = 'bill88888';
+      //   }} ></Button>,
+      // };
+
+    }
+
+
     if (col.name === 'Age') {
-      console.log(`customTransform 正在處理 Age 欄位`);
+
       // return {
       //   name: col.name,
       //   value: 'age new value',
@@ -81,7 +143,7 @@ const Example = () => {
         name: col.name,
         value: '',
         type: 'empty',
-        child: <Button label="取得值" onClick={() => handleSelect2(item)} ></Button>, // 確保 href 有值
+        child: <Button label="取得值1" onClick={() => handleSelect2(item)} ></Button>, // 確保 href 有值
       };
 
     }
@@ -89,36 +151,14 @@ const Example = () => {
     return { name: col.name, value: String(item[col.name]), type: col.type };
   };
 
-
-  const customTransform2 = (item: any, col: { name: string; type: string }) => {
-
-    //  console.log(`customTransform 被呼叫:`, { item, col });
-    if (col.name === 'fullname') {
-      // console.log(`customTransform 正在處理 Age 欄位`);
-      // return {
-      //   name: col.name,
-      //   value: 'age new value',
-      //   type: 'hyperlink',
-      //   href: `https://example.com/age/${item[col.name]}`, // 確保 href 有值
-      // };
-      return {
-        name: col.name,
-        value: 'transnew:' + String(item[col.name]),
-        type: 'input',
-        // child: <Button label="取得值" onClick={() => handleSelect2(item)} ></Button>, // 確保 href 有值
-      };
-
-    }
-
-    return { name: col.name, value: String(item[col.name]), type: col.type };
-  };
 
   // 將jsondata轉換成FormField格式
-  const transformedData_api = apitransform(Grid_Data2, [
+  const transformedData_local = apitransform(gridData2, [
     { name: 'Name', type: 'input', showname: '員工編號2', colSpan: 1, widthcss: 'minmax(80px,120px)' },
     { name: 'Age', type: 'input', showname: '全名', colSpan: 1 },
+    { name: 'view', type: 'input', showname: '測試改值' }, // 👈 補上這行！
     { name: 'Email', type: 'input', showname: '電子郵件', colSpan: 2 }
-  ], customTransform);
+  ], customTransform_local);
 
 
 
@@ -178,17 +218,19 @@ const Example = () => {
       <div>
         {/* 這裡試著 取得 data.js 的 Grid_Data1 資料給grid  */}
         {/* 但要先將Grid_Data1 轉換成符合FormField格式的資料 */}
-
+        {/* TODO: local GRID */}
         <h1>local GRID</h1>
         <div> 選擇local資料, 並轉成FormField格式,並且搭配transformedData,對每一列再做客制化調整</div>
         <DataGridApi
+          refreshKey={RefreshKeylocal}
           columns={[
-            { name: 'Name', showname: '員工編號3', type: 'input', colSpan: 1 },
-            { name: 'Age', type: 'input', colSpan: 1 },
-            { name: 'Email', type: 'hyperlink', colSpan: 2 },
+            { name: 'Name', showname: '員工編號3', type: 'input' },
+            { name: 'Age', showname: 'aaa', type: 'input' },
+            { name: 'view', showname: '測試改值', type: 'input' },
+            { name: 'Email', type: 'hyperlink' },
           ]}
           //  data={data}    // 原本的data
-          data={transformedData_api}   // 使用轉換後的data
+          data={transformedData_local}   // 使用轉換後的data
           //gridCols={4}
           onRowClick={(item) => {
             alert(`Clicked Name: ${item['Name']?.value}, Age: ${item['Age']?.value}`);
@@ -198,14 +240,16 @@ const Example = () => {
       </div>
 
 
-
+      {/* TODO:api grid have trans */}
       <h1>api grid have transform</h1>
       <div >
         <DataGridApi
+
           PageSize={5}
           columns={[
             { name: 'empno', type: 'input', showname: '員工編號', colSpan: 1, widthcss: 'minmax(80px,120px)' },
-            { name: 'fullname', type: 'input', showname: '全名', colSpan: 1 }
+            { name: 'fullname', type: 'input', showname: '全名', colSpan: 1 },
+            // { name: 'view', showname: '測試改值', type: 'input' },
           ]}
 
           customTransform={customTransform2}
