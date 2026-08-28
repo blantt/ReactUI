@@ -10,7 +10,7 @@ interface ModalProps {
   width?: string;
   height?: string;
   isAnimating?: boolean;
-   
+
 }
 /**
  * ### myModal 元件
@@ -47,7 +47,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, myHeade
       <div className={`  flex flex-col bg-white rounded-lg shadow-lg  min-w-80 ${width || ''} ${height || ''} `}>
         {/* Header */}
         <div className="relative px-2 py-1 border-b border-gray-200 flex items-center justify-center">
-           {myHeader ? myHeader : <h2 className="text-center text-base font-semibold text-slate-800">{title}</h2>}
+          {myHeader ? myHeader : <h2 className="text-center text-base font-semibold text-slate-800">{title}</h2>}
           {/* <h2 className="text-base text-center font-medium">{title}</h2> */}
           <button
             onClick={onClose}
@@ -56,15 +56,16 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, myHeade
             ×
           </button>
         </div>
-         
+
         {/* Body */}
-        <div className=" flex-1  p-4">
+        {/* <div className=" flex-1  p-4"> */}
+        <div className="flex-1 p-4 min-h-0 overflow-hidden">
           {children}
         </div>
 
         {/* Footer */}
         {footer && (
-         <div className="flex items-center justify-end   bg-slate-50/50 px-6 py-2">
+          <div className="flex items-center justify-end   bg-slate-50/50 px-6 py-2">
             {footer}
           </div>
         )}
@@ -74,5 +75,5 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, myHeade
 };
 
 
- 
+
 export default Modal;

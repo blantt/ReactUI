@@ -315,6 +315,40 @@ function useGridSelection(
 
 /**
  * 通用 datagrid 元件 - 高度自定義化
+ *
+ * @param {Array<DataGridProps>} columns - 欄位設定陣列，定義表頭與各欄位屬性
+ * @param {Array<Record<string, FormField>>} [data] - 直接傳入已轉換為 `FormField` 格式的資料陣列（與 `rawData`、`apiUrl` 擇一使用）
+ * @param {Array<any>} [rawData] - 傳入原始 JSON 資料陣列，元件內部自動根據 `columns` 及 `transform` 轉換（與 `data`、`apiUrl` 擇一使用）
+ * @param {(data: Array<Record<string, FormField>>) => void} [setTransformedData] - rawData / apiUrl 轉換為 FormField 完成後的回調，可在此針對整批資料進行細部修改或注入按鈕（Mutation）
+ * @param {string} [apiUrl] - API 資料來源 URL，設定後元件載入時會自動發起 fetch 抓取資料（與 `data`、`rawData` 擇一使用）
+ * @param {string} [className] - 附加在 DataGrid 容器上的自定義 Tailwind CSS 類別
+ * @param {number} [gridCols] - 手動指定 Grid 欄位數量
+ * @param {number} [PageSize] - 每頁顯示筆數（預設 `5`）。注意：當 `useBar={true}` 時會強制重設為全顯不分頁
+ * @param {boolean} [useSearch=false] - 是否在表格上方顯示全欄位關鍵字搜尋框（預設 `false`）
+ * @param {boolean} [useSubSearch=false] - 是否啟用各欄位單欄子搜尋框功能（預設 `false`，需在 `columns` 對應欄位設定 `subSearch: true`）
+ * @param {boolean} [havecheckbox=false] - 是否在每列最左側顯示 Checkbox 勾選框（預設 `false`）
+ * @param {boolean} [useBar=false] - 是否啟用捲軸模式：高度填滿父容器並可垂直捲動，同時不分頁顯示全量資料（預設 `false`）
+ * @param {boolean} [useXBar=false] - 是否啟用橫向捲軸模式：欄位過寬時支援水平捲動，並在視窗底部提供浮動捲軸列（預設 `false`）
+ * @param {string} [keycol] - 指定每列的唯一鍵值欄位名稱（用於 Checkbox 勾選狀態比對，未設定時預設取 `columns[0].name`）
+ * @param {(items: Array<Record<string, FormField>>) => void} [onCheckItemsChange] - 當使用者勾選/取消勾選 Checkbox 項目變更時的回調函式，傳入當前所有已勾選列
+ * @param {(row: Record<string, FormField>) => void} [onRowClick] - 點擊任一資料列時觸發的回調函式，傳回該列資料物件
+ * @param {Array<Record<string, FormField>>} [checkedItems_old] - 外部傳入預設勾選的資料陣列，用於控制或同步內部 Checkbox 狀態
+ * @param {(item: any, col: DataGridProps['columns'][number]) => FormField} [customTransform] - 全域自定義資料轉換邏輯，優先於欄位各自的 `transform`，執行於原始資料轉 FormField 階段
+ * @param {boolean} [onlyCheckedItems=false] - 是否僅顯示已勾選的項目（預設 `false`，需搭配 `havecheckbox={true}` 使用）
+ * @param {boolean} [haveCredentials=false] - API 請求時是否帶入 Cookie / Session 憑證（`credentials: 'include'`，預設 `false`）
+ * @param {string} [textSize="text-sm"] - 整體表格字體大小 Tailwind 類別（例如 `'text-xs'`, `'text-sm'`, `'text-base'`，預設 `'text-sm'`）
+ * @param {string} [classNameHeader=""] - 附加在每個表頭儲存格的自定義 Tailwind CSS 類別
+ * @param {string} [classItem=""] - 附加在每個資料儲存格的自定義 Tailwind CSS 類別
+ * @param {string} [borderColor="border-slate-700"] - 表格網格邊框顏色 Tailwind 色彩類別（例如 `'border-gray-300'`, `'border-slate-700'`）
+ * @param {'default' | 'empty' | 'yellow' | 'vistaBlue' | 'green1' | 'green2' | 'white1'} [styleHeader='default'] - 表頭預設主題風格：
+ *     - `'default'`: 紫藍漸層
+ *     - `'empty'`: 無漸層背景
+ *     - `'yellow'`: 暖黃漸層
+ *     - `'vistaBlue'`: Vista 經典藍
+ *     - `'green1'`: 抹茶歐蕾
+ *     - `'green2'`: 薄荷晨曦
+ *     - `'white1'`: 絲絨銀灰
+ * @param {number} [refreshKey] - 當外部欲強制重新抓取 API 資料時，傳入遞增或更新的數字 key
  */
 const DataGridApi: React.FC<DataGridProps> = ({
     columns,
